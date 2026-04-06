@@ -1,0 +1,36 @@
+<body>
+
+    <div class="app-main">
+
+        <!-- app wrapper start -->
+        <div id="app-wrapper" class="app-wrapper d-flex flex-column align-items-stretch min-vh-100">
+
+            <!-- app sidebar start -->
+            <app-sidebar></app-sidebar>
+            <!-- app sidebar end -->
+
+            <!-- app header start -->
+            <div class="app-dir-wrapper">
+                <button type="button" class="app-dir-btn app-set-ltr">LTR</button>
+                <button type="button" class="app-dir-btn app-set-rtl">RTL</button>
+            </div>
+            <app-header></app-header>
+            <!-- app header end -->
+
+            <!-- app content start -->
+            <div class="app-content-wrapper pt-13 pb-13">
+
+                <div class="container ">
+
+                    <router-outlet></router-outlet>
+
+                </div>
+            </div><!-- app content end -->
+            <app-footer></app-footer>
+
+            <div class="app-backdrop"></div>
+            <!-- app content end -->
+        </div>
+        <!-- app wrapper end -->
+    </div>
+</body>

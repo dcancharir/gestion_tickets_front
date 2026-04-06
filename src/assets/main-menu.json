@@ -1,0 +1,39 @@
+[
+    {
+        "name": "Mantenimientos",
+        "modules": [
+            {
+                "name": "Mantenimientos",
+                "icon": "games",
+                "items": [
+                    {
+                        "action": "mantenimiento/categorias",
+                        "name": "Categorias",
+                        "path": "mantenimiento/categorias"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Seguridad",
+        "modules": [
+            {
+                "name": "Seguridad",
+                "icon": "games",
+                "items": [
+                    {
+                        "action": "security/roles",
+                        "name": "Roles",
+                        "path": "seguridad/roles"
+                    },
+                    {
+                        "action": "security/users",
+                        "name": "Usuarios",
+                        "path": "security/users"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -22,10 +22,20 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
+              "src/assets/css/bootstrap.css",
+              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css",
               "src/styles.css"
+            ],
+            "scripts": [
+              "src/assets/vendor/libs/jquery/jquery.js",
+              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js",
+              "src/assets/js/bootstrap.js",
+              "src/assets/js/conca-sidebar.js",
+              "src/assets/js/conca.js"
             ]
           },
           "configurations": {
@@ -47,7 +57,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
