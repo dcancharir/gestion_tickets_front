@@ -11,4 +11,13 @@ export class RolService {
     getAll():Observable<Rol[]>{
         return this.http.get<Rol[]>(`${this.api}api/roles`);
     }
+    create(data:Rol):Observable<Rol>{
+        return this.http.post<Rol>(`${this.api}api/roles`,data);
+    }
+    update(id:number,data:Rol):Observable<Rol>{
+        return this.http.post<Rol>(`${this.api}api/roles/${id}`,data);
+    }
+    delete(id:number):Observable<void>{
+        return this.http.delete<void>(`${this.api}api/roles/${id}`);
+    }
 }
