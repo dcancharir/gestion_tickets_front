@@ -25,7 +25,7 @@
                     {
                         "action": "security/roles",
                         "name": "Roles",
-                        "path": "seguridad/roles"
+                        "path": "security/roles"
                     },
                     {
                         "action": "security/users",

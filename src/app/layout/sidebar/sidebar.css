@@ -1,0 +1,14 @@
+.app-sidebar-submenu {
+  display: none;
+}
+
+.app-sidebar-submenu.open {
+  display: block;
+}
+.app-sidebar-menu-item .app-sidebar-submenu {
+  display: none;
+}
+
+.app-sidebar-menu-item.open .app-sidebar-submenu {
+  display: block;
+}

@@ -36,8 +36,9 @@
                         </li>
                         @if(section.modules.length){
                             @for(module of section.modules; track module.name){
-                                <li class="app-sidebar-menu-item has-dropdown">
-                                    <a href="javascript:void(0);" class="menu-link d-flex align-items-center">
+                                <li class="app-sidebar-menu-item has-dropdown" [class.open]="isAnyChildActive(module.items)">
+                                    <a href="javascript:void(0);" class="menu-link d-flex align-items-center" (click)="toggleModule(module)"
+  [class.active]="openModule === module.name">
                                         <span class="menu-icon flex-shrink-0">
                                             <svg width="13" height="17" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11.55 6.75H1.95C1.28726 6.75 0.75 7.28726 0.75 7.95V15.15C0.75 15.8127 1.28726 16.35 1.95 16.35H11.55C12.2127 16.35 12.75 15.8127 12.75 15.15V7.95C12.75 7.28726 12.2127 6.75 11.55 6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -53,10 +54,10 @@
                                         </span>
                                     </a>
                                     @if(module.items.length){
-                                        <ul class="app-sidebar-submenu">
+                                        <ul class="app-sidebar-submenu"  [style.display]="openModule === module.name ? 'block' : 'none'">
                                             @for(item of module.items; track item.name){
                                                 <li class="app-sidebar-menu-item">
-                                                    <a href="javascript:void(0)" [routerLink]="['/'+item.path]" class="menu-link d-flex align-items-center">
+                                                    <a href="javascript:void(0)" [routerLink]="['/'+item.path]" [class.menu-current]="router.url === `/${item.path}`" class="menu-link d-flex align-items-center">
                                                         <span class="menu-title flex-grow-1">{{item.name}}</span>
                                                     </a>
                                                 </li>

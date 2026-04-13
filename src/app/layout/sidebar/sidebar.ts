@@ -6,10 +6,12 @@ import { RouterLink, Router } from "@angular/router";
 @Component({
     selector : 'app-sidebar',
     templateUrl : './sidebar.html',
+    styleUrl:'./sidebar.css',
     imports: [RouterLink]
 })
 export class Sidebar {
     router = inject(Router);
+    openModule: string | null = null;
     constructor() {
         afterNextRender(() => {
             console.log('DOM listo');
@@ -17,7 +19,9 @@ export class Sidebar {
         
         effect(() => {
             if (this.menu().length) {
+                this.openModule = this.getActiveModule();
                 console.log('Menú cargado y renderizado');
+               
                 this.jqueryload()
             }
         });
@@ -38,31 +42,27 @@ export class Sidebar {
         current.has(name) ? current.delete(name) : current.add(name);
         this.expandedSections.set(current);
     }
+        getActiveModule(): string | null {
+        for (let section of this.menu()) {
+            for (let module of section.modules) {
+            if (module.items.some(item => this.router.url.includes(`/${item.path}`))) {
+                return module.name;
+            }
+            }
+        }
+        return null;
+        }
 
+    toggleModule(module: any) {
+        this.openModule = this.openModule === module.name ? null : module.name;
+    }
     isExpanded(name: string): boolean {
         return this.expandedSections().has(name);
     }
+    isAnyChildActive(items: any[]): boolean {
+        return items.some(item => this.router.url === `/${item.path}`);
+    }
     jqueryload(){
-        const url = this.router.url;
-        console.log('URL actual:', url);
-        console.log('Menú actual:', this.menu());
-        this.menu().forEach(section => {
-            section.modules.forEach(module => {
-                module.items.forEach(item => {
-                    console.log('Comparando:', item.path, url);
-                    if (item.path === url) {
-                        console.log(item.path, url);
-                        // Marcar el enlace como activo
-                        $(`.app-sidebar-menu-item a[href="/${item.path}"]`).addClass('active');
-                        $(`.app-sidebar-menu-item a[href="/${item.path}"]`).addClass('current-menu');
-                        // Expandir la sección correspondiente
-                        $(`.app-sidebar-menu-item a[href="/${item.path}"]`).closest('.app-sidebar-submenu').show();
-                        $(`.app-sidebar-menu-item a[href="/${item.path}"]`).closest('.app-sidebar-submenu').prev('.menu-link').addClass('active');
-                    }
-                });
-            });
-        });
-
         // update sidebar menu height
         function update_sidebar_menu_height() {
             let headerHeight = 60;
@@ -81,20 +81,6 @@ export class Sidebar {
             update_sidebar_menu_height();
         })();
 
-        $('.app-sidebar-menu-item').each(function() {
-            let $this = $(this);
-            if ($this.find('.menu-current').length > 0) {
-                $this.find('.menu-current').addClass('active');
-                $this.parent().show()
-                $this.parent().parent().children('.menu-link').addClass('active')
-            }
-        });
-    
-        // list open hidden
-        $('.menu-link').on('click', function() {
-            $(this).toggleClass('active');
-            $(this).next('.app-sidebar-submenu').slideToggle(300);
-        });
         $('.app-sidebar-open-btn').on('click', function(e){
             e.preventDefault();
             $('.app-sidebar').removeClass('open');
