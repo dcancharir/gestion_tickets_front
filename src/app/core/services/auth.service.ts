@@ -17,6 +17,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.api}api/auth/login`, paylaoad).pipe(
       tap(res => {
         localStorage.setItem('TOKEN_KEY', res.token);
+        localStorage.setItem('AUTH_INFO',JSON.stringify(res))
       })
     );
   }
@@ -30,5 +31,9 @@ export class AuthService {
   }
   getToken():string | null {
     return localStorage.getItem('TOKEN_KEY');
+  }
+  getUserInfo(): AuthResponse | null {
+    const data = localStorage.getItem('AUTH_INFO');
+    return data ? JSON.parse(data) as AuthResponse : null;
   }
 }

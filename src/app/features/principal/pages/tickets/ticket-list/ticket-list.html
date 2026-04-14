@@ -91,7 +91,7 @@
                                                 <option value="archived">Archived</option>
                                             </select>
                                         </div>
-                                        <button class="btn btn-primary">New Projects</button>
+                                        <button (click)="openModal(null)" class="btn btn-primary">New Ticket</button>
                                     </div>
                                 </div>
                             </div>
@@ -595,3 +595,10 @@
 
                 </div>
             </div><!-- app content end -->
+@if(modalAbierto()){
+    <div class="modal-backdrop fade show"></div>
+    <app-ticket-add-edit
+        [incidencia]="null"
+        (cerrado)="modalAbierto.set(false)"
+    ></app-ticket-add-edit>
+}

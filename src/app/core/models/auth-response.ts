@@ -6,4 +6,5 @@ export interface AuthResponse {
   apellidos: string;
   email: string;
   rol: string;
+  userName : string;
 }

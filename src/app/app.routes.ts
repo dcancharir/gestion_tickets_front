@@ -5,6 +5,10 @@ import { LayoutLogin } from './layout/layout-login/layout-login';
 import { RoleList } from './features/maintenance/pages/roles/role-list/role-list';
 import { Dashboard } from './features/principal/pages/dashboard/dashboard';
 import { TicketList } from './features/principal/pages/tickets/ticket-list/ticket-list';
+import { SedeList } from './features/maintenance/pages/sedes/sede-list/sede-list';
+import { PrioridadList } from './features/maintenance/pages/prioridades/prioridad-list/prioridad-list';
+import { EstadoList } from './features/maintenance/pages/estados/estado-list/estado-list';
+import { CategoriaList } from './features/maintenance/pages/categorias/categoria-list/categoria-list';
 export const routes: Routes = [
     { path : '', redirectTo : 'login',pathMatch : 'full'},
     { path : 'login',component : LayoutLogin},
@@ -20,6 +24,17 @@ export const routes: Routes = [
         children : [
             { path : '', component : TicketList},
             { path : 'tickets',component : TicketList}
+        ]
+    },
+    {
+        path : 'maintenance',
+        component : LayoutBase,
+        children : [
+            { path : '', component : SedeList},
+            { path : 'prioridades',component : PrioridadList},
+            { path : 'estados',component : EstadoList},
+            { path : 'categorias',component : CategoriaList},
+            { path : 'sedes',component : SedeList}
         ]
     },
     {

@@ -11,7 +11,7 @@ export class Login {
     constructor() {
         effect(()=>{
             if(this.authService.isLogged()){
-                this.router.navigate(['/security/users'])
+                this.router.navigate(['/dashboard'])
             } 
         })
     }
@@ -30,7 +30,7 @@ export class Login {
                 password : this.password()
             }).subscribe({
             next : (response) =>{
-                this.router.navigate(['/security/users'])
+                this.router.navigate(['/dashboard'])
             },
             error : (error) =>{},
             complete : ()=>{}

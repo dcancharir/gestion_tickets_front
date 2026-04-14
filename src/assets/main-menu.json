@@ -1,4 +1,20 @@
 [
+     {
+        "name": "Principal",
+        "modules": [
+            {
+                "name": "Principal",
+                "icon": "games",
+                "items": [
+                    {
+                        "action": "principal/tickets",
+                        "name": "Tickets",
+                        "path": "principal/tickets"
+                    }
+                ]
+            }
+        ]
+    },
     {
         "name": "Mantenimientos",
         "modules": [
@@ -7,9 +23,24 @@
                 "icon": "games",
                 "items": [
                     {
-                        "action": "mantenimiento/categorias",
+                        "action": "maintenance/sedes",
+                        "name": "Sedes",
+                        "path": "maintenance/sedes"
+                    },
+                    {
+                        "action": "maintenance/prioridades",
+                        "name": "Nivel Prioridad",
+                        "path": "maintenance/prioridades"
+                    },
+                    {
+                        "action": "maintenance/estados",
+                        "name": "Estados Incidencia",
+                        "path": "maintenance/estados"
+                    },
+                    {
+                        "action": "maintenance/categorias",
                         "name": "Categorias",
-                        "path": "mantenimiento/categorias"
+                        "path": "maintenance/categorias"
                     }
                 ]
             }

@@ -1,0 +1,68 @@
+<div   [class.show]="true"  [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-4">Modal title</h1>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pure-card rounded-custom card-bg shadow-custom">
+                            <div class="pure-card-header d-flex flex-wrap align-items-center justify-content-between gap-7">
+                                <h3 class="pure-card-title d-flex align-items-center gap-2 m-0">
+                                    Incidencia Information
+                                </h3>
+                            </div>
+                            <div class="pure-card-body">
+                                <div class="row gy-5">
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="title" class="form-label">Titulo</label>
+                                        <input type="text" class="form-control" [(ngModel)]="form().titulo" placeholder="Ingrese Titulo">
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="slug" class="form-label">Categoria</label>
+                                        <select class="form-select" [(ngModel)]="form().categoriaId">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="title" class="form-label">Canal Reporte</label>
+                                        <input type="text" class="form-control" [(ngModel)]="form().canalReporte" placeholder="Canal Reporte">
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="slug" class="form-label">Impacto</label>
+                                        <select class="form-select" [(ngModel)]="form().impacto">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="slug" class="form-label">Urgencia</label>
+                                        <select class="form-select" [(ngModel)]="form().urgencia">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="slug" class="form-label">Prioridad</label>
+                                        <select class="form-select" [(ngModel)]="form().prioridad">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <label for="slug" class="form-label">Sede</label>
+                                        <select class="form-select" [(ngModel)]="form().sedeId">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <label for="title" class="form-label">Descripcion</label>
+                                        <textarea class="form-control" [(ngModel)]="form().descripcion" placeholder="Ingrese Descripcion"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-danger" (click)="closeModal()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

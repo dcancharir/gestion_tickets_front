@@ -3,12 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Incidencia } from "../../../models/incidencia.model";
 import { IncidenciaService } from "../../../services/incidencia.service";
 import { firstValueFrom } from "rxjs";
+import { TicketAddEdit } from "../ticket-add/ticket-add-edit";
+import { IncidenciaCreate } from "../../../models/incidencia-create.model";
 @Component({
     selector : 'app-ticket-list',
     templateUrl : './ticket-list.html',
-      imports: [CommonModule],
+      imports: [CommonModule,TicketAddEdit],
 })
 export class TicketList {
+      modalAbierto = signal(false)
+      incidenciaSeleccionada = signal<IncidenciaCreate|null>(null)
   private incidenciaService = inject(IncidenciaService)
   viewMode = signal<'grid' | 'list'>('grid');
 
@@ -24,6 +28,15 @@ export class TicketList {
     }
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
+  }
+   openModal(incidencia:IncidenciaCreate | null){
+          this.incidenciaSeleccionada.set(incidencia);
+          this.modalAbierto.set(true);
+          console.log(this.modalAbierto())
+  }
+  onGuardado(incidenciaCreate : IncidenciaCreate){
+      this.modalAbierto.set(false);
+      this.incidencias.reload();
   }
   getPriorityClass(prioridad: number | string): string {
     switch (prioridad) {

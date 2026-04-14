@@ -6,4 +6,5 @@ export interface IncidenciaCreate{
     impacto : number;
     urgencia : number;
     prioridad : number;
+    sedeId : number;
 }
