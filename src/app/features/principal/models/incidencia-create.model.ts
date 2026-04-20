@@ -5,6 +5,6 @@ export interface IncidenciaCreate{
     canalReporte : string;
     impacto : number;
     urgencia : number;
-    prioridad : number;
+    prioridadId : number;
     sedeId : number;
 }

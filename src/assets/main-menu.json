@@ -62,6 +62,11 @@
                         "action": "security/users",
                         "name": "Usuarios",
                         "path": "security/users"
+                    },
+                    {
+                        "action": "security/permisos",
+                        "name": "Permisos",
+                        "path": "security/permisos"
                     }
                 ]
             }

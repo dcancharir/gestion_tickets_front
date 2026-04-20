@@ -23,30 +23,52 @@
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Categoria</label>
                                         <select class="form-select" [(ngModel)]="form().categoriaId">
+                                            <option value="0">Seleccione Categoria</option>
+                                            @for(r of categorias.value(); track r.categoriaId){
+                                                <option value="{{r.categoriaId}}">{{r.nombre}}</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <label for="title" class="form-label">Canal Reporte</label>
-                                        <input type="text" class="form-control" [(ngModel)]="form().canalReporte" placeholder="Canal Reporte">
+                                        <select class="form-select" [(ngModel)]="form().canalReporte">
+                                            <option value="WHATSAPP">WhatsApp</option>
+                                            <option value="EMAIL">Email</option>
+                                            <option value="TELEFONO">Telefono</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Impacto</label>
                                         <select class="form-select" [(ngModel)]="form().impacto">
+                                            <option value="1">Alta</option>
+                                            <option value="2">Media</option>
+                                            <option value="3">Baja</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Urgencia</label>
                                         <select class="form-select" [(ngModel)]="form().urgencia">
+                                            <option value="1">Alta</option>
+                                            <option value="2">Media</option>
+                                            <option value="3">Baja</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Prioridad</label>
-                                        <select class="form-select" [(ngModel)]="form().prioridad">
+                                        <select class="form-select" [(ngModel)]="form().prioridadId">
+                                            <option value="0">Seleccione Prioridad</option>
+                                            @for(r of prioridades.value(); track r.prioridadId){
+                                                <option value="{{r.prioridadId}}">{{r.nombre}}</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Sede</label>
                                         <select class="form-select" [(ngModel)]="form().sedeId">
+                                            <option value="0">Seleccione Sede</option>
+                                            @for(r of sedes.value(); track r.sedeId){
+                                                <option value="{{r.sedeId}}">{{r.nombre}}</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="col-md-12 col-sm-12">

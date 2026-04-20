@@ -3,6 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { IncidenciaCreate } from '../../../models/incidencia-create.model';
 import { IncidenciaService } from "../../../services/incidencia.service";
 import { Incidencia } from '../../../models/incidencia.model';
+import { CategoriaService } from '../../../../maintenance/services/categoria.service';
+import { PrioridadService } from '../../../../maintenance/services/prioridad.service';
+import { SedeService } from '../../../../maintenance/services/sede.service';
+import { firstValueFrom } from 'rxjs';
 @Component({
     selector : 'app-ticket-add-edit',
     templateUrl : './ticket-add-edit.html',
@@ -10,6 +14,22 @@ import { Incidencia } from '../../../models/incidencia.model';
 })
 export class TicketAddEdit{
     private incidenciaService = inject(IncidenciaService);
+    private categoriaService = inject(CategoriaService)
+    private prioridadService = inject(PrioridadService) 
+    private sedeService = inject(SedeService)
+
+
+    categorias = resource({
+        loader : ()=>firstValueFrom(this.categoriaService.getAll())
+    })
+    prioridades = resource({
+        loader : ()=>firstValueFrom(this.prioridadService.getAll())
+    })
+    sedes = resource({
+        loader : ()=>firstValueFrom(this.sedeService.getAll())
+    })
+
+
     // input() / output() reemplazan @Input() / @Output()
     incidencia = input<IncidenciaCreate|null>(null);
     cerrado = output();
@@ -22,7 +42,7 @@ export class TicketAddEdit{
         canalReporte : this.incidencia()?.canalReporte ?? '',
         impacto : this.incidencia()?.impacto ?? 0,
         urgencia : this.incidencia()?.urgencia ?? 0,
-        prioridad : this.incidencia()?.prioridad ?? 0,
+        prioridadId : this.incidencia()?.prioridadId ?? 0,
         sedeId : this.incidencia()?.sedeId ?? 0,
     }))
     guardar(){

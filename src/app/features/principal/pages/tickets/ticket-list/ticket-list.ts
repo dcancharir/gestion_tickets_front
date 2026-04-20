@@ -5,6 +5,7 @@ import { IncidenciaService } from "../../../services/incidencia.service";
 import { firstValueFrom } from "rxjs";
 import { TicketAddEdit } from "../ticket-add/ticket-add-edit";
 import { IncidenciaCreate } from "../../../models/incidencia-create.model";
+import { Router } from "@angular/router";
 @Component({
     selector : 'app-ticket-list',
     templateUrl : './ticket-list.html',
@@ -14,6 +15,7 @@ export class TicketList {
       modalAbierto = signal(false)
       incidenciaSeleccionada = signal<IncidenciaCreate|null>(null)
   private incidenciaService = inject(IncidenciaService)
+  private router = inject(Router)
   viewMode = signal<'grid' | 'list'>('grid');
 
   setView(mode: 'grid' | 'list') {
@@ -37,6 +39,9 @@ export class TicketList {
   onGuardado(incidenciaCreate : IncidenciaCreate){
       this.modalAbierto.set(false);
       this.incidencias.reload();
+  }
+  viewDetails(publicId : string){
+    this.router.navigate(['/principal/ticket-detail', publicId])
   }
   getPriorityClass(prioridad: number | string): string {
     switch (prioridad) {

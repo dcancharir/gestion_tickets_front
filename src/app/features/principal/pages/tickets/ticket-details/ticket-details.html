@@ -1,0 +1,275 @@
+<div class="app-content-wrapper py-10 pb-13">
+    <div class="container ">
+        <div class="page-content">
+            <div class="row gy-5">
+                <div class="col-lg-4">
+                    <div class="card shadow-custom rounded-custom mb-5">
+                        <div class="card-body p-6">
+                            <h4 class="fw-semibold mb-5">Ticket - {{incidencia.value()?.numeroTicket}}</h4>
+
+                            <div class="profile-info d-flex flex-column gap-3">
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Sede: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.sede}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Titulo: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.titulo}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Descripcion: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.descripcion}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Categoria: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.categoria}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Prioridad: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.prioridad}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Nivel Prioridad: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.nivelPrioridad}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Impacto: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.impacto}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Urgencia: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.urgencia}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Estado: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.estado}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Solicitante: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.solicitante}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-custom rounded-custom mb-5">
+                        <div class="card-body p-6">
+                            <h4 class="fw-semibold mb-5">Asignado</h4>
+
+                            <div class="profile-info d-flex flex-column gap-3">
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Tecnico: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.tecnico}} </span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Fecha Asignacion: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.fechaAsignacion}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Fecha Limite Respuesta:</span>
+                                    <span class="profile-info-content">{{incidencia.value()?.fechaLimiteRespuesta}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Fecha Limite Resolucion: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.fechaLimiteResolucion}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Fecha Primera Respuesta: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.fechaPrimeraRespuesta}}</span>
+                                </div>
+                             
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow-custom rounded-custom">
+                        <div class="card-body p-6">
+                            <h4 class="fw-semibold mb-5">Solucion</h4>
+
+                            <div class="profile-info d-flex flex-column gap-3">
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Fecha Cierre: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.fechaCierre}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Solucion Aplicada: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.solucionAplicada}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Resuelto en Primer Contacto: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.resueltoEnPrimerContacto}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Cantidad Reasignaciones:</span>
+                                    <span class="profile-info-content">{{incidencia.value()?.numeroReasignaciones}}</span>
+                                </div>
+                                <div class="profile-info-item d-flex align-items-center">
+                                    <span class="profile-info-label">Cumple SLA: </span>
+                                    <span class="profile-info-content">{{incidencia.value()?.cumpleSla}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="demo-card  rounded-xl mb-5">
+                                    <div class="demo-card-header d-flex align-items-center justify-content-between px-6 py-5 ">
+                                        <h3 class="demo-card-title m-0">Tab Basic</h3>
+                                        <button type="button" class="btn btn-label-primary btn-xs d-flex align-items-center demo-show-code-btn">
+                                            <span>Show Code</span>
+                                            <svg class=" ms-1" width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.40015 8.60015L13.0002 5.00007L9.40015 1.39998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M4.60009 1.39998L1 5.00007L4.60009 8.60015" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="demo-card-body">
+                                        <div class="demo-card-body-content">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Comentarios</button>
+                                                        </li>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" tabindex="-1">Historial</button>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content" id="myTabContent">
+                                                        <div class="tab-pane fade active show" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                                            <div class="demo-card-body">
+                                                                <div class="demo-card-body-content">
+                                                                   
+                                                                    @if(incidencia.value()?.historial){
+                                                                        @for (item of incidencia.value()?.comentarios; track $index; let i = $index) {
+                                                                            <ul class="timeline mb-0">
+                                                                                <li class="timeline-item">
+                                                                                    <span class="timeline-point timeline-point-primary"></span>
+                                                                                    <div class="timeline-content">
+                                                                                        <div class="timeline-header mb-3">
+                                                                                            <h4 class="mb-0 timeline-title">{{item.usuario}}</h4>
+                                                                                            <small class="text-body-secondary">
+                                                                                                {{item.fechaComentario | date:'yyyy-MM-dd HH:mm:ss a'}}
+                                                                                            </small>
+                                                                                        </div>
+                                                                                        <div class="timeline-body">
+                                                                                            <p class="mb-2">{{item.mensaje}}</p>
+                                                                                            <div class="d-flex align-items-center mb-2">
+                                                                                                <div class="badge bg-label-secondary border-0 rounded d-flex align-items-center">
+                                                                                                    <img src="assets/img/icons/misc/pdf.png" alt="img" width="15" class="me-2">
+                                                                                                    <span class="mb-0 text-custom-body">Invoices.pdf</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        }
+                                                                    }@else {
+                                                                        <div class="d-flex justify-content-center align-items-center">
+                                                                            <p class="text-primary mb-0">No se encontraron registros.</p>
+                                                                        </div>
+                                                                    }
+                                                                    
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <label for="short-description" class="form-label">Add Comment <span class="text-danger fw-bold">*</span></label>
+                                                                            <textarea class="form-control" id="short-description" rows="5" placeholder="Enter short description"></textarea>
+                                                                        </div>
+                                                                        <div class="col-md-12 py-1">
+                                                                            <button class="btn btn-primary float-end">Agregar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                                            <div class="pure-card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-sm">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Accion</th>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Estado Anterior</th>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Estado Nuevo</th>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Detalle</th>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Usuario</th>
+                                                                                <th scope="col" class="text-custom-paragraph fw-medium">Fecha</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @if(incidencia.value()?.historial){
+                                                                                @for (item of incidencia.value()?.historial; track $index; let i = $index) {
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-medium text-custom-body">{{item.accion}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-normal text-custom-body">{{item.estadoAnterior}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-normal text-custom-body">{{item.estadoNuevo}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-normal text-custom-body">{{item.detalle}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                     <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-normal text-custom-body">{{item.usuario}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                     <td>
+                                                                                        <div class="d-flex align-items-center gap-2 py-2 text-custom-body">
+                                                                                            <span class="fw-normal text-custom-body">{{item.fechaAccion | date:'yyyy-MM-dd HH:mm:ss a'}}</span>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                }
+                                                                                
+                                                                            }
+                                                                            @else {
+                                                                                <tr>
+                                                                                    <td colspan="6">
+                                                                                       <div class="d-flex justify-content-center align-items-center">
+                                                                                            <p class="text-primary mb-0">No se encontraron registros.</p>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- code copy content -->
+                                        <div class="demo-card-body-code d-none position-relative">
+                                            <div class="btn-clipboard-wrapper">
+                                                <button type="button" class="btn-clipboard position-absolute top-2 end-3 z-index-1 text-white" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to Clipboard" aria-label="Copy to Clipboard">
+                                                    <svg width="14" height="23" viewBox="0 0 18 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12.9443 3.33826H14.9443C15.4748 3.33826 15.9835 3.54897 16.3585 3.92404C16.7336 4.29912 16.9443 4.80782 16.9443 5.33826V19.3383C16.9443 19.8687 16.7336 20.3774 16.3585 20.7525C15.9835 21.1275 15.4748 21.3383 14.9443 21.3383H2.94434C2.4139 21.3383 1.9052 21.1275 1.53012 20.7525C1.15505 20.3774 0.944336 19.8687 0.944336 19.3383V5.33826C0.944336 4.80782 1.15505 4.29912 1.53012 3.92404C1.9052 3.54897 2.4139 3.33826 2.94434 3.33826H4.94434" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path d="M11.9443 1.33826H5.94434C5.39205 1.33826 4.94434 1.78597 4.94434 2.33826V4.33826C4.94434 4.89054 5.39205 5.33826 5.94434 5.33826H11.9443C12.4966 5.33826 12.9443 4.89054 12.9443 4.33826V2.33826C12.9443 1.78597 12.4966 1.33826 11.9443 1.33826Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <pre><code></code></pre>
+                                        </div>
+                                    </div>
+
+                                </div>
+                </div>
+            </div>
+        </div><!-- page content end -->
+
+    </div>
+</div><!-- app content end -->

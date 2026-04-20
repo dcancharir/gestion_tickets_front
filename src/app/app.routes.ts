@@ -9,6 +9,8 @@ import { SedeList } from './features/maintenance/pages/sedes/sede-list/sede-list
 import { PrioridadList } from './features/maintenance/pages/prioridades/prioridad-list/prioridad-list';
 import { EstadoList } from './features/maintenance/pages/estados/estado-list/estado-list';
 import { CategoriaList } from './features/maintenance/pages/categorias/categoria-list/categoria-list';
+import { TicketDetails } from './features/principal/pages/tickets/ticket-details/ticket-details';
+import { PermisosAddRemove } from './features/maintenance/pages/permisos/permisos-add-remove';
 export const routes: Routes = [
     { path : '', redirectTo : 'login',pathMatch : 'full'},
     { path : 'login',component : LayoutLogin},
@@ -23,7 +25,8 @@ export const routes: Routes = [
         component : LayoutBase,
         children : [
             { path : '', component : TicketList},
-            { path : 'tickets',component : TicketList}
+            { path : 'tickets',component : TicketList},
+            { path : 'ticket-detail/:ticketId',component : TicketDetails }
         ]
     },
     {
@@ -42,7 +45,8 @@ export const routes: Routes = [
         component : LayoutBase,
         children : [
             { path : 'users',component : UserList},
-            { path : 'roles',component : RoleList}
+            { path : 'roles',component : RoleList},
+            { path : 'permisos',component : PermisosAddRemove},
         ]
     },
     {path : '**', redirectTo : 'login'}

@@ -1,8 +1,8 @@
   <!-- app content start -->
-            <div class="app-content-wrapper py-20 pb-13">
+            <div class="app-content-wrapper py-10 pb-13">
                 <div class="container ">
                     <div class="page-content">
-                        <div class="profile-header card-bg shadow-custom rounded-custom position-relative overflow-hidden mb-6">
+                        <!-- <div class="profile-header card-bg shadow-custom rounded-custom position-relative overflow-hidden mb-6">
                             <div class="profile-cover-wrapper">
                                 <div class="profile-cover-img" data-background="assets/img/profile/cover.jpg"></div>
                                 <div class="profile-cover-actions"></div>
@@ -52,7 +52,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="py-5">
                             <div class="row align-items-center g-4">
                                 <div class="col-md-4">
@@ -160,6 +160,14 @@
                                                             <h4 class="h6 mb-0">Prioridad</h4>
                                                             <p class="mb-0 text-{{getPriorityClass(item.prioridad)}}">{{item.prioridad}}</p>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pb-3">
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <button class="btn btn-sm btn-outline-primary btn-block" style="width: 100%;" (click)="viewDetails(item.publicId)">Details</button>
+                                                    </div>
+                                                     <div class="col-md-6 col-sm-6">
+                                                        <button class="btn btn-sm btn-outline-danger btn-block" style="width: 100%;">Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
