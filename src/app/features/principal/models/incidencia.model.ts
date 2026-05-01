@@ -14,4 +14,5 @@ export interface Incidencia{
     cumpleSla : boolean;
     resueltoEnPrimerContacto : boolean;
     descripcion? : string;
+    sede?:string
 }

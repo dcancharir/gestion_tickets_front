@@ -29,7 +29,7 @@ export class TicketAddEdit{
         loader : ()=>firstValueFrom(this.sedeService.getAll())
     })
 
-
+    guardado = output<Incidencia>();
     // input() / output() reemplazan @Input() / @Output()
     incidencia = input<IncidenciaCreate|null>(null);
     cerrado = output();
@@ -46,20 +46,42 @@ export class TicketAddEdit{
         sedeId : this.incidencia()?.sedeId ?? 0,
     }))
     guardar(){
-        this.incidenciaService.create(this.form()).subscribe({
+        const formData = new FormData();
+
+        const f = this.form();
+
+        formData.append('titulo', f.titulo);
+        formData.append('descripcion', f.descripcion);
+        formData.append('categoriaId', f.categoriaId.toString());
+        formData.append('canalReporte', f.canalReporte);
+        formData.append('impacto', f.impacto.toString());
+        formData.append('urgencia', f.urgencia.toString());
+        formData.append('prioridadId', f.prioridadId.toString());
+        formData.append('sedeId', f.sedeId.toString());
+
+        for (let file of this.archivosSeleccionados) {
+            formData.append('adjuntos', file);
+        }
+
+        this.guardando.set(true);
+        this.incidenciaService.create(formData).subscribe({
             next:(response)=>{
                 if(response){
-                    this.guardando.set(true);
+                    this.guardado.emit(response)
                     this.cerrado.emit();
                 }
             },
-            error:()=>{},
-            complete:()=>{
-            }
+            error:()=>{ this.guardando.set(false);},
+            complete:()=>{ this.guardando.set(false);}
         });
     }
     closeModal(){
         this.guardando.set(false);
         this.cerrado.emit();
+    }
+    archivosSeleccionados: File[] = [];
+
+    onFilesSelected(event: any) {
+    this.archivosSeleccionados = Array.from(event.target.files);
     }
 }

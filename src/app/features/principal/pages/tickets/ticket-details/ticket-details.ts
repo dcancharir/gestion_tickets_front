@@ -4,10 +4,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { IncidenciaService } from "../../../services/incidencia.service";
 import { firstValueFrom } from "rxjs";
 import { DatePipe } from '@angular/common';
+import { IncidenciaDetail } from "../../../models/incidencia-detail.model";
+import { TicketAssign } from "../ticket-actions/ticket-assign";
 @Component({
        selector : 'app-ticket-details',
     templateUrl : './ticket-details.html',
-    imports:[DatePipe]
+    imports:[DatePipe,TicketAssign]
 })
 export class TicketDetails{
     private route = inject(ActivatedRoute)
@@ -20,5 +22,29 @@ export class TicketDetails{
     incidencia = resource({
         loader : ()=>firstValueFrom(this.ticketService.getByPublicId(this.ticketId()))
     })
+    modalAsignarAbierto = signal(false)
+    incidenciaSeleccionada = signal<IncidenciaDetail|null>(null)
+    addComment(){
+        
+    }
+    asignar(incidenciaDetail:IncidenciaDetail | null){
+        this.incidenciaSeleccionada.set(incidenciaDetail);
+        this.modalAsignarAbierto.set(true);
+    }
+    onAsignado(){
+        this.modalAsignarAbierto.set(false);
+        this.incidencia.reload();
+    }
+    cerrar(){
 
+    }
+    reabrir(){
+
+    }
+    escalar(){
+
+    }
+    resolver(){
+
+    }
 }

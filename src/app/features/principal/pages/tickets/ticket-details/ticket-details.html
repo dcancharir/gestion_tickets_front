@@ -51,75 +51,97 @@
                             </div>
                         </div>
                     </div>
+                          
                     <div class="card shadow-custom rounded-custom mb-5">
                         <div class="card-body p-6">
-                            <h4 class="fw-semibold mb-5">Asignado</h4>
+                            <h4 class="fw-semibold mb-5">Asignación</h4>
+                            @if(incidencia.value()?.tecnicoPublicId){
 
-                            <div class="profile-info d-flex flex-column gap-3">
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Tecnico: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.tecnico}} </span>
+                                <div class="profile-info d-flex flex-column gap-3">
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Tecnico: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.tecnico}} </span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Fecha Asignacion: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.fechaAsignacion}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Fecha Limite Respuesta:</span>
+                                        <span class="profile-info-content">{{incidencia.value()?.fechaLimiteRespuesta}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Fecha Limite Resolucion: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.fechaLimiteResolucion}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Fecha Primera Respuesta: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.fechaPrimeraRespuesta}}</span>
+                                    </div>
+                                
                                 </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Fecha Asignacion: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.fechaAsignacion}}</span>
+                            }
+                            @else{
+                                <div class="d-flex justify-content-center align-items-center alert alert-warning">
+                                    <p class="text-primary mb-0">Aun no se ha asignado este ticket ...</p>
                                 </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Fecha Limite Respuesta:</span>
-                                    <span class="profile-info-content">{{incidencia.value()?.fechaLimiteRespuesta}}</span>
-                                </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Fecha Limite Resolucion: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.fechaLimiteResolucion}}</span>
-                                </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Fecha Primera Respuesta: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.fechaPrimeraRespuesta}}</span>
-                                </div>
-                             
-                            </div>
+                            }
                         </div>
                     </div>
+               
                     <div class="card shadow-custom rounded-custom">
                         <div class="card-body p-6">
-                            <h4 class="fw-semibold mb-5">Solucion</h4>
+                            <h4 class="fw-semibold mb-5">Solución</h4>
+                            @if(incidencia.value()?.estado == 'resuelto' || incidencia.value()?.estado == 'cerrado'){
 
-                            <div class="profile-info d-flex flex-column gap-3">
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Fecha Cierre: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.fechaCierre}}</span>
+                                <div class="profile-info d-flex flex-column gap-3">
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Fecha Cierre: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.fechaCierre}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Solucion Aplicada: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.solucionAplicada}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Resuelto en Primer Contacto: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.resueltoEnPrimerContacto}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Cantidad Reasignaciones:</span>
+                                        <span class="profile-info-content">{{incidencia.value()?.numeroReasignaciones}}</span>
+                                    </div>
+                                    <div class="profile-info-item d-flex align-items-center">
+                                        <span class="profile-info-label">Cumple SLA: </span>
+                                        <span class="profile-info-content">{{incidencia.value()?.cumpleSla}}</span>
+                                    </div>
                                 </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Solucion Aplicada: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.solucionAplicada}}</span>
+                            }
+                              @else{
+                                <div class="d-flex justify-content-center align-items-center alert alert-warning">
+                                    <p class="text-primary mb-0">El ticket aun no esta resuelto o cerrado ...</p>
                                 </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Resuelto en Primer Contacto: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.resueltoEnPrimerContacto}}</span>
-                                </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Cantidad Reasignaciones:</span>
-                                    <span class="profile-info-content">{{incidencia.value()?.numeroReasignaciones}}</span>
-                                </div>
-                                <div class="profile-info-item d-flex align-items-center">
-                                    <span class="profile-info-label">Cumple SLA: </span>
-                                    <span class="profile-info-content">{{incidencia.value()?.cumpleSla}}</span>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
+
                 </div>
                 <div class="col-lg-8">
                   <div class="demo-card  rounded-xl mb-5">
                                     <div class="demo-card-header d-flex align-items-center justify-content-between px-6 py-5 ">
-                                        <h3 class="demo-card-title m-0">Tab Basic</h3>
-                                        <button type="button" class="btn btn-label-primary btn-xs d-flex align-items-center demo-show-code-btn">
-                                            <span>Show Code</span>
-                                            <svg class=" ms-1" width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.40015 8.60015L13.0002 5.00007L9.40015 1.39998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path d="M4.60009 1.39998L1 5.00007L4.60009 8.60015" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </button>
+                                        <h3 class="demo-card-title m-0">Informacion Adicional</h3>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ACCIONES
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <a class="dropdown-item" style="cursor: pointer;" (click)="asignar(incidencia.value()??null)">ASIGNAR</a>
+                                                <a class="dropdown-item" href="#">CERRAR</a>
+                                                <a class="dropdown-item" href="#">REABRIR</a>
+                                                <a class="dropdown-item" href="#">ESCALAR</a>
+                                                <a class="dropdown-item" href="#">RESOLVER</a>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="demo-card-body">
                                         <div class="demo-card-body-content">
@@ -175,7 +197,7 @@
                                                                             <textarea class="form-control" id="short-description" rows="5" placeholder="Enter short description"></textarea>
                                                                         </div>
                                                                         <div class="col-md-12 py-1">
-                                                                            <button class="btn btn-primary float-end">Agregar</button>
+                                                                            <button class="btn btn-primary float-end" (click)="addComment()">Agregar</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -273,3 +295,11 @@
 
     </div>
 </div><!-- app content end -->
+@if(modalAsignarAbierto()){
+    <div class="modal-backdrop fade show"></div>
+    <app-ticket-assign
+        [incidencia]="incidenciaSeleccionada()"
+        (asignado)="onAsignado()"
+        (cerrado)="modalAsignarAbierto.set(false)"
+    ></app-ticket-assign>
+}

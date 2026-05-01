@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 @Component({
     selector : 'app-login',
     templateUrl : './login.html',
-    imports : [FormsModule]
+    imports: [FormsModule]
 })
 export class Login {
     constructor() {
@@ -30,10 +30,14 @@ export class Login {
                 password : this.password()
             }).subscribe({
             next : (response) =>{
-                this.router.navigate(['/dashboard'])
+                if(response){
+                    
+                    this.router.navigate(['/dashboard'])
+                }
             },
             error : (error) =>{},
-            complete : ()=>{}
+            complete : ()=>{
+            }
         })
     }
 }

@@ -1331,18 +1331,18 @@ button {
   background-color: var(--app-sidebar-menu-hover-bg);
 }
 .app-sidebar-menu ul li a.menu-current {
-  background-color: var(--bs-primary);
-  color: var(--bs-white);
-  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 #3E18BE;
+  background-color: #bf391c;
+  color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 rgba(191,57,28, 0.14);
 }
 .app-sidebar-menu ul li a.menu-current::before {
   background-color: transparent;
   opacity: 1;
 }
 .app-sidebar-menu ul li a.menu-current:hover {
-  background-color: var(--bs-primary);
-  color: var(--bs-white);
-  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 #3E18BE;
+  background-color: #bf391c;
+  color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 rgba(191,57,28, 0.14);
 }
 .app-sidebar-menu ul li a.active .menu-arrow {
   transform: rotate(90deg);
@@ -1364,9 +1364,9 @@ button {
   opacity: 0.4;
 }
 .app-sidebar-menu ul li .app-sidebar-submenu li a.menu-current {
-  background-color: var(--bs-primary);
-  color: var(--bs-white);
-  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 #3E18BE;
+  background-color: #bf391c;
+  color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(55, 17, 184, 0.25), 0 0 1px 0 rgba(191,57,28, 0.14);
 }
 .app-sidebar-menu ul li .app-sidebar-submenu li a.menu-current::before {
   background-color: transparent;
@@ -1578,7 +1578,13 @@ button {
 }
 
 .auth-main {
-  background-color: var(--app-main-bg);
+  /* background: linear-gradient(0deg, rgba(223, 159, 0, 1) 0%, rgba(215, 105, 28, 1) 50%); */
+  /* background-color: var(--app-main-bg); */
+  background: linear-gradient(
+    to bottom,
+    #d7691c 50%,
+    #fff 50%
+  );
 }
 .auth-brand {
   position: absolute;
@@ -2584,3 +2590,129 @@ button {
 }
 
 /*# sourceMappingURL=conca.css.map */
+.form-control:focus, .form-control-icon:focus {
+  color: var(--bs-heading-color);
+  background-color: var(--bs-card-bg);
+  border-color: rgb(191, 57, 28);
+  outline: 0;
+  box-shadow: 0px 0px 0px 3px rgba(191,57,28, 0.14);
+}
+.btn-orange{
+    color: #fff;
+    background-color: #d7691c;
+    border-color: #d7691c;
+    box-shadow: 0px 1px 2px 0 rgba(95, 74, 254, 0.25), 0px 0px 1px 0 #d7691c;
+}
+.btn-orange2{
+    color: #fff;
+    background-color: #bf391c;
+    border-color: #bf391c;
+    box-shadow: 0px 1px 2px 0 rgba(95, 74, 254, 0.25), 0px 0px 1px 0 #bf391c;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
+    font-size: var(--bs-pagination-font-size);
+    color: #fff;
+    text-decoration: none;
+    background-color: #d7691c;
+    border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.page-link:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #bf391c;
+    border-color: rgba(191,57,28, 0.14);
+}
+.container-template {
+    --bs-gutter-x: 5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
+}
+.btn-login{
+  background-color: #d7691c; 
+  color: #fff;
+}
+.btn-login:hover{
+  color: #fff;
+  background-color: #bf391c;
+  border-color: rgba(191,57,28, 0.14);
+}
+.form-control,
+.form-control-icon{
+    border: var(--bs-border-width) solid #29292B;
+    border-radius: var(--bs-border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.password-toggle{
+   border: var(--bs-border-width) solid #29292B;
+    border-radius: var(--bs-border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.app-header-bar-btn span{
+  background-color: #000;
+}
+.header-nav-link{
+  color:#000
+}
+.app-sidebar{
+  background-color: #000;
+}
+.app-sidebar-menu ul li a.active{
+  background-color: #bf391c;
+  color: #fff;
+}
+body{
+  color: #fff;
+}
+.app-sidebar-menu ul li a:hover{
+ background-color: #d7691c; 
+  color: #fff;
+}
+.app-sidebar-menu ul li a.active:hover{
+   background-color: #bf391c;
+  color: #fff;
+}
+.app-sidebar-menu ul .app-sidebar-menu-heading > span {
+    font-size: 13px;
+    color: #fff;
+    display: inline-block;
+    padding: 0 16px;
+    position: relative;
+}
+button.tp-course-toggle-btn {
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
+    border-radius: 4px;
+    margin-right: 6px;
+    border: 1px solid #d7691c;
+}
+button.tp-course-toggle-btn.active {
+    color: #d7691c;
+    border-color: #d7691c;
+}
+.btn-outline-orange {
+    color: #d7691c;
+    border-color: #d7691c;
+    background: transparent;
+}
+.btn-outline-orange2 {
+    color: #bf391c;
+    border-color: #bf391c;
+    background: transparent;
+}
+.text-custom-paragraph {
+  color: #000 !important;
+}
+table > thead > tr > th{
+  background-color: #d7691c !important;
+}

@@ -34,9 +34,8 @@ export class TicketList {
    openModal(incidencia:IncidenciaCreate | null){
           this.incidenciaSeleccionada.set(incidencia);
           this.modalAbierto.set(true);
-          console.log(this.modalAbierto())
   }
-  onGuardado(incidenciaCreate : IncidenciaCreate){
+  onGuardado(incidencia : Incidencia){
       this.modalAbierto.set(false);
       this.incidencias.reload();
   }

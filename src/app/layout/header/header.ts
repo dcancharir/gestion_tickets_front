@@ -13,4 +13,8 @@ export class Header {
       this.user.set(this.service.getUserInfo())
     }
   }
+  logout(event : any){
+    event.preventDefault()
+    this.service.logout()
+  }
 }

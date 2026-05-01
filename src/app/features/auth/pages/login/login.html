@@ -3,24 +3,23 @@
         <div class="container-xxl">
             <div class="auth-wrapper auth-basic p-5 min-vh-100 d-flex align-items-center justify-content-center">
                 <div class="auth-card py-6">
-                    <div class="card shadow-xl">
+                    <div class="card shadow-xl" style="border: 2px solid #000;border-radius: 10px;">
                         <div class="card-body py-9 px-6 px-sm-12">
                             <div class="mb-7">
                                 <div class="d-flex align-items-center justify-content-center mb-5">
-                                    <img class="app-main-logo logo-black" width="120" src="assets/img/logo/logo.png" alt="Conca">
-                                    <img class="app-main-logo logo-white d-none" width="120" src="assets/img/logo/logo-white.png" alt="Conca">
+                                    <img class="app-main-logo logo-black" width="200" src="assets/img/logo/logo-linktek-sinfondo.png" alt="LINKTEK">
+                                    <img class="app-main-logo logo-white d-none" width="200" src="assets/img/logo/logo-linktek.png" alt="LINKTEK">
                                 </div>
                                 <div class="text-center">
-                                    <h4 class="mb-1 fw-semibold">SOPORTE REMOTO S.A.C.</h4>
-                                    <p>Sistema de Gestión de Tickets</p>
+                                    <h3 class="mb-1 fw-semibold">GESTIÓN DE INCIDENCIAS</h3>
                                 </div>
                             </div>
                             <div class="divider">
-                                <div class="divider-text">Ingrese sus credenciales</div>
+                                <div class="divider-text" style="color: #000;">Ingrese sus credenciales</div>
                             </div>
                             <div class="mb-3">
-                                <label for="loginUserName" class="form-label">UserName</label>
-                                <input type="text" class="form-control" id="loginUserName" placeholder="userName" [ngModel]="userName()" (ngModelChange)="userName.set($event)" name="userName">
+                                <label for="loginUserName" class="form-label">Usuario</label>
+                                <input type="text" class="form-control" id="loginUserName" placeholder="Usuario" [ngModel]="userName()" (ngModelChange)="userName.set($event)">
                             </div>
                          <div class="mb-3">
                             <label for="loginPassword" class="form-label">Password</label>
@@ -28,7 +27,7 @@
                             <div class="input-group mb-3">
                                <input 
                                 [type]="showPassword() ? 'text' : 'password'"
-                                class="form-control" placeholder="***********" [ngModel]="password()" name="password" (ngModelChange)="password.set($event)"
+                                class="form-control" placeholder="***********" [ngModel]="password()" (ngModelChange)="password.set($event)"
                                 />
 
                                 <span 
@@ -60,7 +59,7 @@
                             </div>
                             <div class="mb-3">
                                 <div class="text-center">
-                                    <button type="submit" (click)="login()" class="btn btn-primary w-100">Acceder</button>
+                                    <button type="submit" (click)="login()" class="btn w-100 btn-login">ACCEDER</button>
                                 </div>
                             </div>
                         </div>

@@ -23,7 +23,7 @@
             : "light";
 
     const getPreferredTheme = () => {
-        return getStoredTheme() || "auto";
+        return 'light';
     };
 
     function updateLogo(theme) {

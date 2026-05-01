@@ -20,4 +20,7 @@ export class UserService {
     delete(id:string):Observable<void>{
         return this.http.delete<void>(`${this.api}api/usuarios/${id}`);
     }
+    GetByRolId(rolId:number):Observable<Usuario[]>{
+        return this.http.get<Usuario[]>(`${this.api}api/usuarios/getbyrolid/${rolId}`);
+    }
 }

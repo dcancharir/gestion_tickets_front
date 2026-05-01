@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { MenuSection,MenuItem,MenuModule } from "./menu.model";
 import { firstValueFrom } from "rxjs";
 import { RouterLink, Router } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
 @Component({
     selector : 'app-sidebar',
     templateUrl : './sidebar.html',
@@ -11,16 +12,15 @@ import { RouterLink, Router } from "@angular/router";
 })
 export class Sidebar {
     router = inject(Router);
+    auth = inject(AuthService)
     openModule: string | null = null;
     constructor() {
         afterNextRender(() => {
-            console.log('DOM listo');
         });
         
         effect(() => {
             if (this.menu().length) {
                 this.openModule = this.getActiveModule();
-                console.log('Menú cargado y renderizado');
                
                 this.jqueryload()
             }
@@ -109,5 +109,8 @@ export class Sidebar {
             $('#app-sidebar').removeClass('open');
             $(this).removeClass('show');
         });
+    }
+    logout(event : any){
+        this.auth.logout()
     }
 }

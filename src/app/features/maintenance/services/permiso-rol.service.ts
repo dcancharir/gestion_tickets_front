@@ -11,4 +11,10 @@ export class PermisoRolService {
     getByRol(rolid: number):Observable<PermisoRol[]>{
         return this.http.get<PermisoRol[]>(`${this.api}api/permiso/getbyrol/${rolid}`);
     }
+    create(permisoId:number,rolId:number):Observable<PermisoRol>{
+         return this.http.post<PermisoRol>(`${this.api}api/permiso`,{permisoId : permisoId, rolId : rolId});
+    }
+    delete(permisoId:number,rolId:number):Observable<void>{
+        return this.http.delete<void>(`${this.api}api/permiso/${permisoId}/${rolId}`);
+    }
 }

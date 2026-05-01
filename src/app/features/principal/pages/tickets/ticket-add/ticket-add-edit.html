@@ -32,6 +32,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <label for="title" class="form-label">Canal Reporte</label>
                                         <select class="form-select" [(ngModel)]="form().canalReporte">
+                                            <option value="">Seleccione Canal</option>
                                             <option value="WHATSAPP">WhatsApp</option>
                                             <option value="EMAIL">Email</option>
                                             <option value="TELEFONO">Telefono</option>
@@ -40,6 +41,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Impacto</label>
                                         <select class="form-select" [(ngModel)]="form().impacto">
+                                            <option value="0">Seleccione Impacto</option>
                                             <option value="1">Alta</option>
                                             <option value="2">Media</option>
                                             <option value="3">Baja</option>
@@ -48,6 +50,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <label for="slug" class="form-label">Urgencia</label>
                                         <select class="form-select" [(ngModel)]="form().urgencia">
+                                            <option value="0">Seleccione Urgencia</option>
                                             <option value="1">Alta</option>
                                             <option value="2">Media</option>
                                             <option value="3">Baja</option>
@@ -74,6 +77,10 @@
                                     <div class="col-md-12 col-sm-12">
                                         <label for="title" class="form-label">Descripcion</label>
                                         <textarea class="form-control" [(ngModel)]="form().descripcion" placeholder="Ingrese Descripcion"></textarea>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <label for="" class="form-label">Adjuntos</label>
+                                        <input type="file" multiple (change)="onFilesSelected($event)" class="form-control">
                                     </div>
                                 </div>
                             </div>
