@@ -136,10 +136,10 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <a class="dropdown-item" style="cursor: pointer;" (click)="asignar(incidencia.value()??null)">ASIGNAR</a>
-                                                <a class="dropdown-item" href="#">CERRAR</a>
+                                                <a class="dropdown-item" style="cursor: pointer;" (click)="cerrar(incidencia.value()??null)">CERRAR</a>
                                                 <a class="dropdown-item" href="#">REABRIR</a>
                                                 <a class="dropdown-item" href="#">ESCALAR</a>
-                                                <a class="dropdown-item" href="#">RESOLVER</a>
+                                                <a class="dropdown-item" style="cursor: pointer;" (click)="resolver(incidencia.value()??null)">RESOLVER</a>
                                             </ul>
                                         </div>
                                     </div>
@@ -302,4 +302,20 @@
         (asignado)="onAsignado()"
         (cerrado)="modalAsignarAbierto.set(false)"
     ></app-ticket-assign>
+}
+@if(modalCerrarAbierto()){
+    <div class="modal-backdrop fade show"></div>
+    <app-ticket-close
+        [incidencia]="incidenciaSeleccionada()"
+        (asignado)="onCerrado()"
+        (cerrado)="modalCerrarAbierto.set(false)"
+    ></app-ticket-close>
+}
+@if(modalResolverAbierto()){
+    <div class="modal-backdrop fade show"></div>
+    <app-ticket-resolve
+        [incidencia]="incidenciaSeleccionada()"
+        (asignado)="onResolve()"
+        (cerrado)="modalResolverAbierto.set(false)"
+    ></app-ticket-resolve>
 }

@@ -6,12 +6,14 @@ import { RolService } from "../../services/rol.service";
 import { PermisoRolService } from "../../services/permiso-rol.service";
 import { FormsModule } from '@angular/forms';
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
+import { ToastService } from "../../../../core/services/toast.service";
 @Component({
     selector : 'app-permisos-add-remove',
     templateUrl : './permisos-add-remove.html',
     imports : [FormsModule]
 })
 export class PermisosAddRemove{
+    toastService = inject(ToastService)
     permisoService = inject(PermisoService)
     rolService = inject(RolService)
     permisoRolService = inject(PermisoRolService)
@@ -47,7 +49,7 @@ export class PermisosAddRemove{
 
         if (rolId === null) {
             checkbox.checked = !checkbox.checked;
-            console.error("No hay rol seleccionado");
+            this.toastService.show('Seleccione un Rol', 'error')
             return;
         }
 

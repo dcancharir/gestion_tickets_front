@@ -6,10 +6,12 @@ import { firstValueFrom } from "rxjs";
 import { DatePipe } from '@angular/common';
 import { IncidenciaDetail } from "../../../models/incidencia-detail.model";
 import { TicketAssign } from "../ticket-actions/ticket-assign";
+import { TicketClose } from "../ticket-actions/ticket-close";
+import { TicketResolve } from "../ticket-actions/ticket-resolve";
 @Component({
        selector : 'app-ticket-details',
     templateUrl : './ticket-details.html',
-    imports:[DatePipe,TicketAssign]
+    imports:[DatePipe,TicketAssign,TicketClose,TicketResolve]
 })
 export class TicketDetails{
     private route = inject(ActivatedRoute)
@@ -23,6 +25,8 @@ export class TicketDetails{
         loader : ()=>firstValueFrom(this.ticketService.getByPublicId(this.ticketId()))
     })
     modalAsignarAbierto = signal(false)
+    modalCerrarAbierto = signal(false)
+    modalResolverAbierto = signal(false)
     incidenciaSeleccionada = signal<IncidenciaDetail|null>(null)
     addComment(){
         
@@ -35,8 +39,13 @@ export class TicketDetails{
         this.modalAsignarAbierto.set(false);
         this.incidencia.reload();
     }
-    cerrar(){
-
+    cerrar(incidenciaDetail:IncidenciaDetail | null){
+        this.incidenciaSeleccionada.set(incidenciaDetail);
+        this.modalCerrarAbierto.set(true);
+    }
+    onCerrado(){
+        this.modalCerrarAbierto.set(false);
+        this.incidencia.reload();
     }
     reabrir(){
 
@@ -44,7 +53,12 @@ export class TicketDetails{
     escalar(){
 
     }
-    resolver(){
-
+    resolver(incidenciaDetail:IncidenciaDetail | null){
+        this.incidenciaSeleccionada.set(incidenciaDetail);
+        this.modalResolverAbierto.set(true);
+    }
+    onResolve(){
+        this.modalResolverAbierto.set(false);
+        this.incidencia.reload();
     }
 }

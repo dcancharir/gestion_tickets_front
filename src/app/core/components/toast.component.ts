@@ -6,14 +6,11 @@ import { ToastService } from "../services/toast.service";
   template: `
     <div class="toast-container">
       @for (t of toast.toasts(); track t.id) {
-        <div class="toast" [class]="t.type">
-          <span class="toast-icon">
-            @if (t.type === 'success') { ✓ }
-            @else if (t.type === 'error') { ✕ }
-            @else { i }
-          </span>
-          {{ t.message }}
-          <button (click)="toast.dismiss(t.id)">✕</button>
+        <div class="d-flex toast" [class]="t.type">
+            <div class="toast-body">
+                {{t.message}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="toast.dismiss(t.id)"></button>
         </div>
       }
     </div>
@@ -22,14 +19,13 @@ import { ToastService } from "../services/toast.service";
     .toast-container {
       position: fixed;
       top: 1rem; right: 1rem;
-      display: flex; flex-direction: column; gap: 8px;
       z-index: 1000;
     }
-    .toast { display: flex; align-items: center; gap: 10px;
-             padding: 10px 14px; border-radius: 8px; font-size: 13px; }
-    .toast.success { background: #EAF3DE; color: #27500A; }
-    .toast.error   { background: #FCEBEB; color: #791F1F; }
-    .toast.info    { background: #E6F1FB; color: #0C447C; }
+    .toast { align-items: center; gap: 10px;
+             padding: 10px 0px 10px 14px; border-radius: 8px; font-size: 13px; }
+    .toast.success { color: #EAF3DE; background-color: #219653; }
+    .toast.error   { color: #FCEBEB; background-color: #d50100; }
+    .toast.info    { color: #E6F1FB; background-color: #0ba5ec; }
   `]
 })
 export class ToastComponent {

@@ -25,24 +25,24 @@ import { ToastService } from "../../../../../core/services/toast.service";
                                         <div class="row gy-5">
                                             <div id="about" class="mb-10">
                                             <h3 class="h4 mb-5">{{incidencia()?.titulo}}</h3>
-                                            <p>{{incidencia()?.descripcion}}</p>
+                                            <p style="color: black;">{{incidencia()?.descripcion}}</p>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="text-center">
-                                                    <span class="fw-medium">Registro</span>
+                                                    <span class="fw-medium" style="color: black;">Registro</span>
                                                     <h4 class="fs-4">{{ incidencia()?.fechaRegistro | date:'yyyy-MM-dd HH:mm' }}</h4>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="text-center">
-                                                    <span class="fw-medium">Categoria </span>
+                                                    <span class="fw-medium" style="color: black;">Categoria </span>
                                                     <h4 class="fs-4">{{ incidencia()?.categoria }}</h4>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="text-center">
-                                                    <span class="fw-medium">Prioridad</span>
+                                                    <span class="fw-medium" style="color: black;">Prioridad</span>
                                                     <h4 class="fs-4">{{ incidencia()?.prioridad }}</h4>
                                                 </div>
                                             </div>

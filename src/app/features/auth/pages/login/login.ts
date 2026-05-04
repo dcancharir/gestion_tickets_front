@@ -2,6 +2,7 @@ import { Component, effect, inject, signal } from "@angular/core";
 import { FormsModule } from '@angular/forms';
 import { AuthService } from "../../../../core/services/auth.service";
 import { Router } from "@angular/router";
+import { ToastService } from "../../../../core/services/toast.service";
 @Component({
     selector : 'app-login',
     templateUrl : './login.html',
@@ -15,6 +16,7 @@ export class Login {
             } 
         })
     }
+    toastService = inject(ToastService)
     authService = inject(AuthService)
     router = inject(Router)
     userName = signal('')
@@ -31,11 +33,19 @@ export class Login {
             }).subscribe({
             next : (response) =>{
                 if(response){
-                    
-                    this.router.navigate(['/dashboard'])
+                    this.toastService.show(`Bienvenido al sistema ${response.userName}`)
+                    setTimeout(() => {
+                        this.router.navigate(['/dashboard'])
+                    }, 1500);
+                }
+                else{
+                    this.toastService.show('Ha ocurrido un error')
                 }
             },
-            error : (error) =>{},
+            error : (error) =>{
+                const result = error.error
+                this.toastService.show(result.mensaje,'error')
+            },
             complete : ()=>{
             }
         })

@@ -9,7 +9,7 @@ export class ToastService {
     //Lista reactiva de toasts - el componente la lee con toasts()
     toasts = signal<Toast[]>([]);
     private nextId = 0;
-    show(message : string, type : Toast['type']= 'info' ){
+    show(message : string, type : Toast['type']= 'success' ){
         const id = ++this.nextId;
         //Agrega el toast al signal
         this.toasts.update(list=>[...list,{id,message,type}])
