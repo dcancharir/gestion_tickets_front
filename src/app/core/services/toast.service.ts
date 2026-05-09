@@ -22,4 +22,7 @@ export class ToastService {
     dismiss(id:number){
         this.toasts.update(list=>list.filter(t=>t.id !== id))
     }
+    dismissAll(){
+        this.toasts.update(list=>[]);
+    }
 }
