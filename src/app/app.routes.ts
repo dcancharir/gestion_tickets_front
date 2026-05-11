@@ -13,10 +13,13 @@ import { TicketListaComponent } from './features/ticket/component/ticket-lista/t
 import { TicketDetalleComponent } from './features/ticket/component/ticket-detalle/ticket-detalle';
 import { ArticuloList } from './features/conocimiento/pages/articulo-list/articulo-list';
 import { ArticuloDetalleComponent } from './features/conocimiento/pages/articulo-detalle/articulo-detalle';
+import { AccesoDenegado } from './features/acceso-denegado/acceso-denegado';
+import { permisosGuard } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LayoutLogin },
+    { path: 'acceso-denegado', component: AccesoDenegado },
 
     // ── Dashboard ────────────────────────────────────────────────────────────
     {
@@ -26,25 +29,28 @@ export const routes: Routes = [
             { path: '', component: Dashboard }
         ]
     },
- // ── Base de Conocimiento ─────────────────────────────────────────────────
+
+    // ── Base de Conocimiento ─────────────────────────────────────────────────
     {
         path: 'conocimiento',
         component: LayoutBase,
+        canActivate: [permisosGuard],
         children: [
             { path: '',          component: ArticuloList },
-            { path: 'articulos',          component: ArticuloList },
+            { path: 'articulos', component: ArticuloList },
             { path: ':publicId', component: ArticuloDetalleComponent }
         ]
     },
+
     // ── Tickets — vistas de lista ────────────────────────────────────────────
     {
         path: 'principal',
         component: LayoutBase,
         children: [
             { path: '', redirectTo: 'mis-tickets', pathMatch: 'full' },
-            { path: 'tickets',          component: TicketListaComponent, data: { modo: 'todos' } },
-            { path: 'mis-tickets',      component: TicketListaComponent, data: { modo: 'mis-tickets' } },
-            { path: 'mis-asignaciones', component: TicketListaComponent, data: { modo: 'mis-asignaciones' } },
+            { path: 'tickets',          component: TicketListaComponent, canActivate: [permisosGuard], data: { modo: 'todos' } },
+            { path: 'mis-tickets',      component: TicketListaComponent, canActivate: [permisosGuard], data: { modo: 'mis-tickets' } },
+            { path: 'mis-asignaciones', component: TicketListaComponent, canActivate: [permisosGuard], data: { modo: 'mis-asignaciones' } },
         ]
     },
 
@@ -62,11 +68,11 @@ export const routes: Routes = [
         path: 'maintenance',
         component: LayoutBase,
         children: [
-            { path: '',            component: SedeList },
-            { path: 'prioridades', component: PrioridadList },
-            { path: 'estados',     component: EstadoList },
-            { path: 'categorias',  component: CategoriaList },
-            { path: 'sedes',       component: SedeList },
+            { path: '',            component: SedeList,        canActivate: [permisosGuard] },
+            { path: 'sedes',       component: SedeList,        canActivate: [permisosGuard] },
+            { path: 'prioridades', component: PrioridadList,   canActivate: [permisosGuard] },
+            { path: 'estados',     component: EstadoList,      canActivate: [permisosGuard] },
+            { path: 'categorias',  component: CategoriaList,   canActivate: [permisosGuard] },
         ]
     },
 
@@ -75,13 +81,11 @@ export const routes: Routes = [
         path: 'security',
         component: LayoutBase,
         children: [
-            { path: 'users',    component: UserList },
-            { path: 'roles',    component: RoleList },
-            { path: 'permisos', component: PermisosAddRemove },
+            { path: 'users',    component: UserList,          canActivate: [permisosGuard] },
+            { path: 'roles',    component: RoleList,          canActivate: [permisosGuard] },
+            { path: 'permisos', component: PermisosAddRemove, canActivate: [permisosGuard] },
         ]
     },
-
-   
 
     { path: '**', redirectTo: 'login' }
 ];
