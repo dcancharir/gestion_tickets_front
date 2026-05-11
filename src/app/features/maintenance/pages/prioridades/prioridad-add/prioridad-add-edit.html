@@ -1,47 +1,52 @@
-<div   [class.show]="true"  [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-4">Modal title</h1>
-                <button type="button" class="btn-close" (click)="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="pure-card rounded-custom card-bg shadow-custom">
-                            <div class="pure-card-header d-flex flex-wrap align-items-center justify-content-between gap-7">
-                                <h3 class="pure-card-title d-flex align-items-center gap-2 m-0">
-                                    {{!prioridad()?.prioridadId?'Add':'Update'}} Prioridad Information
-                                </h3>
-                            </div>
-                            <div class="pure-card-body">
-                                <div class="row gy-5">
-                                    <div class="col-md-12">
-                                        <label for="title" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" [(ngModel)]="form().nombre" placeholder="Ingrese Nombre">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="title" class="form-label">Nivel</label>
-                                        <input type="email" class="form-control" [(ngModel)]="form().nivel" placeholder="Ingrese Nivel">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="title" class="form-label">Tiempo Respuesta Minutos</label>
-                                        <input type="email" class="form-control" [(ngModel)]="form().tiempoRespuestaMin" placeholder="Ingrese Tiempo Respuesta Minutos">
-                                    </div>
-                                      <div class="col-md-12">
-                                        <label for="title" class="form-label">Tiempo Resolucion Minutos</label>
-                                        <input type="email" class="form-control" [(ngModel)]="form().tiempoResolucionMin" placeholder="Ingrese Tiempo Resolucion Minutos">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-label-danger" (click)="closeModal()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="guardar()">Guardar</button>
-            </div>
+<div [class.show]="true" [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content modal-dark">
+
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title">
+          {{ !prioridad()?.prioridadId ? 'Nueva Prioridad' : 'Editar Prioridad' }}
+        </h5>
+        <button type="button" class="btn-close-custom" (click)="closeModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body modal-dark-body">
+        <div class="mb-4">
+          <label class="form-label-dark">Nombre <span class="req">*</span></label>
+          <input type="text" class="form-input-dark"
+                 [(ngModel)]="form().nombre"
+                 placeholder="Ingrese nombre">
         </div>
+        <div class="mb-4">
+          <label class="form-label-dark">Nivel <span class="req">*</span></label>
+          <input type="number" class="form-input-dark"
+                 [(ngModel)]="form().nivel"
+                 placeholder="Ingrese nivel (1 = más alto)">
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label-dark">T. Respuesta (min) <span class="req">*</span></label>
+            <input type="number" class="form-input-dark"
+                   [(ngModel)]="form().tiempoRespuestaMin"
+                   placeholder="Minutos">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-dark">T. Resolución (min) <span class="req">*</span></label>
+            <input type="number" class="form-input-dark"
+                   [(ngModel)]="form().tiempoResolucionMin"
+                   placeholder="Minutos">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer modal-dark-footer">
+        <button type="button" class="btn-modal-cancel" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn-modal-save" (click)="guardar()">Guardar</button>
+      </div>
+
     </div>
+  </div>
 </div>

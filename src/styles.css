@@ -2713,6 +2713,201 @@ button.tp-course-toggle-btn.active {
 .text-custom-paragraph {
   color: #000 !important;
 }
-table > thead > tr > th{
+table:not(.tk-table):not(.dash-table) > thead > tr > th{
   background-color: #d7691c !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHARED DARK THEME — ticket views + all maintenance components
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* -- Page title -- */
+.page-title {
+  font-size:   1.6rem;
+  font-weight: 700;
+  color:       #111;
+}
+
+/* -- New record button -- */
+.btn-nuevo {
+  background:    #d7691c;
+  border:        none;
+  color:         #fff;
+  font-size:     0.875rem;
+  font-weight:   600;
+  padding:       0.5rem 1.1rem;
+  border-radius: 8px;
+  cursor:        pointer;
+  transition:    background 0.2s;
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.4rem;
+}
+.btn-nuevo:hover { background: #bf391c; }
+
+/* -- Table card wrapper -- */
+.tabla-wrapper {
+  background:    #111;
+  border:        1px solid #2a1a0e;
+  border-radius: 12px;
+  overflow:      auto;
+}
+
+/* -- Dark table -- */
+.tk-table {
+  width:           100%;
+  border-collapse: collapse;
+  font-size:       0.865rem;
+}
+.tk-table thead th {
+  padding:          0.85rem 1rem;
+  text-align:       left;
+  font-size:        0.72rem;
+  text-transform:   uppercase;
+  letter-spacing:   0.06em;
+  color:            #fff;
+  background-color: #111 !important;
+  border-bottom:    1px solid #2a1a0e;
+  white-space:      nowrap;
+}
+.tk-row {
+  background:    #F4F4F7;
+  border-bottom: 1px solid #e0e0e6;
+  transition:    background 0.15s;
+}
+.tk-row:last-child { border-bottom: none; }
+.tk-row:hover      { background: #eaeaef; }
+.tk-row td {
+  padding:        0.85rem 1rem;
+  vertical-align: middle;
+}
+
+/* -- Cell helpers -- */
+.cell-muted { color: #6b7280; font-size: 0.83rem; }
+
+/* -- Icon action buttons (edit / delete in table rows) -- */
+.btn-accion-icon {
+  background:      transparent;
+  border:          1px solid #2a1a0e;
+  color:           #7a6a5a;
+  width:           32px;
+  height:          32px;
+  border-radius:   8px;
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  cursor:          pointer;
+  transition:      all 0.2s;
+  padding:         0;
+}
+.btn-accion-icon:hover         { border-color: #d7691c; color: #d7691c; }
+.btn-accion-icon.peligro:hover { border-color: #bf391c; color: #bf391c; }
+
+/* -- Boolean badges -- */
+.badge-si { display:inline-block; background:rgba(215,105,28,.15); color:#d7691c; font-size:0.7rem; font-weight:600; padding:0.2rem 0.55rem; border-radius:4px; }
+.badge-no { display:inline-block; background:rgba(191,57,28,.15);  color:#bf391c; font-size:0.7rem; font-weight:600; padding:0.2rem 0.55rem; border-radius:4px; }
+
+/* -- Chip tipo / categoria -- */
+.chip-tipo {
+  background:    rgba(215,105,28,.12);
+  color:         #e8843a;
+  font-size:     0.72rem;
+  padding:       0.2rem 0.55rem;
+  border-radius: 4px;
+  white-space:   nowrap;
+}
+
+/* -- Form labels & inputs (dark modals) -- */
+.form-label-dark {
+  font-size:      0.8rem;
+  font-weight:    600;
+  color:          #7a6a5a;
+  display:        block;
+  margin-bottom:  0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.req { color: #d7691c; }
+
+.form-input-dark {
+  width:         100%;
+  background:    #0a0a0a;
+  border:        1px solid #2a1a0e;
+  border-radius: 8px;
+  color:         #f5f0eb;
+  padding:       0.55rem 0.85rem;
+  font-size:     0.875rem;
+  outline:       none;
+  transition:    border-color 0.2s;
+  font-family:   inherit;
+}
+.form-input-dark:focus        { border-color: #d7691c; }
+.form-input-dark::placeholder { color: #4a3a2a; }
+.form-input-dark option       { background: #111; }
+textarea.form-input-dark      { resize: vertical; min-height: 80px; }
+
+/* -- Dark modals -- */
+.modal-dark {
+  background:    #111;
+  border:        1px solid #2a1a0e;
+  border-radius: 12px;
+}
+.modal-dark-header {
+  border-bottom:   1px solid #2a1a0e;
+  padding:         1.25rem 1.5rem;
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+}
+.modal-dark-header .modal-title { color: #f5f0eb; font-weight: 600; font-size: 1rem; }
+.modal-dark-body   { padding: 1.5rem; }
+.modal-dark-footer {
+  border-top:      1px solid #2a1a0e;
+  padding:         1rem 1.5rem;
+  display:         flex;
+  justify-content: flex-end;
+  gap:             0.5rem;
+}
+
+.btn-close-custom       { background:transparent; border:none; color:#7a6a5a; cursor:pointer; transition:color 0.2s; padding:0.25rem; display:flex; align-items:center; }
+.btn-close-custom:hover { color: #bf391c; }
+
+.btn-modal-cancel       { background:transparent; border:1px solid #2a1a0e; color:#7a6a5a; border-radius:8px; padding:0.5rem 1.1rem; font-size:0.875rem; cursor:pointer; transition:all 0.2s; }
+.btn-modal-cancel:hover { border-color:#7a6a5a; color:#f5f0eb; }
+
+.btn-modal-save                  { background:#d7691c; border:none; color:#fff; border-radius:8px; padding:0.5rem 1.25rem; font-size:0.875rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; transition:background 0.2s; }
+.btn-modal-save:hover:not(:disabled) { background: #bf391c; }
+.btn-modal-save:disabled         { opacity:0.5; cursor:not-allowed; }
+
+/* -- Checkbox rows (permisos / sede-assign) -- */
+.check-interno       { display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:#c5b8a8; cursor:pointer; }
+.check-interno input { accent-color: #d7691c; }
+
+/* -- Filter select (used in permisos header) -- */
+.filtro-select {
+  background:    #111;
+  border:        1px solid #2a1a0e;
+  border-radius: 8px;
+  color:         #f5f0eb;
+  padding:       0.5rem 0.75rem;
+  font-size:     0.875rem;
+  outline:       none;
+  cursor:        pointer;
+  transition:    border-color 0.2s;
+  min-width:     200px;
+}
+.filtro-select:focus  { border-color: #d7691c; }
+.filtro-select option { background: #111; }
+
+/* -- Spinner small (inside save button) -- */
+@keyframes tk-spin { to { transform: rotate(360deg); } }
+.spinner-sm {
+  width:         14px;
+  height:        14px;
+  border:        2px solid rgba(255,255,255,.3);
+  border-top:    2px solid #fff;
+  border-radius: 50%;
+  animation:     tk-spin 0.7s linear infinite;
+  display:       inline-block;
+  margin-right:  0.4rem;
 }

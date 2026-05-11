@@ -23,4 +23,7 @@ export class UserService {
     GetByRolId(rolId:number):Observable<Usuario[]>{
         return this.http.get<Usuario[]>(`${this.api}api/usuarios/getbyrolid/${rolId}`);
     }
+    getBySedeId(sedeId: number): Observable<Usuario[]> {
+        return this.http.get<Usuario[]>(`${this.api}api/usuariosede/sedes/${sedeId}/usuarios`);
+    }
 }

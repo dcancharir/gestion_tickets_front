@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, resource } from '@angular/core';
+import { Component, OnInit, inject, signal, resource, effect } from '@angular/core';
 import { CommonModule }    from '@angular/common';
 import { FormsModule }     from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { firstValueFrom }  from 'rxjs';
 import { TicketService }   from '../../services/ticket.service';
 import { EstadoService }   from '../../../maintenance/services/estado.service';
 import { PrioridadService } from '../../../maintenance/services/prioridad.service';
+import { UserService }     from '../../../maintenance/services/user.service';
 import { environment }     from '../../../../../environments/environment';
  
 declare var bootstrap: any;
@@ -24,6 +25,7 @@ export class TicketDetalleComponent implements OnInit {
   readonly svc         = inject(TicketService);
   private estadoSvc    = inject(EstadoService);
   private prioridadSvc = inject(PrioridadService);
+  private userSvc      = inject(UserService);
 
   estados     = resource({ loader: () => firstValueFrom(this.estadoSvc.getAll()) });
   prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });
@@ -37,9 +39,13 @@ export class TicketDetalleComponent implements OnInit {
   }
  
   // ── Estado de los modales ──────────────────────────────────────────────────
-  accionActiva = signal<string>('');
-  guardando    = signal(false);
-  errorAccion  = signal<string | null>(null);
+  accionActiva       = signal<string>('');
+  guardando          = signal(false);
+  errorAccion        = signal<string | null>(null);
+
+  // ── Estado del formulario de comentarios ───────────────────────────────────
+  guardandoComentario = signal(false);
+  errorComentario     = signal<string | null>(null);
  
   // ── Formularios de modales ─────────────────────────────────────────────────
   fAsignar   = { tecnicoPublicId: '' };
@@ -50,9 +56,28 @@ export class TicketDetalleComponent implements OnInit {
   fReabrir   = { motivo: '' };
   fComentario = { mensaje: '', esInterno: false };
  
-  // Técnicos disponibles (en producción vienen de UsuarioService)
-  tecnicos: { publicId: string; nombre: string }[] = [];
- 
+  // Técnicos disponibles — filtrados por la sede del ticket
+  tecnicos = signal<{ publicId: string; nombre: string }[]>([]);
+
+  constructor() {
+    effect(() => {
+      const t = this.svc.detalle();
+      if (!t?.sedeId) {
+        this.tecnicos.set([]);
+        return;
+      }
+      this.userSvc.getBySedeId(t.sedeId).subscribe({
+        next: usuarios => {
+          this.tecnicos.set(usuarios.map(u => ({
+            publicId: u.publicId,
+            nombre:   `${u.nombre} ${u.apellidos}`
+          })));
+        },
+        error: () => { this.tecnicos.set([]); }
+      });
+    });
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('publicId')!;
     this.svc.cargarDetalle(id);
@@ -129,14 +154,18 @@ export class TicketDetalleComponent implements OnInit {
   agregarComentario(): void {
     const t = this.svc.detalle();
     if (!t || !this.fComentario.mensaje.trim()) return;
-    this.guardando.set(true);
+    this.guardandoComentario.set(true);
+    this.errorComentario.set(null);
     this.svc.agregarComentario(t.publicId, this.fComentario).subscribe({
-      next: () => {
+      next: (comentario) => {
+        this.svc.agregarComentarioLocal(comentario);
         this.fComentario = { mensaje: '', esInterno: false };
-        this.guardando.set(false);
-        this.svc.cargarDetalle(t.publicId); // refrescar historial
+        this.guardandoComentario.set(false);
       },
-      error: () => { this.guardando.set(false); }
+      error: () => {
+        this.errorComentario.set('No se pudo enviar el comentario. Intenta nuevamente.');
+        this.guardandoComentario.set(false);
+      }
     });
   }
  

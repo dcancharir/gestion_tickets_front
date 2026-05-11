@@ -1,52 +1,57 @@
 <div [class.show]="true" [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="pure-card-title d-flex align-items-center gap-2 m-0">
-                    Asignar Sedes — {{ usuario().nombre }} {{ usuario().apellidos }}
-                </h3>
-                <button type="button" class="btn-close" (click)="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <div class="pure-card rounded-custom card-bg shadow-custom" style="padding: 24px;">
-                    @if(todasSedes.isLoading() || cargandoSedes()) {
-                        <div class="d-flex justify-content-center align-items-center py-4">
-                            <p class="text-primary mb-0">Cargando sedes...</p>
-                        </div>
-                    } @else if((todasSedes.value()?.length ?? 0) === 0) {
-                        <p class="text-muted text-center py-4 mb-0">No hay sedes registradas.</p>
-                    } @else {
-                        <div class="row gy-4">
-                            @for(sede of todasSedes.value(); track sede.sedeId) {
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            [id]="'sede-' + sede.sedeId"
-                                            [checked]="estaSeleccionada(sede.sedeId)"
-                                            (change)="toggleSede(sede.sedeId, $any($event.target).checked)">
-                                        <label class="form-check-label" [for]="'sede-' + sede.sedeId" style="color: black;">
-                                            <strong>{{ sede.nombre }}</strong>
-                                            <span class="badge badge-label-secondary ms-2">{{ sede.tipoSede }}</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
-                <button
-                    type="button"
-                    class="btn btn-orange"
-                    (click)="guardar()"
-                    [disabled]="guardando() || todasSedes.isLoading() || cargandoSedes()">
-                    {{ guardando() ? 'Guardando...' : 'Guardar' }}
-                </button>
-            </div>
-        </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content modal-dark">
+
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title">
+          Asignar Sedes — {{ usuario().nombre }} {{ usuario().apellidos }}
+        </h5>
+        <button type="button" class="btn-close-custom" (click)="closeModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body modal-dark-body">
+        @if (todasSedes.isLoading() || cargandoSedes()) {
+          <div class="d-flex justify-content-center py-4">
+            <p class="text-primary mb-0">Cargando sedes...</p>
+          </div>
+        } @else if ((todasSedes.value()?.length ?? 0) === 0) {
+          <p class="cell-muted text-center py-4 mb-0">No hay sedes registradas.</p>
+        } @else {
+          <div class="row gy-3">
+            @for (sede of todasSedes.value(); track sede.sedeId) {
+              <div class="col-md-6">
+                <label class="check-interno">
+                  <input type="checkbox"
+                         [id]="'sede-' + sede.sedeId"
+                         [checked]="estaSeleccionada(sede.sedeId)"
+                         (change)="toggleSede(sede.sedeId, $any($event.target).checked)">
+                  <span>
+                    <strong style="color:#f5f0eb;">{{ sede.nombre }}</strong>
+                    <span class="chip-tipo ms-1">{{ sede.tipoSede }}</span>
+                  </span>
+                </label>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer modal-dark-footer">
+        <button type="button" class="btn-modal-cancel" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn-modal-save"
+                (click)="guardar()"
+                [disabled]="guardando() || todasSedes.isLoading() || cargandoSedes()">
+          @if (guardando()) {
+            <span class="spinner-sm"></span>
+          }
+          Guardar
+        </button>
+      </div>
+
     </div>
+  </div>
 </div>

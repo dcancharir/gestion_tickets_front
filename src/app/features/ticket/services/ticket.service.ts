@@ -128,6 +128,12 @@ export class TicketService {
   agregarComentario(publicId: string, dto: AgregarComentarioRequest) {
     return this.http.post<ComentarioItem>(`${this.base}/${publicId}/comentarios`, dto);
   }
+
+  agregarComentarioLocal(comentario: ComentarioItem): void {
+    this.detalle.update(d =>
+      d ? { ...d, comentarios: [...d.comentarios, comentario] } : d
+    );
+  }
  
   // ── Helpers de vista ───────────────────────────────────────────────────────
  

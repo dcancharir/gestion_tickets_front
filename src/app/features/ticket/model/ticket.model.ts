@@ -69,6 +69,8 @@ export interface TicketDetalle {
   resueltoEnPrimerContacto:   boolean;
   numeroReasignaciones:       number;
   cumpleSla:                  boolean | null;
+  sedeId:                     number;
+  sede:                       string | null;
   historial:                  HistorialItem[];
   comentarios:                ComentarioItem[];
   adjuntos:                   AdjuntoItem[];

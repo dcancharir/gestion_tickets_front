@@ -1,74 +1,41 @@
-<!-- app content start -->
 <div class="app-content-wrapper py-20 pb-13">
-    <div class="container ">
-        <div class="page-header pb-7 d-flex justify-content-between align-items-center gap-6 flex-wrap">
-            <div class="">
-                <h2 class="fw-semibold fs-7">All Roles</h2>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">All Users</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                <select 
-                    class="form-select" 
-                    [ngModel]="selectedRolId()"
-                    (change)="onRolChange($event)"
-                    placeholder="Seleccione">
-                    <option [ngValue]="null">Seleccione</option>
-                    @for(rol of roles.value(); track rol.rolId){
-                        <option [value]="rol.rolId">{{ rol.nombre }}</option>
-                    }
-                </select>
-                </div>
-            </div>
-        </div> <!-- breadcrumb end -->
+  <div class="container">
 
-        <div class="page-content">
-            <div class="row">
-                @for(grupo of agrupadosArray(); track grupo.controlador){
-                <div class="col-md-3">
-                    <div class="pure-card rounded-custom card-bg shadow-custom mb-6">
-                        <div class="pure-card-header">
-                            <h3 class="pure-card-title d-flex align-items-center gap-2 m-0">
-                                <span class="text-primary d-flex align-items-center">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path opacity="0.3" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="currentColor"></path>
-                                        <path d="M16.8125 11.1H12.9125V7.20005C12.9125 6.70805 12.5045 6.30005 12.0125 6.30005C11.5205 6.30005 11.1125 6.70805 11.1125 7.20005V11.1H7.2125C6.7205 11.1 6.3125 11.508 6.3125 12C6.3125 12.492 6.7205 12.9 7.2125 12.9H11.1125V16.8001C11.1125 17.2921 11.5205 17.7001 12.0125 17.7001C12.5045 17.7001 12.9125 17.2921 12.9125 16.8001V12.9H16.8125C17.3045 12.9 17.7125 12.492 17.7125 12C17.7125 11.508 17.3045 11.1 16.8125 11.1Z" fill="currentColor"></path>
-                                    </svg>
-                                </span>
-                                {{grupo.controlador == '' ? 'Vistas' : grupo.controlador}}
-                            </h3>
-                        </div>
-                    
-                        <div class="pure-card-body">
-                            <div class="row row-cols-1 gy-5 ">
-                                <div class="course-category-checkbox">
-                                    <div class="d-flex flex-column gap-3">
-                                        @for (permiso of grupo.permisos; track permiso.permisoId) {
-                                            <div class="form-check">
-                                                <label class="form-check-label" style="color: black;" for="web_design">
-                                                    {{permiso.nombre}}
-                                                </label>
-                                                <input  
-                                                    [checked]="tienePermiso(permiso.permisoId)" 
-                                                    class="form-check-input float-end" 
-                                                    type="checkbox" 
-                                                    (change)="addDeletePermission($event,permiso.permisoId)">
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                }
-            </div>
-        </div><!-- page content end -->
-
+    <!-- ── Header ────────────────────────────────────────────────────────── -->
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+      <h1 class="page-title mb-0">Permisos por Rol</h1>
+      <select class="filtro-select"
+              [ngModel]="selectedRolId()"
+              (change)="onRolChange($event)">
+        <option [ngValue]="null">Seleccione un rol</option>
+        @for (rol of roles.value(); track rol.rolId) {
+          <option [value]="rol.rolId">{{ rol.nombre }}</option>
+        }
+      </select>
     </div>
-</div><!-- app content end -->
+
+    <!-- ── Tarjetas de permisos ───────────────────────────────────────────── -->
+    <div class="row g-3">
+      @for (grupo of agrupadosArray(); track grupo.controlador) {
+        <div class="col-xl-3 col-md-4 col-sm-6">
+          <div class="tabla-wrapper" style="padding: 1.1rem 1.25rem;">
+            <p style="font-size:0.72rem;font-weight:700;color:#d7691c;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.85rem;">
+              {{ grupo.controlador || 'Vistas' }}
+            </p>
+            <div class="d-flex flex-column gap-2">
+              @for (permiso of grupo.permisos; track permiso.permisoId) {
+                <label class="check-interno">
+                  <input type="checkbox"
+                         [checked]="tienePermiso(permiso.permisoId)"
+                         (change)="addDeletePermission($event, permiso.permisoId)">
+                  {{ permiso.nombre }}
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>
