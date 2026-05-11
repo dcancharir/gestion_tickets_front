@@ -1,13 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, resource } from '@angular/core';
 import { CommonModule }               from '@angular/common';
 import { FormsModule }                from '@angular/forms';
 import { Router, ActivatedRoute }     from '@angular/router';
-import { TicketService } from '../../services/ticket.service';
+import { firstValueFrom }             from 'rxjs';
+import { TicketService }              from '../../services/ticket.service';
 import { TicketListItem }             from '../../model/ticket.model';
 import { TicketCrearModalComponent }  from '../ticket-crear-modal/ticket-crear-modal';
- 
+import { EstadoService }              from '../../../maintenance/services/estado.service';
+import { PrioridadService }           from '../../../maintenance/services/prioridad.service';
+
 type ModoLista = 'todos' | 'mis-tickets' | 'mis-asignaciones';
- 
+
 @Component({
   selector:    'app-ticket-lista',
   standalone:  true,
@@ -16,13 +19,18 @@ type ModoLista = 'todos' | 'mis-tickets' | 'mis-asignaciones';
   styleUrls:   ['./ticket-lista.css']
 })
 export class TicketListaComponent implements OnInit {
- 
-  readonly svc    = inject(TicketService);
-  readonly router = inject(Router);
-  readonly route  = inject(ActivatedRoute);
- 
+
+  readonly svc         = inject(TicketService);
+  readonly router      = inject(Router);
+  readonly route       = inject(ActivatedRoute);
+  private estadoSvc    = inject(EstadoService);
+  private prioridadSvc = inject(PrioridadService);
+
   modo: ModoLista = 'todos';
- 
+
+  estados   = resource({ loader: () => firstValueFrom(this.estadoSvc.getAll()) });
+  prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });
+
   get busqueda()         { return this.svc.filtroBusqueda(); }
   set busqueda(v)        { this.svc.filtroBusqueda.set(v); }
   get filtroEstado()     { return this.svc.filtroEstado(); }
@@ -30,14 +38,15 @@ export class TicketListaComponent implements OnInit {
   get filtroPrioridad()  { return this.svc.filtroPrioridad(); }
   set filtroPrioridad(v) { this.svc.filtroPrioridad.set(v); }
  
-  get estadosUnicos(): string[] {
-    return [...new Set(this.svc.tickets().map(t => t.estado))].sort();
+  get prioridadesDistintas() {
+    const vistas = new Set<string>();
+    return (this.prioridades.value() ?? []).filter(p => {
+      if (vistas.has(p.nombre)) return false;
+      vistas.add(p.nombre);
+      return true;
+    });
   }
- 
-  get prioridadesUnicas(): string[] {
-    return [...new Set(this.svc.tickets().map(t => t.prioridad))];
-  }
- 
+
   get titulo(): string {
     return { 'todos': 'Todos los Tickets',
              'mis-tickets': 'Mis Tickets',
@@ -63,22 +72,15 @@ export class TicketListaComponent implements OnInit {
     this.svc.tickets.update(lista => [ticket, ...lista]);
   }
  
-  prioridadClass(nivel: number): string {
-    return ['','badge-critico','badge-alto','badge-medio',
-            'badge-bajo','badge-planificado'][nivel] ?? 'badge-bajo';
+  estadoColor(nombre: string): string {
+    return (this.estados.value() ?? []).find(e => e.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
- 
-  estadoClass(estado: string): string {
-    const map: Record<string, string> = {
-      'Registrado': 'estado-chip-registrado', 'Asignado': 'estado-chip-asignado',
-      'En Diagnóstico': 'estado-chip-diagnostico', 'En Progreso': 'estado-chip-progreso',
-      'Pendiente': 'estado-chip-pendiente', 'Resuelto': 'estado-chip-resuelto',
-      'Cerrado': 'estado-chip-cerrado', 'Reabierto': 'estado-chip-reabierto',
-      'Cancelado': 'estado-chip-cancelado',
-    };
-    return map[estado] ?? '';
+
+  prioridadColor(nombre: string): string {
+    return (this.prioridades.value() ?? []).find(p => p.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
- 
+
+
   slaClass(ticket: TicketListItem): string {
     if (ticket.esEstadoFinal) return ticket.cumpleSla ? 'sla-ok' : 'sla-fail';
     if (!ticket.fechaLimiteResolucion) return '';
@@ -104,13 +106,4 @@ export class TicketListaComponent implements OnInit {
     });
   }
  
-  kanbanColor(estado: string): string {
-    const map: Record<string, string> = {
-      'Registrado': '#d7691c', 'Asignado': '#e8843a',
-      'En Diagnóstico': '#bf391c', 'En Progreso': '#c25a1a',
-      'Pendiente': '#7a6a5a', 'Resuelto': '#d7691c',
-      'Cerrado': '#4a3a2a', 'Reabierto': '#bf391c',
-    };
-    return map[estado] ?? '#7a6a5a';
-  }
 }

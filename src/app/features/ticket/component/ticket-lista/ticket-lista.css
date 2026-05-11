@@ -10,7 +10,7 @@
 .page-title {
   font-size:   1.6rem;
   font-weight: 700;
-  color:       #f5f0eb;
+  color:       #111;
 }
  
 .page-subtitle {
@@ -88,10 +88,10 @@
  
 .filtro-input {
   width:         100%;
-  background:    #111;
+  background:    #fff;
   border:        1px solid #2a1a0e;
   border-radius: 8px;
-  color:         #f5f0eb;
+  color:         #2a1a0e;
   padding:       0.5rem 0.75rem 0.5rem 2.2rem;
   font-size:     0.875rem;
   outline:       none;
@@ -188,20 +188,22 @@
   font-size:      0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color:          #7a6a5a;
+  color:          #fff;
+  background-color: #111 !important;
   border-bottom:  1px solid #2a1a0e;
   white-space:    nowrap;
 }
- 
+
 .tk-row {
-  border-bottom: 1px solid #1a1008;
+  background:    #F4F4F7;
+  border-bottom: 1px solid #e0e0e6;
   cursor:        pointer;
   transition:    background 0.15s;
 }
- 
+
 .tk-row:last-child { border-bottom: none; }
-.tk-row:hover      { background: #1a0f06; }
- 
+.tk-row:hover      { background: #eaeaef; }
+
 .tk-row td {
   padding:        0.85rem 1rem;
   vertical-align: middle;
@@ -216,7 +218,7 @@
 }
  
 .titulo-ticket {
-  color:        #f5f0eb;
+  color:        #1a1a2e;
   font-weight:  500;
   max-width:    240px;
   display:      block;
@@ -235,7 +237,7 @@
 }
  
 .cell-muted {
-  color:      #7a6a5a;
+  color:      #6b7280;
   font-size:  0.83rem;
   white-space:nowrap;
 }
@@ -244,14 +246,18 @@
   background:    transparent;
   border:        1px solid #2a1a0e;
   color:         #7a6a5a;
-  border-radius: 6px;
-  padding:       0.3rem 0.55rem;
+  padding:       0.5rem 0.85rem;
+  border-radius: 8px;
+  font-size:     0.8rem;
   cursor:        pointer;
+  display:       flex;
+  align-items:   center;
+  gap:           0.35rem;
   transition:    all 0.2s;
 }
  
-.btn-ver:hover { border-color: #d7691c; color: #d7691c; }
- 
+.btn-ver:hover { border-color: #bf391c; color: #bf391c; }
+
 /* ── Badges de prioridad ──────────────────────────────────────────────────────── */
 .badge-prioridad {
   font-size:     0.7rem;

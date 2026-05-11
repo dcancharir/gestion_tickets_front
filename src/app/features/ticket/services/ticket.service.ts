@@ -97,8 +97,8 @@ export class TicketService {
  
   // ── Acciones ───────────────────────────────────────────────────────────────
  
-  crear(dto: CrearTicketRequest) {
-    return this.http.post<TicketListItem>(this.base, dto);
+  crear(formData: FormData) {
+    return this.http.post<TicketListItem>(this.base, formData);
   }
  
   asignar(publicId: string, dto: AsignarTicketRequest) {

@@ -1,7 +1,7 @@
 <div class="modal fade" id="modalCrearTicket" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content modal-dark">
- 
+
       <div class="modal-header modal-dark-header">
         <h5 class="modal-title">
           <i class="bi bi-plus-circle me-2" style="color:#d7691c"></i>
@@ -12,15 +12,15 @@
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
- 
+
       <div class="modal-body modal-dark-body">
- 
+
         @if (error()) {
           <div class="alerta-error mb-3">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
           </div>
         }
- 
+
         <!-- Título -->
         <div class="form-group mb-3">
           <label class="form-label-dark">Título <span class="req">*</span></label>
@@ -28,7 +28,7 @@
                  placeholder="Describe brevemente el problema"
                  [(ngModel)]="form.titulo" maxlength="200">
         </div>
- 
+
         <!-- Descripción -->
         <div class="form-group mb-3">
           <label class="form-label-dark">Descripción <span class="req">*</span></label>
@@ -36,30 +36,7 @@
                     placeholder="Detalla el problema, pasos para reproducirlo, equipos afectados…"
                     [(ngModel)]="form.descripcion"></textarea>
         </div>
- 
-        <div class="row g-3 mb-3">
-          <!-- Categoría -->
-          <div class="col-md-6">
-            <label class="form-label-dark">Categoría <span class="req">*</span></label>
-            <select class="form-input-dark" [(ngModel)]="form.categoriaId">
-              <option [value]="0" disabled>Seleccionar…</option>
-              @for (c of categorias; track c.id) {
-                <option [value]="c.id">{{ c.nombre }}</option>
-              }
-            </select>
-          </div>
-          <!-- Prioridad -->
-          <div class="col-md-6">
-            <label class="form-label-dark">Prioridad</label>
-            <select class="form-input-dark" [(ngModel)]="form.prioridadId">
-              @for (p of prioridades; track p.id) {
-                <option [value]="p.id">{{ p.nombre }}</option>
-              }
-            </select>
-          </div>
-        </div>
- 
-        <div class="row g-3">
+    <div class="row g-3 mb-3">
           <!-- Canal -->
           <div class="col-md-4">
             <label class="form-label-dark">Canal de reporte</label>
@@ -88,9 +65,78 @@
             </select>
           </div>
         </div>
- 
+
+        <div class="row g-3 mb-3">
+          <!-- Categoría -->
+          <div class="col-md-6">
+            <label class="form-label-dark">Categoría <span class="req">*</span></label>
+            <select class="form-input-dark" [(ngModel)]="form.categoriaId">
+              <option [value]="0" disabled>Seleccionar…</option>
+              @for (c of categorias; track c.id) {
+                <option [value]="c.id">{{ c.nombre }}</option>
+              }
+            </select>
+          </div>
+          <!-- Prioridad (calculada automáticamente) -->
+          <div class="col-md-6">
+            <label class="form-label-dark">Prioridad</label>
+            <div class="prioridad-display"
+                 [style.border-color]="prioridad.colorHexa"
+                 [style.color]="prioridad.colorHexa"
+                 [style.background-color]="prioridad.colorHexa + '1A'">
+              <span class="prioridad-dot" [style.background-color]="prioridad.colorHexa"></span>
+              {{ prioridad.nombre }}
+            </div>
+          </div>
+        </div>
+
+    
+        <!-- Sede -->
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Sede <span class="req">*</span></label>
+          @if (sedes.isLoading()) {
+            <select class="form-input-dark" disabled>
+              <option>Cargando sedes…</option>
+            </select>
+          } @else {
+            <select class="form-input-dark" [(ngModel)]="form.sedeId">
+              <option [value]="0" disabled>Seleccionar sede…</option>
+              @for (s of sedes.value(); track s.sedeId) {
+                <option [value]="s.sedeId">{{ s.nombre }} ({{ s.tipoSede }})</option>
+              }
+            </select>
+          }
+        </div>
+
+        <!-- Adjuntos -->
+        <div class="form-group mb-1">
+          <label class="form-label-dark">Adjuntos</label>
+          <input type="file" class="form-input-dark" multiple
+                 accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+                 (change)="onFileChange($event)">
+          <small style="color:#9a8a7a; font-size:.75rem">
+            Formatos permitidos: imágenes, PDF, Word, Excel, TXT
+          </small>
+        </div>
+
+        <!-- Lista de archivos seleccionados -->
+        @if (archivosSeleccionados().length > 0) {
+          <div class="archivos-lista mt-2">
+            @for (f of archivosSeleccionados(); track $index) {
+              <div class="archivo-item">
+                <span class="archivo-clip">📎</span>
+                <span class="archivo-nombre">{{ f.name }}</span>
+                <span class="archivo-size">{{ (f.size / 1024).toFixed(0) }} KB</span>
+                <button type="button" class="btn-remove-archivo"
+                        title="Quitar archivo"
+                        (click)="removerArchivo($index)">✕</button>
+              </div>
+            }
+          </div>
+        }
+
       </div>
- 
+
       <div class="modal-footer modal-dark-footer">
         <button class="btn-modal-cancel" data-bs-dismiss="modal" (click)="cancelar()">
           Cancelar
@@ -103,13 +149,7 @@
           }
         </button>
       </div>
- 
+
     </div>
   </div>
 </div>
- 
- 
-/* ── CSS inline del modal — guardar en ticket-crear-modal.component.css ────── */
- 
-
- 

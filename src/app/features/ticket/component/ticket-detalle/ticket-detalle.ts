@@ -1,8 +1,12 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
+import { Component, OnInit, inject, signal, resource } from '@angular/core';
+import { CommonModule }    from '@angular/common';
+import { FormsModule }     from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TicketService }  from '../../services/ticket.service';
+import { firstValueFrom }  from 'rxjs';
+import { TicketService }   from '../../services/ticket.service';
+import { EstadoService }   from '../../../maintenance/services/estado.service';
+import { PrioridadService } from '../../../maintenance/services/prioridad.service';
+import { environment }     from '../../../../../environments/environment';
  
 declare var bootstrap: any;
  
@@ -15,9 +19,22 @@ declare var bootstrap: any;
 })
 export class TicketDetalleComponent implements OnInit {
  
-  private route  = inject(ActivatedRoute);
-  private router = inject(Router);
-  readonly svc   = inject(TicketService);
+  private route        = inject(ActivatedRoute);
+  private router       = inject(Router);
+  readonly svc         = inject(TicketService);
+  private estadoSvc    = inject(EstadoService);
+  private prioridadSvc = inject(PrioridadService);
+
+  estados     = resource({ loader: () => firstValueFrom(this.estadoSvc.getAll()) });
+  prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });
+
+  estadoColor(nombre: string): string {
+    return (this.estados.value() ?? []).find(e => e.nombre === nombre)?.colorHexa ?? '#7a6a5a';
+  }
+
+  prioridadColor(nombre: string): string {
+    return (this.prioridades.value() ?? []).find(p => p.nombre === nombre)?.colorHexa ?? '#7a6a5a';
+  }
  
   // ── Estado de los modales ──────────────────────────────────────────────────
   accionActiva = signal<string>('');
@@ -32,13 +49,6 @@ export class TicketDetalleComponent implements OnInit {
   fEscalar   = { tecnicoPublicId: '', motivo: '' };
   fReabrir   = { motivo: '' };
   fComentario = { mensaje: '', esInterno: false };
- 
-  // Catálogos (en producción vienen de CatalogoService)
-  estados = [
-    { id: 3, nombre: 'En Diagnóstico' },
-    { id: 4, nombre: 'En Progreso' },
-    { id: 5, nombre: 'Pendiente' },
-  ];
  
   // Técnicos disponibles (en producción vienen de UsuarioService)
   tecnicos: { publicId: string; nombre: string }[] = [];
@@ -151,18 +161,17 @@ export class TicketDetalleComponent implements OnInit {
  
   // ── Helpers visuales ──────────────────────────────────────────────────────
  
-  formatFecha(f: string | null): string {
+  adjuntoUrl(ruta: string): string {
+    return `${environment.api_url}${ruta}`;
+  }
+
+formatFecha(f: string | null): string {
     if (!f) return '—';
     return new Date(f).toLocaleString('es-PE', {
       day: '2-digit', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
     });
   }
- 
-  prioridadClass(nivel: number): string {
-    return ['','badge-critico','badge-alto','badge-medio','badge-bajo','badge-planificado'][nivel] ?? '';
-  }
- 
   accionesPosibles(): string[] {
     const estado = this.svc.detalle()?.estado ?? '';
     const final  = this.svc.detalle()?.esEstadoFinal ?? false;

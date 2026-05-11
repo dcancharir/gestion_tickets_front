@@ -52,7 +52,7 @@
 .detalle-titulo {
   font-size:   1.4rem;
   font-weight: 700;
-  color:       #f5f0eb;
+  color:       #111;
   margin:      0;
   line-height: 1.3;
 }
@@ -124,7 +124,7 @@
  
 .descripcion-texto {
   font-size:   0.9rem;
-  color:       #c5b8a8;
+  color:       #f5f0eb;
   line-height: 1.7;
   margin:      0;
   white-space: pre-wrap;
@@ -351,6 +351,63 @@ textarea.form-input-dark { resize: vertical; min-height: 80px; }
   display: inline-block; margin-right: 0.4rem;
 }
  
+/* ── Adjuntos ─────────────────────────────────────────────────────────────────── */
+.badge-count {
+  background:    rgba(215,105,28,.2);
+  color:         #d7691c;
+  font-size:     0.7rem;
+  font-weight:   700;
+  padding:       0.1rem 0.45rem;
+  border-radius: 20px;
+}
+
+.adjuntos-lista {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.4rem;
+}
+
+.adjunto-item {
+  display:         flex;
+  align-items:     center;
+  gap:             0.55rem;
+  background:      #0a0a0a;
+  border:          1px solid #2a1a0e;
+  border-radius:   8px;
+  padding:         0.5rem 0.85rem;
+  color:           #c8b8a8;
+  text-decoration: none;
+  font-size:       0.85rem;
+  transition:      border-color 0.2s, color 0.2s;
+}
+
+.adjunto-item:hover {
+  border-color: #d7691c;
+  color:        #f5f0eb;
+}
+
+.adjunto-item > .bi:first-child {
+  color:      #d7691c;
+  font-size:  1rem;
+  flex-shrink: 0;
+}
+
+.adjunto-nombre {
+  flex:          1;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  white-space:   nowrap;
+}
+
+.adjunto-open {
+  color:      #4a3a2a;
+  font-size:  0.75rem;
+  flex-shrink: 0;
+  transition:  color 0.2s;
+}
+
+.adjunto-item:hover .adjunto-open { color: #d7691c; }
+
 /* ── Responsive ───────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .detalle-wrapper  { padding: 1rem; }

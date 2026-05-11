@@ -31,6 +31,15 @@ export interface ComentarioItem {
   usuarioPublicId: string;
   fechaComentario: string;
 }
+
+export interface AdjuntoItem {
+  idIncidenciaAdjunto: number;
+  idIncidencia:        number;
+  nombre:              string;
+  rutaContenedora:     string;
+  nombreReal:          string;
+  fechaCreacion:       string;
+}
  
 export interface TicketDetalle {
   publicId:                   string;
@@ -62,6 +71,7 @@ export interface TicketDetalle {
   cumpleSla:                  boolean | null;
   historial:                  HistorialItem[];
   comentarios:                ComentarioItem[];
+  adjuntos:                   AdjuntoItem[];
 }
  
 // ── Requests ──────────────────────────────────────────────────────────────────
@@ -74,6 +84,7 @@ export interface CrearTicketRequest {
   impacto:      number;
   urgencia:     number;
   prioridadId:  number;
+  sedeId:       number;
 }
  
 export interface AsignarTicketRequest {
