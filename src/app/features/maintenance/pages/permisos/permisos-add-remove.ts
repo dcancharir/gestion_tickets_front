@@ -17,6 +17,22 @@ export class PermisosAddRemove{
     permisoService = inject(PermisoService)
     rolService = inject(RolService)
     permisoRolService = inject(PermisoRolService)
+
+    sincronizando = signal(false);
+
+    async sincronizarPermisos() {
+        this.sincronizando.set(true);
+        try {
+            await firstValueFrom(this.permisoService.sincronizar());
+            this.permisos.reload();
+            this.toastService.show('Permisos sincronizados correctamente', 'success');
+        } catch {
+            this.toastService.show('Error al sincronizar permisos', 'error');
+        } finally {
+            this.sincronizando.set(false);
+        }
+    }
+
     permisos = resource({
         loader : ()=>firstValueFrom(this.permisoService.getAll())
     })

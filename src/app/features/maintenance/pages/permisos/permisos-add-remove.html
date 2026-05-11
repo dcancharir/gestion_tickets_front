@@ -4,14 +4,27 @@
     <!-- ── Header ────────────────────────────────────────────────────────── -->
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
       <h1 class="page-title mb-0">Permisos por Rol</h1>
-      <select class="filtro-select"
-              [ngModel]="selectedRolId()"
-              (change)="onRolChange($event)">
-        <option [ngValue]="null">Seleccione un rol</option>
-        @for (rol of roles.value(); track rol.rolId) {
-          <option [value]="rol.rolId">{{ rol.nombre }}</option>
-        }
-      </select>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn-nuevo" (click)="sincronizarPermisos()" [disabled]="sincronizando()">
+          @if (sincronizando()) {
+            <span class="spinner-sm me-1"></span> Sincronizando…
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+            Sincronizar Permisos
+          }
+        </button>
+        <select class="filtro-select"
+                [ngModel]="selectedRolId()"
+                (change)="onRolChange($event)">
+          <option [ngValue]="null">Seleccione un rol</option>
+          @for (rol of roles.value(); track rol.rolId) {
+            <option [value]="rol.rolId">{{ rol.nombre }}</option>
+          }
+        </select>
+      </div>
     </div>
 
     <!-- ── Tarjetas de permisos ───────────────────────────────────────────── -->

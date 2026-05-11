@@ -33,9 +33,9 @@
                 "icon": "book",
                 "items": [
                     {
-                        "action": "conocimiento",
+                        "action": "conocimiento/articulos",
                         "name": "Artículos",
-                        "path": "conocimiento"
+                        "path": "conocimiento/articulos"
                     }
                 ]
             }

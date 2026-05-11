@@ -11,4 +11,8 @@ export class PermisoService {
     getAll():Observable<Permiso[]>{
         return this.http.get<Permiso[]>(`${this.api}api/permiso/getall`);
     }
+
+    sincronizar(): Observable<void> {
+        return this.http.post<void>(`${this.api}api/permiso/SincronizarPermisos`, {});
+    }
 }

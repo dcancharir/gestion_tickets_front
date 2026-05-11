@@ -32,6 +32,7 @@ export const routes: Routes = [
         component: LayoutBase,
         children: [
             { path: '',          component: ArticuloList },
+            { path: 'articulos',          component: ArticuloList },
             { path: ':publicId', component: ArticuloDetalleComponent }
         ]
     },
