@@ -98,10 +98,14 @@
             <select class="form-input-dark" disabled>
               <option>Cargando sedes…</option>
             </select>
+          } @else if (sedes.error()) {
+            <select class="form-input-dark" disabled>
+              <option>Error al cargar sedes</option>
+            </select>
           } @else {
             <select class="form-input-dark" [(ngModel)]="form.sedeId">
               <option [value]="0" disabled>Seleccionar sede…</option>
-              @for (s of sedes.value(); track s.sedeId) {
+              @for (s of (sedes.value() ?? []); track s.sedeId) {
                 <option [value]="s.sedeId">{{ s.nombre }} ({{ s.tipoSede }})</option>
               }
             </select>

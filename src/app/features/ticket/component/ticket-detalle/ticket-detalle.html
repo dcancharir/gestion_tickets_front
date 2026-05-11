@@ -298,7 +298,7 @@
         <div class="form-group mb-3">
           <label class="form-label-dark">Nuevo estado</label>
           <select class="form-input-dark" [(ngModel)]="fEstado.nuevoEstadoId">
-            @for (e of (estados.value() ?? []); track e.estadoId) {
+            @for (e of (estados.error() ? [] : (estados.value() ?? [])); track e.estadoId) {
               <option [value]="e.estadoId">{{ e.nombre }}</option>
             }
           </select>

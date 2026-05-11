@@ -20,7 +20,7 @@
                 [ngModel]="selectedRolId()"
                 (change)="onRolChange($event)">
           <option [ngValue]="null">Seleccione un rol</option>
-          @for (rol of roles.value(); track rol.rolId) {
+          @for (rol of (roles.error() ? [] : (roles.value() ?? [])); track rol.rolId) {
             <option [value]="rol.rolId">{{ rol.nombre }}</option>
           }
         </select>

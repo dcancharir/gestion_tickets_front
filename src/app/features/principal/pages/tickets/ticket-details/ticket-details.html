@@ -1,6 +1,7 @@
 <div class="app-content-wrapper py-10 pb-13">
     <div class="container ">
         <div class="page-content">
+          @if (!incidencia.error()) {
             <div class="row gy-5">
                 <div class="col-lg-4">
                     <div class="card shadow-custom rounded-custom mb-5">
@@ -291,6 +292,7 @@
                                 </div>
                 </div>
             </div>
+          } <!-- end @if (!incidencia.error()) -->
         </div><!-- page content end -->
 
     </div>

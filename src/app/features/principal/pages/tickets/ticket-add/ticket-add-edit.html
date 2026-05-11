@@ -24,7 +24,7 @@
                                         <label for="slug" class="form-label">Categoria</label>
                                         <select class="form-select" [(ngModel)]="form().categoriaId">
                                             <option value="0">Seleccione Categoria</option>
-                                            @for(r of categorias.value(); track r.categoriaId){
+                                            @for(r of (categorias.error() ? [] : (categorias.value() ?? [])); track r.categoriaId){
                                                 <option value="{{r.categoriaId}}">{{r.nombre}}</option>
                                             }
                                         </select>
@@ -60,7 +60,7 @@
                                         <label for="slug" class="form-label">Prioridad</label>
                                         <select class="form-select" [(ngModel)]="form().prioridadId">
                                             <option value="0">Seleccione Prioridad</option>
-                                            @for(r of prioridades.value(); track r.prioridadId){
+                                            @for(r of (prioridades.error() ? [] : (prioridades.value() ?? [])); track r.prioridadId){
                                                 <option value="{{r.prioridadId}}">{{r.nombre}}</option>
                                             }
                                         </select>
@@ -69,7 +69,7 @@
                                         <label for="slug" class="form-label">Sede</label>
                                         <select class="form-select" [(ngModel)]="form().sedeId">
                                             <option value="0">Seleccione Sede</option>
-                                            @for(r of sedes.value(); track r.sedeId){
+                                            @for(r of (sedes.error() ? [] : (sedes.value() ?? [])); track r.sedeId){
                                                 <option value="{{r.sedeId}}">{{r.nombre}}</option>
                                             }
                                         </select>

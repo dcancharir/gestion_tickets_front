@@ -43,7 +43,7 @@
             <label class="form-label-dark">Rol <span class="req">*</span></label>
             <select class="form-input-dark" [(ngModel)]="form().rolId">
               <option value="0">Seleccione rol</option>
-              @for (r of roles.value(); track r.rolId) {
+              @for (r of (roles.error() ? [] : (roles.value() ?? [])); track r.rolId) {
                 <option [value]="r.rolId">{{ r.nombre }}</option>
               }
             </select>

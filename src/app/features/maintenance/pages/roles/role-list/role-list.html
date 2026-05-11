@@ -33,7 +33,7 @@
                 </div>
               </td>
             </tr>
-          } @else if ((roles.value() ?? []).length === 0) {
+          } @else if (roles.error() || (roles.value() ?? []).length === 0) {
             <tr>
               <td colspan="4">
                 <div class="d-flex justify-content-center py-4">
@@ -42,7 +42,7 @@
               </td>
             </tr>
           } @else {
-            @for (u of roles.value(); track u.rolId) {
+            @for (u of (roles.value() ?? []); track u.rolId) {
               <tr class="tk-row">
                 <td class="cell-muted">{{ u.rolId }}</td>
                 <td>{{ u.nombre }}</td>

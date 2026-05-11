@@ -34,7 +34,7 @@
                 </div>
               </td>
             </tr>
-          } @else if ((prioridades.value() ?? []).length === 0) {
+          } @else if (prioridades.error() || (prioridades.value() ?? []).length === 0) {
             <tr>
               <td colspan="5">
                 <div class="d-flex justify-content-center py-4">
@@ -43,7 +43,7 @@
               </td>
             </tr>
           } @else {
-            @for (u of prioridades.value(); track u.prioridadId) {
+            @for (u of (prioridades.value() ?? []); track u.prioridadId) {
               <tr class="tk-row">
                 <td>
                   <span [style.color]="u.colorHexa"

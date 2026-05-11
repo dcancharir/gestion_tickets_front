@@ -52,7 +52,7 @@ import { ToastService } from "../../../../../core/services/toast.service";
                                                 <label for="" class="form-label">Tecnico <span class="text-danger fw-bold">*</span></label>
                                                 <select class="form-select" [(ngModel)]="publicId">
                                                     <option value="">Seleccione Tecnico</option>
-                                                    @for(r of tecnicos.value(); track r.publicId){
+                                                    @for(r of (tecnicos.error() ? [] : (tecnicos.value() ?? [])); track r.publicId){
                                                         <option value="{{r.publicId}}">{{r.nombre}}</option>
                                                     }
                                                 </select>

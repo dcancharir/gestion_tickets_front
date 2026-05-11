@@ -43,18 +43,26 @@
     </div>
  
     <select class="filtro-select" [(ngModel)]="filtroEstado"
-            [disabled]="estados.isLoading()">
-      <option value="">{{ estados.isLoading() ? 'Cargando…' : 'Todos los estados' }}</option>
-      @for (e of (estados.value() ?? []); track e.estadoId) {
-        <option [value]="e.nombre">{{ e.nombre }}</option>
+            [disabled]="estados.isLoading() || !!estados.error()">
+      <option value="">
+        {{ estados.isLoading() ? 'Cargando…' : 'Todos los estados' }}
+      </option>
+      @if (!estados.error()) {
+        @for (e of (estados.value() ?? []); track e.estadoId) {
+          <option [value]="e.nombre">{{ e.nombre }}</option>
+        }
       }
     </select>
 
     <select class="filtro-select" [(ngModel)]="filtroPrioridad"
-            [disabled]="prioridades.isLoading()">
-      <option value="">{{ prioridades.isLoading() ? 'Cargando…' : 'Todas las prioridades' }}</option>
-      @for (p of prioridadesDistintas; track p.nombre) {
-        <option [value]="p.nombre">{{ p.nombre }}</option>
+            [disabled]="prioridades.isLoading() || !!prioridades.error()">
+      <option value="">
+        {{ prioridades.isLoading() ? 'Cargando…' : 'Todas las prioridades' }}
+      </option>
+      @if (!prioridades.error()) {
+        @for (p of prioridadesDistintas; track p.nombre) {
+          <option [value]="p.nombre">{{ p.nombre }}</option>
+        }
       }
     </select>
  

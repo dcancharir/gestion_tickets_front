@@ -33,7 +33,7 @@
                 </div>
               </td>
             </tr>
-          } @else if ((estados.value() ?? []).length === 0) {
+          } @else if (estados.error() || (estados.value() ?? []).length === 0) {
             <tr>
               <td colspan="4">
                 <div class="d-flex justify-content-center py-4">
@@ -42,7 +42,7 @@
               </td>
             </tr>
           } @else {
-            @for (u of estados.value(); track u.estadoId) {
+            @for (u of (estados.value() ?? []); track u.estadoId) {
               <tr class="tk-row">
                 <td>
                   <span [style.color]="u.colorHexa"

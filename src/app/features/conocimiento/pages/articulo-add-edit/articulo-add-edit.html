@@ -37,7 +37,7 @@
                     [ngModel]="form().categoriaId"
                     (ngModelChange)="form.update(f => ({...f, categoriaId: $event ? +$event : null}))">
               <option [ngValue]="null">Sin categoría</option>
-              @for (c of (categorias.value() ?? []); track c.categoriaId) {
+              @for (c of (categorias.error() ? [] : (categorias.value() ?? [])); track c.categoriaId) {
                 <option [value]="c.categoriaId">{{ c.nombre }}</option>
               }
             </select>

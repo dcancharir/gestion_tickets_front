@@ -31,10 +31,12 @@ export class TicketDetalleComponent implements OnInit {
   prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });
 
   estadoColor(nombre: string): string {
+    if (this.estados.error()) return '#7a6a5a';
     return (this.estados.value() ?? []).find(e => e.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
 
   prioridadColor(nombre: string): string {
+    if (this.prioridades.error()) return '#7a6a5a';
     return (this.prioridades.value() ?? []).find(p => p.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
  

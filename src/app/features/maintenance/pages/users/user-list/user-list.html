@@ -35,7 +35,7 @@
                 </div>
               </td>
             </tr>
-          } @else if ((usuarios.value() ?? []).length === 0) {
+          } @else if (usuarios.error() || (usuarios.value() ?? []).length === 0) {
             <tr>
               <td colspan="6">
                 <div class="d-flex justify-content-center py-4">
@@ -44,7 +44,7 @@
               </td>
             </tr>
           } @else {
-            @for (u of usuarios.value(); track u.publicId) {
+            @for (u of (usuarios.value() ?? []); track u.publicId) {
               <tr class="tk-row">
                 <td>{{ u.nombre }} {{ u.apellidos }}</td>
                 <td class="cell-muted">{{ u.userName }}</td>

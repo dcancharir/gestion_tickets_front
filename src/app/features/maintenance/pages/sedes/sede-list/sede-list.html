@@ -33,7 +33,7 @@
                 </div>
               </td>
             </tr>
-          } @else if ((sedes.value() ?? []).length === 0) {
+          } @else if (sedes.error() || (sedes.value() ?? []).length === 0) {
             <tr>
               <td colspan="4">
                 <div class="d-flex justify-content-center py-4">
@@ -42,7 +42,7 @@
               </td>
             </tr>
           } @else {
-            @for (u of sedes.value(); track u.sedeId) {
+            @for (u of (sedes.value() ?? []); track u.sedeId) {
               <tr class="tk-row">
                 <td class="cell-muted">{{ u.sedeIdExterno }}</td>
                 <td>{{ u.nombre }}</td>

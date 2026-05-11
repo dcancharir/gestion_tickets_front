@@ -32,8 +32,8 @@ export class Sidebar {
         loader: () => firstValueFrom(this.http.get<MenuSection[]>('assets/main-menu.json'))
     });
 
-    // signal derivada (opcional)
-    menu = computed(() => this.menuResource.value() ?? []);
+    // signal derivada — protegida contra ResourceValueError en estado de error
+    menu = computed(() => this.menuResource.error() ? [] : (this.menuResource.value() ?? []));
 
     // estado UI (expandir/collapse)
     expandedSections = signal<Set<string>>(new Set());

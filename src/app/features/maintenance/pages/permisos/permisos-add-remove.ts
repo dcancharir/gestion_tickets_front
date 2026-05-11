@@ -41,6 +41,7 @@ export class PermisosAddRemove{
     })
     
    agrupadosArray = computed(() => {
+    if (this.permisos.error()) return [];
     const data = this.permisos.value();
     if (!data) return [];
 

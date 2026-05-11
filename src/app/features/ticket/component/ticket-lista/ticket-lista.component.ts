@@ -39,6 +39,7 @@ export class TicketListaComponent implements OnInit {
   set filtroPrioridad(v) { this.svc.filtroPrioridad.set(v); }
  
   get prioridadesDistintas() {
+    if (this.prioridades.error()) return [];
     const vistas = new Set<string>();
     return (this.prioridades.value() ?? []).filter(p => {
       if (vistas.has(p.nombre)) return false;
@@ -73,10 +74,12 @@ export class TicketListaComponent implements OnInit {
   }
  
   estadoColor(nombre: string): string {
+    if (this.estados.error()) return '#7a6a5a';
     return (this.estados.value() ?? []).find(e => e.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
 
   prioridadColor(nombre: string): string {
+    if (this.prioridades.error()) return '#7a6a5a';
     return (this.prioridades.value() ?? []).find(p => p.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
 
