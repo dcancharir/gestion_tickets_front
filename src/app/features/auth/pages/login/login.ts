@@ -1,6 +1,7 @@
 import { Component, effect, inject, signal } from "@angular/core";
 import { FormsModule } from '@angular/forms';
 import { AuthService } from "../../../../core/services/auth.service";
+import { SignalrService } from "../../../../core/services/signalr.service";
 import { Router } from "@angular/router";
 import { ToastService } from "../../../../core/services/toast.service";
 @Component({
@@ -16,9 +17,10 @@ export class Login {
             } 
         })
     }
-    toastService = inject(ToastService)
-    authService = inject(AuthService)
-    router = inject(Router)
+    toastService  = inject(ToastService);
+    authService   = inject(AuthService);
+    signalrSvc    = inject(SignalrService);
+    router        = inject(Router);
     userName = signal('')
     password = signal('')
     showPassword = signal(false);
@@ -33,6 +35,7 @@ export class Login {
             }).subscribe({
             next : (response) =>{
                 if(response){
+                    this.signalrSvc.connect();
                     this.toastService.show(`Bienvenido al sistema ${response.userName}`)
                     setTimeout(() => {
                         this.router.navigate(['/dashboard'])

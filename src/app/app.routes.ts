@@ -11,6 +11,8 @@ import { CategoriaList } from './features/maintenance/pages/categorias/categoria
 import { PermisosAddRemove } from './features/maintenance/pages/permisos/permisos-add-remove';
 import { TicketListaComponent } from './features/ticket/component/ticket-lista/ticket-lista.component';
 import { TicketDetalleComponent } from './features/ticket/component/ticket-detalle/ticket-detalle';
+import { ArticuloList } from './features/conocimiento/pages/articulo-list/articulo-list';
+import { ArticuloDetalleComponent } from './features/conocimiento/pages/articulo-detalle/articulo-detalle';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,7 +26,15 @@ export const routes: Routes = [
             { path: '', component: Dashboard }
         ]
     },
-
+ // ── Base de Conocimiento ─────────────────────────────────────────────────
+    {
+        path: 'conocimiento',
+        component: LayoutBase,
+        children: [
+            { path: '',          component: ArticuloList },
+            { path: ':publicId', component: ArticuloDetalleComponent }
+        ]
+    },
     // ── Tickets — vistas de lista ────────────────────────────────────────────
     {
         path: 'principal',
@@ -69,6 +79,8 @@ export const routes: Routes = [
             { path: 'permisos', component: PermisosAddRemove },
         ]
     },
+
+   
 
     { path: '**', redirectTo: 'login' }
 ];

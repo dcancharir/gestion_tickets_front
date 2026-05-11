@@ -1,0 +1,90 @@
+<div [class.show]="true" [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content modal-dark">
+
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title">
+          {{ esEdicion ? 'Editar Artículo' : 'Nuevo Artículo' }}
+        </h5>
+        <button type="button" class="btn-close-custom" (click)="closeModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body modal-dark-body">
+        @if (error()) {
+          <div class="alerta-error mb-3">{{ error() }}</div>
+        }
+
+        <!-- Título -->
+        <div class="mb-3">
+          <label class="form-label-dark">Título <span class="req">*</span></label>
+          <input type="text" class="form-input-dark"
+                 placeholder="Título del artículo…"
+                 [ngModel]="form().titulo"
+                 (ngModelChange)="form.update(f => ({...f, titulo: $event}))">
+        </div>
+
+        <!-- Categoría -->
+        <div class="mb-3">
+          <label class="form-label-dark">Categoría</label>
+          @if (categorias.isLoading()) {
+            <p class="cell-muted mb-0" style="font-size:.8rem;">Cargando categorías…</p>
+          } @else {
+            <select class="form-input-dark"
+                    [ngModel]="form().categoriaId"
+                    (ngModelChange)="form.update(f => ({...f, categoriaId: $event ? +$event : null}))">
+              <option [ngValue]="null">Sin categoría</option>
+              @for (c of (categorias.value() ?? []); track c.categoriaId) {
+                <option [value]="c.categoriaId">{{ c.nombre }}</option>
+              }
+            </select>
+          }
+        </div>
+
+        <!-- Problema -->
+        <div class="mb-3">
+          <label class="form-label-dark">Problema <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="4"
+                    placeholder="Describe el problema…"
+                    [ngModel]="form().problema"
+                    (ngModelChange)="form.update(f => ({...f, problema: $event}))">
+          </textarea>
+        </div>
+
+        <!-- Solución -->
+        <div class="mb-3">
+          <label class="form-label-dark">Solución <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="4"
+                    placeholder="Describe la solución…"
+                    [ngModel]="form().solucion"
+                    (ngModelChange)="form.update(f => ({...f, solucion: $event}))">
+          </textarea>
+        </div>
+
+        <!-- Activo (solo edición) -->
+        @if (esEdicion) {
+          <label class="check-interno mt-1">
+            <input type="checkbox"
+                   [ngModel]="form().activo"
+                   (ngModelChange)="form.update(f => ({...f, activo: $event}))">
+            <span>Artículo activo</span>
+          </label>
+        }
+      </div>
+
+      <div class="modal-footer modal-dark-footer">
+        <button type="button" class="btn-modal-cancel" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn-modal-save"
+                (click)="guardar()"
+                [disabled]="guardando() || categorias.isLoading()">
+          @if (guardando()) { <span class="spinner-sm"></span> }
+          Guardar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

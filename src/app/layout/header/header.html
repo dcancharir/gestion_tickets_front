@@ -17,134 +17,78 @@
         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-8 col-9">
             <ul class="navbar-nav flex-row align-items-center justify-content-end">
 
-                <!-- Language -->
+                <!-- Notificaciones -->
                 <li class="header-nav-item me-2">
                     <a class="header-nav-link" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                         <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.50407 16.1001H9.96007M0.75 6.73041C0.750662 5.56153 1.02941 4.40958 1.56323 3.36971C2.09704 2.32985 2.8706 1.43191 3.82 0.750061M16.714 6.73041C16.7133 5.56153 16.4346 4.40958 15.9008 3.36971C15.367 2.32985 14.5934 1.43191 13.644 0.750061M13.6439 6.88998C13.6439 5.58724 13.1264 4.33786 12.2052 3.41668C11.2841 2.4955 10.0347 1.97799 8.73193 1.97799C7.42919 1.97799 6.1798 2.4955 5.25862 3.41668C4.33744 4.33786 3.81993 5.58724 3.81993 6.88998V11.188C3.81993 11.6765 3.62586 12.145 3.28042 12.4905C2.93498 12.8359 2.46646 13.03 1.97793 13.03H15.4859C14.9974 13.03 14.5289 12.8359 14.1834 12.4905C13.838 12.145 13.6439 11.6765 13.6439 11.188V6.88998Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span class="badge bg-success rounded-pill header-icon-badge pulse pulse-success">
-                            5
-                        </span>
+                        @if (notifSvc.sinLeer() > 0) {
+                            <span class="badge bg-danger rounded-pill header-icon-badge pulse pulse-danger">
+                                {{ notifSvc.sinLeer() }}
+                            </span>
+                        }
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-xl py-0">
                         <div class="dropdown-header d-flex align-items-center justify-content-between border-bottom py-4">
-                            <h6 class="mb-0">Notifications</h6>
-                            <button type="button" class="text-muted clear-all-notifications-btn d-flex align-items-center gap-2">
-                                Clear All
+                            <h6 class="mb-0">
+                                Notificaciones
+                                @if (notifSvc.sinLeer() > 0) {
+                                    <span class="badge bg-danger rounded-pill ms-2">{{ notifSvc.sinLeer() }}</span>
+                                }
+                            </h6>
+                            <button type="button"
+                                    class="text-muted clear-all-notifications-btn d-flex align-items-center gap-2"
+                                    (click)="notifSvc.limpiarTodas()">
+                                Limpiar todo
                             </button>
                         </div>
                         <div class="dropdown-body">
                             <div class="dropdown-list notification-list-scroll">
-                                <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none">
-                                    <div class="me-3 flex-shrink-0">
-                                        <div class="avatar avatar-md avatar-online">
-                                            <img src="assets/img/avatar/15.jpg" alt="" class="rounded-circle">
-                                        </div>
+                                @if (notifSvc.notificaciones().length === 0) {
+                                    <div class="text-center text-muted py-4" style="font-size:0.85rem;">
+                                        Sin notificaciones
                                     </div>
-                                    <div class="flex-grow-1 text-start">
-                                        <p class="mb-0 text-custom-secondary">New user registered</p>
-                                        <span class="text-muted">Just now</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button type="button" class="text-muted notification-remove-btn">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.75 0.75L0.75 10.75M0.75 0.75L10.75 10.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none">
-                                    <div class="me-3 flex-shrink-0">
-                                        <div class="avatar avatar-md rounded-pill">
-                                            <div class="avatar-text bg-label-warning">
-                                                <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M19.7377 12.6175C20.6116 12.6175 21.32 11.9091 21.32 11.0352V6.2883C21.32 5.41441 20.6116 4.70599 19.7377 4.70599H2.33231C1.45842 4.70599 0.75 5.41441 0.75 6.2883V11.0352C0.75 11.9091 1.45842 12.6175 2.33231 12.6175M19.7377 12.6175H2.33231M19.7377 12.6175L19.7377 19.7378C19.7377 20.1575 19.571 20.56 19.2742 20.8567C18.9775 21.1534 18.575 21.3201 18.1554 21.3201H3.91461C3.49496 21.3201 3.09249 21.1534 2.79575 20.8567C2.49901 20.56 2.33231 20.1575 2.33231 19.7378L2.33231 12.6175M11.035 4.70599V21.3202M11.035 4.70599L15.7819 0.75M11.035 4.70599L6.28808 0.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
+                                }
+                                @for (n of notifSvc.notificaciones(); track n.ticketPublicId + n.fecha) {
+                                    <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none"
+                                         [style.opacity]="n.leida ? '0.55' : '1'"
+                                         style="cursor:pointer;"
+                                         (click)="irAlTicket(n.ticketPublicId)">
+                                        <div class="me-3 flex-shrink-0">
+                                            <div class="avatar avatar-md rounded-pill">
+                                                <div class="avatar-text"
+                                                     [class.bg-label-primary]="n.tipo === 'Asignación'"
+                                                     [class.bg-label-warning]="n.tipo === 'Escalamiento'">
+                                                    @if (n.tipo === 'Asignación') {
+                                                        <!-- person-check -->
+                                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/></svg>
+                                                    } @else {
+                                                        <!-- arrow-up-circle -->
+                                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/></svg>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-start">
-                                        <p class="mb-0 text-custom-secondary">A new order has been placed</p>
-                                        <span class="text-muted">5 min ago</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button type="button" class="text-muted notification-remove-btn">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.75 0.75L0.75 10.75M0.75 0.75L10.75 10.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none">
-                                    <div class="me-3 flex-shrink-0">
-                                        <div class="avatar avatar-md avatar-online">
-                                            <div class="avatar-text bg-label-success rounded-pill">
-                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.75 6.90367V4.59598M10.75 6.90367C9.47308 6.90367 8.44241 6.90402 8.44241 8.44248C8.44241 10.7502 13.0578 10.7502 13.0578 13.0579C13.0578 14.5963 12.027 14.5963 10.7501 14.5963M10.75 6.90367C12.0269 6.90367 13.0578 7.48864 13.0578 8.44248M8.44241 13.0579C8.44241 14.2117 9.47318 14.5963 10.7501 14.5963M10.7501 14.5963L10.75 16.9036M20.75 10.75C20.75 16.2728 16.2728 20.75 10.75 20.75C5.22715 20.75 0.75 16.2728 0.75 10.75C0.75 5.22715 5.22715 0.75 10.75 0.75C16.2728 0.75 20.75 5.22715 20.75 10.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
+                                        <div class="flex-grow-1 text-start">
+                                            <p class="mb-0 text-custom-secondary" style="font-size:0.82rem;font-weight:600;">
+                                                {{ n.numeroTicket }} — {{ n.tipo }}
+                                            </p>
+                                            <p class="mb-0 text-muted" style="font-size:0.78rem;white-space:normal;">
+                                                {{ n.mensaje }}
+                                            </p>
+                                            <span class="text-muted" style="font-size:0.72rem;">
+                                                {{ n.fecha | date:'HH:mm · dd/MM' }}
+                                            </span>
+                                        </div>
+                                        @if (!n.leida) {
+                                            <div class="ms-2 flex-shrink-0">
+                                                <span style="width:8px;height:8px;border-radius:50%;background:#d7691c;display:inline-block;"></span>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
-                                    <div class="flex-grow-1 text-start">
-                                        <p class="mb-0 text-custom-secondary">Payout successfull</p>
-                                        <span class="text-muted">2 hrs ago</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button type="button" class="text-muted notification-remove-btn">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.75 0.75L0.75 10.75M0.75 0.75L10.75 10.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none">
-                                    <div class="me-3 flex-shrink-0">
-                                        <div class="avatar avatar-md avatar-online">
-                                            <div class="avatar-text bg-label-primary rounded-pill">
-                                                <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7.57501 13.35H14.925M7.57501 8.09998H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M13.5291 20.0601C17.9213 19.7681 21.4199 16.2199 21.7077 11.7654C21.7641 10.8937 21.7641 9.99097 21.7077 9.11926C21.4199 4.66479 17.9213 1.11659 13.5291 0.824628C12.0307 0.725022 10.4662 0.725226 8.97087 0.824628C4.57871 1.11659 1.08013 4.66479 0.792252 9.11926C0.735916 9.99097 0.735916 10.8937 0.792252 11.7654C0.8971 13.3878 1.6146 14.8899 2.4593 16.1583C2.94976 17.0463 2.62608 18.1546 2.11522 19.1227C1.74688 19.8207 1.56271 20.1697 1.71058 20.4219C1.85846 20.674 2.18877 20.682 2.8494 20.6981C4.15585 20.7299 5.03682 20.3595 5.73611 19.8439C6.13272 19.5514 6.33103 19.4052 6.46771 19.3884C6.60438 19.3715 6.87336 19.4823 7.41121 19.7038C7.89462 19.9029 8.45591 20.0258 8.97087 20.0601C10.4662 20.1595 12.0307 20.1597 13.5291 20.0601Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-start">
-                                        <p class="mb-0 text-custom-secondary">New comment on your post</p>
-                                        <span class="text-muted">4 hrs ago</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button type="button" class="text-muted notification-remove-btn">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.75 0.75L0.75 10.75M0.75 0.75L10.75 10.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none">
-                                    <div class="me-3 flex-shrink-0">
-                                        <div class="avatar avatar-md avatar-online">
-                                            <img src="assets/img/avatar/01.jpg" alt="" class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 text-start">
-                                        <p class="mb-0 text-custom-secondary">User has verified email</p>
-                                        <span class="text-muted">1 day ago</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button type="button" class="text-muted notification-remove-btn">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.75 0.75L0.75 10.75M0.75 0.75L10.75 10.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
+                                }
                             </div>
-                        </div>
-                        <div class="dropdown-footer border-top py-3 text-center">
-                            <a href="user-settings-notification.html" class="text-decoration-none">
-                                View All Notifications
-                            </a>
                         </div>
                     </div>
                 </li>

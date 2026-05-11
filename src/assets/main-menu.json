@@ -26,6 +26,22 @@
         ]
     },
     {
+        "name": "Conocimiento",
+        "modules": [
+            {
+                "name": "Base de Conocimiento",
+                "icon": "book",
+                "items": [
+                    {
+                        "action": "conocimiento",
+                        "name": "Artículos",
+                        "path": "conocimiento"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "Mantenimientos",
         "modules": [
             {
