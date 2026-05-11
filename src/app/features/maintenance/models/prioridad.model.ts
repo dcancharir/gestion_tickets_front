@@ -3,5 +3,7 @@ export interface Prioridad{
     nombre : string;
     nivel : number;
     tiempoRespuestaMin : number;
-    tiempoResolucionMin : number
+    tiempoResolucionMin : number;
+    cssClass : string;
+    colorHexa : string;
 }

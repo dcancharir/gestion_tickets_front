@@ -1,0 +1,115 @@
+<div class="modal fade" id="modalCrearTicket" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content modal-dark">
+ 
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title">
+          <i class="bi bi-plus-circle me-2" style="color:#d7691c"></i>
+          Nuevo Ticket
+        </h5>
+        <button type="button" class="btn-close-custom"
+                data-bs-dismiss="modal" (click)="cancelar()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+ 
+      <div class="modal-body modal-dark-body">
+ 
+        @if (error()) {
+          <div class="alerta-error mb-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
+          </div>
+        }
+ 
+        <!-- Título -->
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Título <span class="req">*</span></label>
+          <input type="text" class="form-input-dark"
+                 placeholder="Describe brevemente el problema"
+                 [(ngModel)]="form.titulo" maxlength="200">
+        </div>
+ 
+        <!-- Descripción -->
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Descripción <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="4"
+                    placeholder="Detalla el problema, pasos para reproducirlo, equipos afectados…"
+                    [(ngModel)]="form.descripcion"></textarea>
+        </div>
+ 
+        <div class="row g-3 mb-3">
+          <!-- Categoría -->
+          <div class="col-md-6">
+            <label class="form-label-dark">Categoría <span class="req">*</span></label>
+            <select class="form-input-dark" [(ngModel)]="form.categoriaId">
+              <option [value]="0" disabled>Seleccionar…</option>
+              @for (c of categorias; track c.id) {
+                <option [value]="c.id">{{ c.nombre }}</option>
+              }
+            </select>
+          </div>
+          <!-- Prioridad -->
+          <div class="col-md-6">
+            <label class="form-label-dark">Prioridad</label>
+            <select class="form-input-dark" [(ngModel)]="form.prioridadId">
+              @for (p of prioridades; track p.id) {
+                <option [value]="p.id">{{ p.nombre }}</option>
+              }
+            </select>
+          </div>
+        </div>
+ 
+        <div class="row g-3">
+          <!-- Canal -->
+          <div class="col-md-4">
+            <label class="form-label-dark">Canal de reporte</label>
+            <select class="form-input-dark" [(ngModel)]="form.canalReporte">
+              @for (c of canales; track c) {
+                <option [value]="c">{{ c }}</option>
+              }
+            </select>
+          </div>
+          <!-- Impacto -->
+          <div class="col-md-4">
+            <label class="form-label-dark">Impacto</label>
+            <select class="form-input-dark" [(ngModel)]="form.impacto">
+              <option [value]="1">Alto</option>
+              <option [value]="2">Medio</option>
+              <option [value]="3">Bajo</option>
+            </select>
+          </div>
+          <!-- Urgencia -->
+          <div class="col-md-4">
+            <label class="form-label-dark">Urgencia</label>
+            <select class="form-input-dark" [(ngModel)]="form.urgencia">
+              <option [value]="1">Alta</option>
+              <option [value]="2">Media</option>
+              <option [value]="3">Baja</option>
+            </select>
+          </div>
+        </div>
+ 
+      </div>
+ 
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal" (click)="cancelar()">
+          Cancelar
+        </button>
+        <button class="btn-modal-save" (click)="guardar()" [disabled]="guardando()">
+          @if (guardando()) {
+            <span class="spinner-sm"></span> Guardando…
+          } @else {
+            <i class="bi bi-check-lg me-1"></i> Crear Ticket
+          }
+        </button>
+      </div>
+ 
+    </div>
+  </div>
+</div>
+ 
+ 
+/* ── CSS inline del modal — guardar en ticket-crear-modal.component.css ────── */
+ 
+
+ 

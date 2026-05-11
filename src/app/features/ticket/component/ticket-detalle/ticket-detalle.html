@@ -1,0 +1,401 @@
+<div class="detalle-wrapper">
+ 
+  <!-- ── Loader ─────────────────────────────────────────────────────────────── -->
+  @if (svc.cargandoDet()) {
+    <div class="text-center py-5">
+      <div class="spinner-custom"></div>
+      <p class="mt-3 text-muted-custom">Cargando ticket…</p>
+    </div>
+  }
+ 
+  @if (svc.detalle(); as t) {
+ 
+    <!-- ── Header ───────────────────────────────────────────────────────────── -->
+    <div class="detalle-header mb-4">
+      <button class="btn-volver" (click)="volver()">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div class="flex-grow-1">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="numero-ticket-grande">{{ t.numeroTicket }}</span>
+          <span class="badge-prioridad" [ngClass]="prioridadClass(t.nivelPrioridad)">
+            {{ t.prioridad }}
+          </span>
+          <span class="estado-badge">{{ t.estado }}</span>
+        </div>
+        <h1 class="detalle-titulo mt-1">{{ t.titulo }}</h1>
+      </div>
+      <!-- Acciones -->
+      <div class="acciones-bar">
+        @for (accion of accionesPosibles(); track accion) {
+          <button class="btn-accion"
+                  [attr.data-bs-toggle]="'modal'"
+                  [attr.data-bs-target]="'#' + modalIdPorAccion(accion)">
+            {{ accion }}
+          </button>
+        }
+      </div>
+    </div>
+ 
+    <!-- ── Grid: info + historial ────────────────────────────────────────────── -->
+    <div class="row g-4">
+ 
+      <!-- Columna izquierda: info del ticket -->
+      <div class="col-12 col-lg-5">
+ 
+        <!-- Descripción -->
+        <div class="info-card mb-4">
+          <div class="info-card-header"><i class="bi bi-file-text"></i> Descripción</div>
+          <div class="info-card-body">
+            <p class="descripcion-texto">{{ t.descripcion }}</p>
+          </div>
+        </div>
+ 
+        <!-- Detalles -->
+        <div class="info-card mb-4">
+          <div class="info-card-header"><i class="bi bi-info-circle"></i> Detalles</div>
+          <div class="info-card-body">
+            <div class="detalle-grid">
+              <span class="d-label">Categoría</span>
+              <span class="d-value">{{ t.categoria }}</span>
+ 
+              <span class="d-label">Canal</span>
+              <span class="d-value">{{ t.canalReporte }}</span>
+ 
+              <span class="d-label">Impacto</span>
+              <span class="d-value">{{ t.impacto }}</span>
+ 
+              <span class="d-label">Urgencia</span>
+              <span class="d-value">{{ t.urgencia }}</span>
+ 
+              <span class="d-label">Solicitante</span>
+              <span class="d-value">{{ t.solicitante }}</span>
+ 
+              <span class="d-label">Técnico</span>
+              <span class="d-value">{{ t.tecnico ?? '—' }}</span>
+ 
+              <span class="d-label">Reasignaciones</span>
+              <span class="d-value">{{ t.numeroReasignaciones }}</span>
+ 
+              <span class="d-label">1er Contacto</span>
+              <span class="d-value">{{ t.resueltoEnPrimerContacto ? 'Sí' : 'No' }}</span>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Fechas y SLA -->
+        <div class="info-card">
+          <div class="info-card-header"><i class="bi bi-clock"></i> Fechas y SLA</div>
+          <div class="info-card-body">
+            <div class="detalle-grid">
+              <span class="d-label">Registrado</span>
+              <span class="d-value">{{ formatFecha(t.fechaRegistro) }}</span>
+ 
+              <span class="d-label">Asignado</span>
+              <span class="d-value">{{ formatFecha(t.fechaAsignacion) }}</span>
+ 
+              <span class="d-label">Lím. respuesta</span>
+              <span class="d-value">{{ formatFecha(t.fechaLimiteRespuesta) }}</span>
+ 
+              <span class="d-label">Lím. resolución</span>
+              <span class="d-value sla-value"
+                    [class.sla-ok]="t.cumpleSla === true"
+                    [class.sla-fail]="t.cumpleSla === false">
+                {{ formatFecha(t.fechaLimiteResolucion) }}
+              </span>
+ 
+              <span class="d-label">Resuelto</span>
+              <span class="d-value">{{ formatFecha(t.fechaResolucion) }}</span>
+ 
+              <span class="d-label">Cerrado</span>
+              <span class="d-value">{{ formatFecha(t.fechaCierre) }}</span>
+            </div>
+ 
+            @if (t.solucionAplicada) {
+              <div class="solucion-box mt-3">
+                <span class="d-label mb-1 d-block">Solución aplicada</span>
+                <p class="solucion-texto">{{ t.solucionAplicada }}</p>
+              </div>
+            }
+          </div>
+        </div>
+ 
+      </div>
+ 
+      <!-- Columna derecha: historial + comentarios -->
+      <div class="col-12 col-lg-7">
+ 
+        <!-- Historial -->
+        <div class="info-card mb-4">
+          <div class="info-card-header"><i class="bi bi-clock-history"></i> Historial</div>
+          <div class="info-card-body p-0">
+            <div class="timeline">
+              @for (h of t.historial; track $index) {
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                      <span class="timeline-accion">{{ h.accion }}</span>
+                      <span class="timeline-fecha">{{ formatFecha(h.fechaAccion) }}</span>
+                    </div>
+                    @if (h.estadoAnterior || h.estadoNuevo) {
+                      <div class="timeline-estados">
+                        @if (h.estadoAnterior) {
+                          <span class="estado-prev">{{ h.estadoAnterior }}</span>
+                          <i class="bi bi-arrow-right" style="color:#7a6a5a; font-size:.7rem"></i>
+                        }
+                        @if (h.estadoNuevo) {
+                          <span class="estado-nuevo">{{ h.estadoNuevo }}</span>
+                        }
+                      </div>
+                    }
+                    @if (h.detalle) {
+                      <p class="timeline-detalle">{{ h.detalle }}</p>
+                    }
+                    <span class="timeline-usuario">{{ h.usuario }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Comentarios -->
+        <div class="info-card">
+          <div class="info-card-header"><i class="bi bi-chat-dots"></i> Comentarios</div>
+          <div class="info-card-body">
+ 
+            @if (t.comentarios.length === 0) {
+              <p class="text-muted-custom text-center py-2">Sin comentarios aún</p>
+            }
+ 
+            @for (c of t.comentarios; track $index) {
+              <div class="comentario-item" [class.comentario-interno]="c.esInterno">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="comentario-usuario">{{ c.usuario }}</span>
+                  <div class="d-flex align-items-center gap-2">
+                    @if (c.esInterno) {
+                      <span class="badge-interno">Interno</span>
+                    }
+                    <span class="comentario-fecha">{{ formatFecha(c.fechaComentario) }}</span>
+                  </div>
+                </div>
+                <p class="comentario-texto">{{ c.mensaje }}</p>
+              </div>
+            }
+ 
+            <!-- Agregar comentario -->
+            @if (!t.esEstadoFinal) {
+              <div class="comentario-form mt-3">
+                <textarea class="form-input-dark"
+                          rows="3"
+                          placeholder="Escribe un comentario…"
+                          [(ngModel)]="fComentario.mensaje">
+                </textarea>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <label class="check-interno">
+                    <input type="checkbox" [(ngModel)]="fComentario.esInterno">
+                    <span>Comentario interno (solo equipo técnico)</span>
+                  </label>
+                  <button class="btn-modal-save"
+                          (click)="agregarComentario()"
+                          [disabled]="guardando() || !fComentario.mensaje.trim()">
+                    @if (guardando()) { <span class="spinner-sm"></span> }
+                    <i class="bi bi-send me-1"></i> Enviar
+                  </button>
+                </div>
+              </div>
+            }
+ 
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  } <!-- end @if detalle -->
+ 
+</div>
+ 
+<!-- ════════════════════════════════════════════════════════════════════════════ -->
+<!-- MODALES DE ACCIÓN                                                           -->
+<!-- ════════════════════════════════════════════════════════════════════════════ -->
+ 
+<!-- Modal: Asignar -->
+<div class="modal fade" id="modalAsignar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-person-check me-2" style="color:#d7691c"></i>Asignar Técnico</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        @if (errorAccion()) { <div class="alerta-error mb-3">{{ errorAccion() }}</div> }
+        <label class="form-label-dark">Técnico <span class="req">*</span></label>
+        <select class="form-input-dark" [(ngModel)]="fAsignar.tecnicoPublicId">
+          <option value="">Seleccionar técnico…</option>
+          @for (tec of tecnicos; track tec.publicId) {
+            <option [value]="tec.publicId">{{ tec.nombre }}</option>
+          }
+        </select>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarAsignar()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Asignar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Modal: Cambiar Estado -->
+<div class="modal fade" id="modalEstado" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-repeat me-2" style="color:#d7691c"></i>Cambiar Estado</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        @if (errorAccion()) { <div class="alerta-error mb-3">{{ errorAccion() }}</div> }
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Nuevo estado</label>
+          <select class="form-input-dark" [(ngModel)]="fEstado.nuevoEstadoId">
+            @for (e of estados; track e.id) {
+              <option [value]="e.id">{{ e.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label-dark">Detalle <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="3"
+                    placeholder="Describe el motivo del cambio…"
+                    [(ngModel)]="fEstado.detalle"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarCambiarEstado()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Cambiar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Modal: Resolver -->
+<div class="modal fade" id="modalResolver" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-check-circle me-2" style="color:#d7691c"></i>Resolver Ticket</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        @if (errorAccion()) { <div class="alerta-error mb-3">{{ errorAccion() }}</div> }
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Solución aplicada <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="4"
+                    placeholder="Describe la solución implementada…"
+                    [(ngModel)]="fResolver.solucionAplicada"></textarea>
+        </div>
+        <label class="check-interno">
+          <input type="checkbox" [(ngModel)]="fResolver.resueltoEnPrimerContacto">
+          <span>Resuelto en el primer contacto</span>
+        </label>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarResolver()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Resolver
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Modal: Cerrar -->
+<div class="modal fade" id="modalCerrar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-lock me-2" style="color:#d7691c"></i>Cerrar Ticket</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        <p style="color:#7a6a5a; font-size:.875rem">¿Confirmas que la solución fue satisfactoria?</p>
+        <label class="form-label-dark">Comentario (opcional)</label>
+        <textarea class="form-input-dark" rows="3"
+                  placeholder="Observaciones adicionales…"
+                  [(ngModel)]="fCerrar.comentario"></textarea>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarCerrar()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Confirmar Cierre
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Modal: Escalar -->
+<div class="modal fade" id="modalEscalar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-up-circle me-2" style="color:#d7691c"></i>Escalar Ticket</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        @if (errorAccion()) { <div class="alerta-error mb-3">{{ errorAccion() }}</div> }
+        <div class="form-group mb-3">
+          <label class="form-label-dark">Técnico destino <span class="req">*</span></label>
+          <select class="form-input-dark" [(ngModel)]="fEscalar.tecnicoPublicId">
+            <option value="">Seleccionar técnico…</option>
+            @for (tec of tecnicos; track tec.publicId) {
+              <option [value]="tec.publicId">{{ tec.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label-dark">Motivo <span class="req">*</span></label>
+          <textarea class="form-input-dark" rows="3"
+                    placeholder="¿Por qué se escala este ticket?"
+                    [(ngModel)]="fEscalar.motivo"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarEscalar()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Escalar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Modal: Reabrir -->
+<div class="modal fade" id="modalReabrir" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header modal-dark-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-counterclockwise me-2" style="color:#d7691c"></i>Reabrir Ticket</h5>
+        <button class="btn-close-custom" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body modal-dark-body">
+        @if (errorAccion()) { <div class="alerta-error mb-3">{{ errorAccion() }}</div> }
+        <label class="form-label-dark">Motivo <span class="req">*</span></label>
+        <textarea class="form-input-dark" rows="3"
+                  placeholder="¿Por qué se reabre este ticket?"
+                  [(ngModel)]="fReabrir.motivo"></textarea>
+      </div>
+      <div class="modal-footer modal-dark-footer">
+        <button class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn-modal-save" (click)="ejecutarReabrir()" [disabled]="guardando()">
+          @if (guardando()) { <span class="spinner-sm"></span> } Reabrir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

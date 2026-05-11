@@ -21,6 +21,8 @@ export class PrioridadAddEdit{
         nivel : this.prioridad()?.nivel ?? 0,
         tiempoRespuestaMin : this.prioridad()?.tiempoRespuestaMin ?? 0,
         tiempoResolucionMin : this.prioridad()?.tiempoResolucionMin ?? 0,
+        cssClass : this.prioridad()?.cssClass??'',
+        colorHexa : this.prioridad()?.colorHexa??''
     }))
     guardar(){
         const u = this.prioridad()

@@ -11,6 +11,8 @@ import { EstadoList } from './features/maintenance/pages/estados/estado-list/est
 import { CategoriaList } from './features/maintenance/pages/categorias/categoria-list/categoria-list';
 import { TicketDetails } from './features/principal/pages/tickets/ticket-details/ticket-details';
 import { PermisosAddRemove } from './features/maintenance/pages/permisos/permisos-add-remove';
+import { TicketListaComponent } from './features/ticket/component/ticket-lista/ticket-lista.component';
+import { TicketDetalleComponent } from './features/ticket/component/ticket-detalle/ticket-detalle';
 export const routes: Routes = [
     { path : '', redirectTo : 'login',pathMatch : 'full'},
     { path : 'login',component : LayoutLogin},
@@ -48,6 +50,32 @@ export const routes: Routes = [
             { path : 'roles',component : RoleList},
             { path : 'permisos',component : PermisosAddRemove},
         ]
+    },
+     // Lista general — admin y técnico ven todos
+    {
+        path:      'tickets',
+        component: TicketListaComponent,
+        data:      { modo: 'todos' }
+    },
+    
+    // Mis tickets — el solicitante ve los suyos
+    {
+        path:      'mis-tickets',
+        component: TicketListaComponent,
+        data:      { modo: 'mis-tickets' }
+    },
+    
+    // Mis asignaciones — el técnico ve los suyos
+    {
+        path:      'mis-asignaciones',
+        component: TicketListaComponent,
+        data:      { modo: 'mis-asignaciones' }
+    },
+    
+    // Detalle del ticket
+    {
+        path:      'tickets/:publicId',
+        component: TicketDetalleComponent
     },
     {path : '**', redirectTo : 'login'}
 ];
