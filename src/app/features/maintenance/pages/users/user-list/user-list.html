@@ -104,6 +104,11 @@
                                                                 <path d="M12.4776 8.79981C12.0606 9.99592 11.2714 11.0223 10.2289 11.7242C9.18631 12.4262 7.94689 12.7657 6.69737 12.6916C5.44786 12.6175 4.25595 12.1339 3.30126 11.3135C2.34657 10.4931 1.68082 9.38048 1.40433 8.14325C1.12784 6.90603 1.25559 5.61124 1.76834 4.45401C2.28108 3.29677 3.15103 2.33978 4.2471 1.72725C5.34317 1.11472 6.60598 0.879838 7.84522 1.05799C9.08447 1.23614 10.233 1.81768 11.1178 2.71497L14.0876 5.54936" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                                             </svg>
                                                             </button>
+                                                            <button (click)="openModalSedes(u)" class="btn btn-sm btn-icon btn-icon-secondary rounded-pill" type="button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Asignar Sedes">
+                                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+                                                                </svg>
+                                                            </button>
                                                             <button (click)="eliminar(u.publicId)" class="btn btn-sm btn-icon btn-icon-secondary rounded-pill" type="button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Delete">
                                                                 <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M13.0508 3.44995L12.617 10.4675C12.5061 12.2605 12.4507 13.1569 12.0013 13.8015C11.7791 14.1201 11.493 14.3891 11.1613 14.5912C10.4903 15 9.59207 15 7.7957 15C5.99696 15 5.09759 15 4.42612 14.5904C4.09414 14.3879 3.80798 14.1185 3.58586 13.7993C3.13659 13.1538 3.0824 12.256 2.97401 10.4606L2.55078 3.44995" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -149,4 +154,13 @@
         (guardado)="onGuardado($event)"
         (cerrado)="modalAbierto.set(false)"
     ></app-user-add-edit>
+}
+
+@if(modalSedesAbierto() && usuarioParaSedes()){
+    <div class="modal-backdrop fade show"></div>
+    <app-usuario-sede-assign
+        [usuario]="usuarioParaSedes()!"
+        (guardado)="onSedesGuardadas()"
+        (cerrado)="modalSedesAbierto.set(false)"
+    ></app-usuario-sede-assign>
 }

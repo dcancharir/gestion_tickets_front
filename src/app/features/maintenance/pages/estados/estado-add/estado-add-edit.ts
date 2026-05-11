@@ -20,6 +20,8 @@ export class EstadoAddEdit{
         nombre : this.estado()?.nombre ?? '',
         descripcion : this.estado()?.descripcion ?? '',
         esEstadoFinal : this.estado()?.esEstadoFinal ?? false,
+        cssClass : this.estado()?.cssClass ?? '',
+        colorHexa : this.estado()?.colorHexa ?? '',
     }))
     guardar(){
         const u = this.estado()

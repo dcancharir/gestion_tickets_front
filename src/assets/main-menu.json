@@ -1,14 +1,24 @@
 [
-     {
+    {
         "name": "Principal",
         "modules": [
             {
-                "name": "Principal",
+                "name": "Tickets",
                 "icon": "games",
                 "items": [
                     {
+                        "action": "principal/mis-tickets",
+                        "name": "Mis Tickets",
+                        "path": "principal/mis-tickets"
+                    },
+                    {
+                        "action": "principal/mis-asignaciones",
+                        "name": "Mis Asignaciones",
+                        "path": "principal/mis-asignaciones"
+                    },
+                    {
                         "action": "principal/tickets",
-                        "name": "Tickets",
+                        "name": "Todos los Tickets",
                         "path": "principal/tickets"
                     }
                 ]
