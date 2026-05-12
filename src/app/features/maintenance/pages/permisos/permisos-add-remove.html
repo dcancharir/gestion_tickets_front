@@ -27,24 +27,93 @@
       </div>
     </div>
 
+    <!-- ── Barra de resumen global ────────────────────────────────────────── -->
+    <div class="tabla-wrapper mb-4 px-4 py-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+      <!-- Check global -->
+      <label class="check-interno mb-0 d-flex align-items-center gap-2"
+             style="font-weight:600; font-size:0.875rem;"
+             [class.text-muted]="!selectedRolId()"
+             [title]="!selectedRolId() ? 'Seleccione un rol primero' : ''">
+        <input type="checkbox"
+               [checked]="estadoGlobal() === 'all'"
+               [class.indeterminate-check]="estadoGlobal() === 'some'"
+               [disabled]="!selectedRolId() || procesando().has('__global__') || totalPermisos() === 0"
+               (change)="toggleTodo()">
+        @if (procesando().has('__global__')) {
+          <span class="spinner-sm"></span> Procesando…
+        } @else {
+          Seleccionar todos los permisos
+        }
+      </label>
+
+      <!-- Estadísticas globales -->
+      <div class="d-flex align-items-center gap-3">
+        <span style="font-size:0.8rem; color:#6c757d;">
+          Total de permisos:
+          <strong style="color:#fff;">{{ totalPermisos() }}</strong>
+        </span>
+        @if (selectedRolId()) {
+          <span class="permiso-badge"
+                [class.permiso-badge--full]="estadoGlobal() === 'all'"
+                [class.permiso-badge--partial]="estadoGlobal() === 'some'"
+                [class.permiso-badge--none]="estadoGlobal() === 'none'">
+            {{ totalAsignados() }} / {{ totalPermisos() }} asignados
+          </span>
+        }
+      </div>
+    </div>
+
     <!-- ── Tarjetas de permisos ───────────────────────────────────────────── -->
     <div class="row g-3">
       @for (grupo of agrupadosArray(); track grupo.controlador) {
         <div class="col-xl-3 col-md-4 col-sm-6">
           <div class="tabla-wrapper" style="padding: 1.1rem 1.25rem;">
-            <p style="font-size:0.72rem;font-weight:700;color:#d7691c;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.85rem;">
-              {{ grupo.controlador || 'Vistas' }}
-            </p>
+
+            <!-- Cabecera del grupo -->
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <label class="check-interno mb-0 d-flex align-items-center gap-2"
+                     style="font-size:0.72rem;font-weight:700;color:#d7691c;text-transform:uppercase;letter-spacing:0.07em;"
+                     [title]="!selectedRolId() ? 'Seleccione un rol primero' : (estadoGrupo(grupo) === 'all' ? 'Quitar todos' : 'Asignar todos')">
+                <input type="checkbox"
+                       [checked]="estadoGrupo(grupo) === 'all'"
+                       [class.indeterminate-check]="estadoGrupo(grupo) === 'some'"
+                       [disabled]="!selectedRolId() || esProcesando(grupo.controlador)"
+                       (change)="toggleControlador(grupo)">
+                @if (esProcesando(grupo.controlador)) {
+                  <span class="spinner-sm"></span>
+                } @else {
+                  {{ grupo.controlador || 'Vistas' }}
+                }
+              </label>
+
+              <!-- Badge X/Y por grupo -->
+              @if (selectedRolId()) {
+                <span class="permiso-badge"
+                      [class.permiso-badge--full]="estadoGrupo(grupo) === 'all'"
+                      [class.permiso-badge--partial]="estadoGrupo(grupo) === 'some'"
+                      [class.permiso-badge--none]="estadoGrupo(grupo) === 'none'"
+                      style="font-size:0.68rem;">
+                  {{ asignadosEnGrupo(grupo) }}/{{ grupo.permisos.length }}
+                </span>
+              }
+            </div>
+
+            <div style="height:1px;background:#f0f0f0;margin-bottom:0.75rem;"></div>
+
+            <!-- Permisos individuales -->
             <div class="d-flex flex-column gap-2">
               @for (permiso of grupo.permisos; track permiso.permisoId) {
                 <label class="check-interno">
                   <input type="checkbox"
                          [checked]="tienePermiso(permiso.permisoId)"
+                         [disabled]="esProcesando(grupo.controlador) || procesando().has('__global__')"
                          (change)="addDeletePermission($event, permiso.permisoId)">
                   {{ permiso.nombre }}
                 </label>
               }
             </div>
+
           </div>
         </div>
       }

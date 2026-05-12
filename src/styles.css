@@ -2882,6 +2882,24 @@ textarea.form-input-dark      { resize: vertical; min-height: 80px; }
 /* -- Checkbox rows (permisos / sede-assign) -- */
 .check-interno       { display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:#c5b8a8; cursor:pointer; }
 .check-interno input { accent-color: #d7691c; }
+.check-interno input:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* Checkbox en estado intermedio (algunos seleccionados) */
+.indeterminate-check { opacity: 0.6; }
+
+/* Badge de conteo de permisos asignados */
+.permiso-badge {
+  display:       inline-flex;
+  align-items:   center;
+  padding:       0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size:     0.72rem;
+  font-weight:   700;
+  white-space:   nowrap;
+}
+.permiso-badge--none    { background:#2a2a2a; color:#888; }
+.permiso-badge--partial { background:#3a2510; color:#d7691c; }
+.permiso-badge--full    { background:#1a3a1a; color:#4caf50; }
 
 /* -- Filter select (used in permisos header) -- */
 .filtro-select {

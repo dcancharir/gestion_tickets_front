@@ -349,6 +349,36 @@
   border-radius: 4px;
 }
  
+/* ── Dashboard Técnico — extras ───────────────────────────────────────────────── */
+.badge-count {
+  background:    #1e1008;
+  border:        1px solid #2a1a0e;
+  border-radius: 10px;
+  color:         #7a6a5a;
+  font-size:     0.72rem;
+  font-weight:   700;
+  padding:       0.1rem 0.5rem;
+  min-width:     22px;
+  text-align:    center;
+}
+
+.badge-count-alert {
+  background: rgba(191, 57, 28, 0.2);
+  border-color: #bf391c;
+  color:       #e8843a;
+}
+
+.empty-panel {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  gap:             0.5rem;
+  padding:         2rem 1rem;
+  color:           #4a3a2a;
+  font-size:       0.85rem;
+}
+
 /* ── Responsive ───────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .dashboard-wrapper { padding: 1rem; }

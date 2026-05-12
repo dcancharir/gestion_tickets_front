@@ -8,6 +8,7 @@ import { SedeList } from './features/maintenance/pages/sedes/sede-list/sede-list
 import { PrioridadList } from './features/maintenance/pages/prioridades/prioridad-list/prioridad-list';
 import { EstadoList } from './features/maintenance/pages/estados/estado-list/estado-list';
 import { CategoriaList } from './features/maintenance/pages/categorias/categoria-list/categoria-list';
+import { SlaList } from './features/maintenance/pages/slas/sla-list/sla-list';
 import { PermisosAddRemove } from './features/maintenance/pages/permisos/permisos-add-remove';
 import { TicketListaComponent } from './features/ticket/component/ticket-lista/ticket-lista.component';
 import { TicketDetalleComponent } from './features/ticket/component/ticket-detalle/ticket-detalle';
@@ -25,6 +26,7 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: LayoutBase,
+        canActivate: [permisosGuard],
         children: [
             { path: '', component: Dashboard }
         ]
@@ -73,6 +75,7 @@ export const routes: Routes = [
             { path: 'prioridades', component: PrioridadList,   canActivate: [permisosGuard] },
             { path: 'estados',     component: EstadoList,      canActivate: [permisosGuard] },
             { path: 'categorias',  component: CategoriaList,   canActivate: [permisosGuard] },
+            { path: 'slas',        component: SlaList,         canActivate: [permisosGuard] },
         ]
     },
 

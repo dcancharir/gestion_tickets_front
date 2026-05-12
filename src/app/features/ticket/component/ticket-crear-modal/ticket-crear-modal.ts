@@ -1,10 +1,19 @@
-import { Component, Output, EventEmitter, inject, signal, resource } from '@angular/core';
+import {
+  Component, Output, EventEmitter,
+  inject, signal, resource,
+  OnInit, OnDestroy
+} from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule }   from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
-import { TicketService } from '../../services/ticket.service';
-import { TicketListItem } from '../../model/ticket.model';
-import { SedeService }   from '../../../maintenance/services/sede.service';
+
+import { TicketService }       from '../../services/ticket.service';
+import { TicketListItem }      from '../../model/ticket.model';
+import { SedeService }         from '../../../maintenance/services/sede.service';
+import { ConocimientoService } from '../../../conocimiento/services/conocimiento.service';
+import { ArticuloListItem, ArticuloDetalle } from '../../../conocimiento/models/conocimiento.model';
 
 declare var bootstrap: any;
 
@@ -34,16 +43,27 @@ const MATRIZ_PRIORIDAD: Record<string, PrioridadInfo> = {
   templateUrl: './ticket-crear-modal.html',
   styleUrls:   ['./ticket-crear-modal.css']
 })
-export class TicketCrearModalComponent {
+export class TicketCrearModalComponent implements OnInit, OnDestroy {
 
   @Output() ticketCreado = new EventEmitter<TicketListItem>();
 
-  private svc     = inject(TicketService);
-  private sedeSvc = inject(SedeService);
+  private svc          = inject(TicketService);
+  private sedeSvc      = inject(SedeService);
+  private kbSvc        = inject(ConocimientoService);
 
-  guardando            = signal(false);
-  error                = signal<string | null>(null);
+  guardando             = signal(false);
+  error                 = signal<string | null>(null);
   archivosSeleccionados = signal<File[]>([]);
+
+  // ── KB sugerida ───────────────────────────────────────────────────────────
+  buscandoKb        = signal(false);
+  sugerencias       = signal<ArticuloListItem[]>([]);
+  articuloExpandido = signal<ArticuloDetalle | null>(null);
+  cargandoArticulo  = signal(false);
+
+  private buscarSubject = new Subject<string>();
+  private kbSub!: Subscription;
+  // ─────────────────────────────────────────────────────────────────────────
 
   sedes = resource({
     loader: () => firstValueFrom(this.sedeSvc.getAll())
@@ -60,17 +80,67 @@ export class TicketCrearModalComponent {
 
   form = this._formVacio();
 
-  private _formVacio() {
-    return {
-      titulo: '', descripcion: '', categoriaId: 0,
-      canalReporte: 'Web', impacto: 2, urgencia: 2, sedeId: 0
-    };
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
+
+  ngOnInit(): void {
+    // Debounce: espera 500ms después del último tecleo, ignora repetidos
+    this.kbSub = this.buscarSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(termino => {
+        if (termino.length < 2) {
+          this.sugerencias.set([]);
+          this.buscandoKb.set(false);
+          return of([]);
+        }
+        this.buscandoKb.set(true);
+        this.articuloExpandido.set(null);
+        return this.kbSvc.buscar(termino).pipe(
+          catchError(() => of([]))
+        );
+      })
+    ).subscribe(resultados => {
+      this.sugerencias.set(resultados.slice(0, 5)); // máximo 5 sugerencias
+      this.buscandoKb.set(false);
+    });
   }
+
+  ngOnDestroy(): void {
+    this.kbSub?.unsubscribe();
+  }
+
+  // ── KB handlers ───────────────────────────────────────────────────────────
+
+  onTituloInput(valor: string): void {
+    this.buscarSubject.next(valor.trim());
+  }
+
+  verSolucion(publicId: string): void {
+    // Si ya está expandido el mismo, lo colapsa
+    if (this.articuloExpandido()?.publicId === publicId) {
+      this.articuloExpandido.set(null);
+      return;
+    }
+    this.cargandoArticulo.set(true);
+    this.kbSvc.getByPublicId(publicId).subscribe({
+      next:  (art) => { this.articuloExpandido.set(art); this.cargandoArticulo.set(false); },
+      error: ()    => this.cargandoArticulo.set(false)
+    });
+  }
+
+  cerrarSugerencias(): void {
+    this.sugerencias.set([]);
+    this.articuloExpandido.set(null);
+  }
+
+  // ── Prioridad calculada ───────────────────────────────────────────────────
 
   get prioridad(): PrioridadInfo {
     return MATRIZ_PRIORIDAD[`${this.form.impacto}-${this.form.urgencia}`]
       ?? { id: 5, nombre: 'Medio', colorHexa: '#2563EB' };
   }
+
+  // ── Archivos ──────────────────────────────────────────────────────────────
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -84,6 +154,8 @@ export class TicketCrearModalComponent {
   removerArchivo(index: number): void {
     this.archivosSeleccionados.update(prev => prev.filter((_, i) => i !== index));
   }
+
+  // ── Guardar ───────────────────────────────────────────────────────────────
 
   guardar(): void {
     if (!this.form.titulo.trim() || !this.form.descripcion.trim() || !this.form.categoriaId) {
@@ -132,5 +204,14 @@ export class TicketCrearModalComponent {
     this.form = this._formVacio();
     this.archivosSeleccionados.set([]);
     this.error.set(null);
+    this.sugerencias.set([]);
+    this.articuloExpandido.set(null);
+  }
+
+  private _formVacio() {
+    return {
+      titulo: '', descripcion: '', categoriaId: 0,
+      canalReporte: 'Web', impacto: 2, urgencia: 2, sedeId: 0
+    };
   }
 }

@@ -176,6 +176,117 @@ textarea.form-input-dark {
 
 .btn-remove-archivo:hover { color: #bf391c; }
 
+/* ── KB Sugerida ──────────────────────────────────────────────────────────────── */
+.kb-panel {
+  background:    #0d0d0d;
+  border:        1px solid #2a1a0e;
+  border-radius: 10px;
+  overflow:      hidden;
+}
+
+.kb-panel-header {
+  display:     flex;
+  align-items: center;
+  padding:     0.6rem 1rem;
+  font-size:   0.8rem;
+  color:       #9a8a7a;
+  background:  #111;
+  border-bottom: 1px solid #1e1008;
+}
+
+.kb-close-btn {
+  background:  transparent;
+  border:      none;
+  color:       #4a3a2a;
+  cursor:      pointer;
+  font-size:   1rem;
+  padding:     0;
+  line-height: 1;
+  transition:  color 0.15s;
+}
+.kb-close-btn:hover { color: #bf391c; }
+
+.kb-lista {
+  display:        flex;
+  flex-direction: column;
+}
+
+.kb-item {
+  border-bottom: 1px solid #1a1008;
+  transition:    background 0.15s;
+}
+.kb-item:last-child { border-bottom: none; }
+
+.kb-item-header {
+  display:     flex;
+  align-items: center;
+  padding:     0.55rem 1rem;
+  cursor:      pointer;
+  transition:  background 0.15s;
+  gap:         0.5rem;
+}
+.kb-item-header:hover { background: #1a1008; }
+
+.kb-item-info {
+  display:     flex;
+  align-items: center;
+  flex:        1;
+  min-width:   0;
+}
+
+.kb-item-titulo {
+  font-size:     0.85rem;
+  color:         #e0d0c0;
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+}
+
+.kb-badge {
+  background:    #1e1008;
+  border:        1px solid #2a1a0e;
+  border-radius: 4px;
+  color:         #d7691c;
+  font-size:     0.7rem;
+  padding:       0.1rem 0.45rem;
+  white-space:   nowrap;
+  flex-shrink:   0;
+}
+
+.kb-detalle {
+  padding:     0.75rem 1rem 0.9rem;
+  background:  #0a0a0a;
+  border-top:  1px solid #1e1008;
+  font-size:   0.83rem;
+}
+
+.kb-seccion { margin-bottom: 0.25rem; }
+
+.kb-seccion-label {
+  display:       block;
+  font-size:     0.72rem;
+  font-weight:   700;
+  color:         #7a6a5a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.kb-seccion-texto {
+  color:       #c8b8a8;
+  line-height: 1.5;
+  margin:      0;
+  white-space: pre-wrap;
+}
+
+.kb-aviso {
+  display:       block;
+  margin-top:    0.65rem;
+  color:         #4a8a5a;
+  font-size:     0.75rem;
+  font-style:    italic;
+}
+
 /* ── Spinner ──────────────────────────────────────────────────────────────────── */
 @keyframes spin { to { transform: rotate(360deg); } }
  

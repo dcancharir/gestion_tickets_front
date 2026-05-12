@@ -27,4 +27,9 @@ export class PermisoRolService {
             .get<{ autorizado: boolean }>(`${this.api}api/permiso/verificar-acceso`, { params })
             .pipe(map(r => r.autorizado));
     }
+
+    // Devuelve las URIs de vistas autorizadas para el usuario autenticado
+    getMisVistas(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.api}api/permiso/mis-vistas`);
+    }
 }

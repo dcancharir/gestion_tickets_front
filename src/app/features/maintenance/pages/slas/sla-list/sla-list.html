@@ -1,64 +1,100 @@
 <div class="app-content-wrapper py-20 pb-13">
   <div class="container">
 
-    <!-- ── Header ────────────────────────────────────────────────────────── -->
+    <!-- ── Header ───────────────────────────────────────────────────────── -->
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-      <h1 class="page-title mb-0">Sedes</h1>
+      <div>
+        <h1 class="page-title mb-0">Acuerdos de Nivel de Servicio (SLA)</h1>
+        <span class="page-subtitle" style="color: #111;">Define tiempos máximos de respuesta y resolución por categoría y prioridad</span>
+      </div>
       <button class="btn-nuevo" (click)="openModal(null)">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Nueva Sede
+        Nuevo SLA
       </button>
     </div>
 
-    <!-- ── Tabla ──────────────────────────────────────────────────────────── -->
+    <!-- ── Tabla ─────────────────────────────────────────────────────────── -->
     <div class="tabla-wrapper">
       <table class="tk-table">
         <thead>
           <tr>
-            <th>Id Externo</th>
-            <th>Nombre</th>
-            <th>Tipo</th>
+            <th>Categoría</th>
+            <th>Prioridad</th>
+            <th>T. Respuesta</th>
+            <th>T. Resolución</th>
+            <th>Estado</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          @if (sedes.isLoading()) {
+
+          @if (slas.isLoading()) {
             <tr>
-              <td colspan="4">
+              <td colspan="6">
                 <div class="d-flex justify-content-center py-4">
-                  <p class="text-primary mb-0">Cargando...</p>
+                  <p class="text-primary mb-0">Cargando SLAs…</p>
                 </div>
               </td>
             </tr>
-          } @else if (sedes.error() || (sedes.value() ?? []).length === 0) {
+          } @else if (slas.error()) {
             <tr>
-              <td colspan="4">
-                <div class="d-flex justify-content-center py-4">
-                  <p class="cell-muted mb-0">No hay sedes registradas.</p>
+              <td colspan="6">
+                <div class="d-flex justify-content-center py-4 gap-2">
+                  <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+                  <p class="text-danger mb-0">Error al cargar los SLAs</p>
+                </div>
+              </td>
+            </tr>
+          } @else if ((slas.value() ?? []).length === 0) {
+            <tr>
+              <td colspan="6">
+                <div class="estado-vacio">
+                  <i class="bi bi-clock-history"></i>
+                  <p>No hay SLAs configurados. Crea uno nuevo para empezar.</p>
                 </div>
               </td>
             </tr>
           } @else {
-            @for (u of (sedes.value() ?? []); track u.sedeId) {
+            @for (s of (slas.value() ?? []); track s.slaId) {
               <tr class="tk-row">
-                <td class="cell-muted">{{ u.sedeIdExterno }}</td>
-                <td style="color: #111;">{{ u.nombre }}</td>
                 <td>
-                  <span class="chip-tipo">{{ u.tipoSede }}</span>
+                  <span class="chip-categoria" style="color: #111;">{{ s.categoriaNombre }}</span>
+                </td>
+                <td>
+                  <span class="cell-muted">{{ s.prioridadNombre }}</span>
+                </td>
+                <td>
+                  <span class="cell-muted">
+                    <i class="bi bi-bell me-1" style="color:#d7691c"></i>
+                    {{ formatMin(s.tiempoRespuestaMin) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="cell-muted">
+                    <i class="bi bi-check2-circle me-1" style="color:#2ea44f"></i>
+                    {{ formatMin(s.tiempoResolucionMin) }}
+                  </span>
+                </td>
+                <td>
+                  @if (s.activo) {
+                    <span class="sla-badge sla-ok">Activo</span>
+                  } @else {
+                    <span class="sla-badge sla-fail">Inactivo</span>
+                  }
                 </td>
                 <td>
                   <div class="d-flex align-items-center gap-1">
-                    <button (click)="openModal(u)" class="btn-accion-icon" type="button" title="Editar">
+                    <button (click)="openModal(s)" class="btn-accion-icon" type="button" title="Editar">
                       <svg width="15" height="15" viewBox="0 0 17 16" fill="none">
                         <path d="M9.9516 2.31982C10.4732 1.75466 10.734 1.47208 11.0112 1.30725C11.6799 0.909531 12.5034 0.897164 13.1833 1.27463C13.465 1.43106 13.7339 1.70568 14.2715 2.25493C14.8092 2.80418 15.078 3.07881 15.2312 3.36665C15.6007 4.06118 15.5886 4.90235 15.1992 5.58549C15.0379 5.86861 14.7613 6.13504 14.208 6.66791L7.62544 13.008C6.57701 14.0178 6.0528 14.5227 5.39764 14.7786C4.74248 15.0345 4.02224 15.0157 2.58176 14.978L2.38576 14.9729C1.94723 14.9614 1.72797 14.9557 1.60051 14.811C1.47305 14.6664 1.49045 14.443 1.52526 13.9963L1.54415 13.7538C1.64211 12.4965 1.69108 11.8678 1.9366 11.3028C2.18211 10.7377 2.6056 10.2788 3.4526 9.36115L9.9516 2.31982Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
                         <path d="M9.19922 2.39996L14.0992 7.29996" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
                         <path d="M9.89941 15L15.4994 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     </button>
-                    <button (click)="eliminar(u.sedeId)" class="btn-accion-icon peligro" type="button" title="Eliminar">
+                    <button (click)="eliminar(s)" class="btn-accion-icon peligro" type="button" title="Eliminar">
                       <svg width="13" height="15" viewBox="0 0 15 16" fill="none">
                         <path d="M13.0508 3.44995L12.617 10.4675C12.5061 12.2605 12.4507 13.1569 12.0013 13.8015C11.7791 14.1201 11.493 14.3891 11.1613 14.5912C10.4903 15 9.59207 15 7.7957 15C5.99696 15 5.09759 15 4.42612 14.5904C4.09414 14.3879 3.80798 14.1185 3.58586 13.7993C3.13659 13.1538 3.0824 12.256 2.97401 10.4606L2.55078 3.44995" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         <path d="M14.1 3.44998H1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -72,6 +108,7 @@
               </tr>
             }
           }
+
         </tbody>
       </table>
     </div>
@@ -81,9 +118,9 @@
 
 @if (modalAbierto()) {
   <div class="modal-backdrop fade show"></div>
-  <app-sede-add-edit
-    [sede]="sedeSeleccionada()"
+  <app-sla-add-edit
+    [sla]="slaSeleccionado()"
     (guardado)="onGuardado($event)"
     (cerrado)="modalAbierto.set(false)"
-  ></app-sede-add-edit>
+  ></app-sla-add-edit>
 }

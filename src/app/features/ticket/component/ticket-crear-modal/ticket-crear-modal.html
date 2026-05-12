@@ -22,12 +22,82 @@
         }
 
         <!-- Título -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-2">
           <label class="form-label-dark">Título <span class="req">*</span></label>
           <input type="text" class="form-input-dark"
                  placeholder="Describe brevemente el problema"
-                 [(ngModel)]="form.titulo" maxlength="200">
+                 [(ngModel)]="form.titulo"
+                 (input)="onTituloInput(form.titulo)"
+                 maxlength="200">
         </div>
+
+        <!-- ── Panel KB sugerida ─────────────────────────────────────────── -->
+        @if (buscandoKb()) {
+          <div class="kb-panel mb-3">
+            <div class="kb-panel-header">
+              <i class="bi bi-book me-2" style="color:#d7691c"></i>
+              <span>Buscando en Base de Conocimiento…</span>
+              <span class="spinner-sm ms-2"></span>
+            </div>
+          </div>
+        } @else if (sugerencias().length > 0) {
+          <div class="kb-panel mb-3">
+            <div class="kb-panel-header">
+              <i class="bi bi-lightbulb me-2" style="color:#d7691c"></i>
+              <span>¿Tu problema ya fue resuelto? Artículos relacionados:</span>
+              <button class="kb-close-btn ms-auto" (click)="cerrarSugerencias()" title="Cerrar">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+
+            <div class="kb-lista">
+              @for (art of sugerencias(); track art.publicId) {
+                <div class="kb-item" [class.kb-item-expanded]="articuloExpandido()?.publicId === art.publicId">
+
+                  <!-- Fila del artículo -->
+                  <div class="kb-item-header" (click)="verSolucion(art.publicId)">
+                    <div class="kb-item-info">
+                      <i class="bi bi-file-text me-2" style="color:#d7691c; font-size:.85rem"></i>
+                      <span class="kb-item-titulo">{{ art.titulo }}</span>
+                      @if (art.categoria) {
+                        <span class="kb-badge ms-2">{{ art.categoria }}</span>
+                      }
+                    </div>
+                    <i class="bi"
+                       [class.bi-chevron-down]="articuloExpandido()?.publicId !== art.publicId"
+                       [class.bi-chevron-up]="articuloExpandido()?.publicId === art.publicId"
+                       style="color:#9a8a7a; font-size:.8rem; flex-shrink:0"></i>
+                  </div>
+
+                  <!-- Detalle expandido -->
+                  @if (articuloExpandido()?.publicId === art.publicId) {
+                    @if (cargandoArticulo()) {
+                      <div class="kb-detalle">
+                        <span class="spinner-sm me-2"></span> Cargando solución…
+                      </div>
+                    } @else {
+                      <div class="kb-detalle">
+                        <div class="kb-seccion">
+                          <span class="kb-seccion-label">🔍 Problema</span>
+                          <p class="kb-seccion-texto">{{ articuloExpandido()!.problema }}</p>
+                        </div>
+                        <div class="kb-seccion mt-2">
+                          <span class="kb-seccion-label">✅ Solución</span>
+                          <p class="kb-seccion-texto">{{ articuloExpandido()!.solucion }}</p>
+                        </div>
+                        <small class="kb-aviso">
+                          Si esta solución resolvió tu problema, no necesitas crear un ticket.
+                        </small>
+                      </div>
+                    }
+                  }
+
+                </div>
+              }
+            </div>
+          </div>
+        }
+        <!-- ── Fin KB sugerida ────────────────────────────────────────────── -->
 
         <!-- Descripción -->
         <div class="form-group mb-3">
@@ -36,7 +106,8 @@
                     placeholder="Detalla el problema, pasos para reproducirlo, equipos afectados…"
                     [(ngModel)]="form.descripcion"></textarea>
         </div>
-    <div class="row g-3 mb-3">
+
+        <div class="row g-3 mb-3">
           <!-- Canal -->
           <div class="col-md-4">
             <label class="form-label-dark">Canal de reporte</label>
@@ -90,7 +161,6 @@
           </div>
         </div>
 
-    
         <!-- Sede -->
         <div class="form-group mb-3">
           <label class="form-label-dark">Sede <span class="req">*</span></label>

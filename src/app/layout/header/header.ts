@@ -22,11 +22,13 @@ export class Header {
   constructor() {
     if (this.service.isLogged()) {
       this.user.set(this.service.getUserInfo());
+      // Cargar notificaciones no leídas desde BD al montar el header
+      this.notifSvc.cargar();
     }
   }
 
-  irAlTicket(ticketPublicId: string): void {
-    this.notifSvc.marcarLeida(ticketPublicId);
+  irAlTicket(notificacionId: number, ticketPublicId: string): void {
+    this.notifSvc.marcarLeida(notificacionId);
     this.router.navigate(['/tickets', ticketPublicId]);
   }
 

@@ -2,381 +2,565 @@
   <div class="container-fluid">
     <div class="dashboard-wrapper">
 
-      <!-- ── Header ──────────────────────────────────────────────────────────── -->
-      <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-        <div>
-          <h1 class="dash-title mb-0">Dashboard</h1>
-          <span class="dash-subtitle">Centro de control · Soporte Remoto SAC</span>
-        </div>
-        <button class="btn-refresh" (click)="svc.cargar()" [disabled]="svc.cargando()">
-          <span [class.spin]="svc.cargando()" style="display:inline-flex;align-items:center;">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="margin-right:0.4rem;">
-              <path d="M13.5 2.5A6.5 6.5 0 0 1 14.5 8a6.5 6.5 0 0 1-6.5 6.5A6.5 6.5 0 0 1 1.5 8a6.5 6.5 0 0 1 5-6.33" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M13.5 2.5V6h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          {{ svc.cargando() ? 'Actualizando…' : 'Actualizar' }}
-        </button>
-      </div>
+      <!-- ══════════════════════════════════════════════════════════════════════
+           VISTA ADMINISTRADOR
+           ══════════════════════════════════════════════════════════════════ -->
+      @if (rol !== 'Técnico') {
 
-      <!-- ── Error ────────────────────────────────────────────────────────────── -->
-      @if (svc.error()) {
-        <div class="alerta-error d-flex align-items-center gap-2 mb-3">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" flex-shrink="0">
-            <path d="M8 1L15 14H1L8 1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M8 6v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="8" cy="11.5" r="0.75" fill="currentColor"/>
-          </svg>
-          {{ svc.error() }}
-        </div>
-      }
-
-      <!-- ── Skeleton loader ──────────────────────────────────────────────────── -->
-      @if (svc.cargando() && !svc.data()) {
-        <div class="row g-3 mb-4">
-          @for (i of [1,2,3,4]; track i) {
-            <div class="col-6 col-lg-3">
-              <div class="skeleton-card"></div>
-            </div>
-          }
-        </div>
-      }
-
-      @if (svc.data(); as d) {
-
-        <!-- ── Fila 1: Contadores de estado ──────────────────────────────────── -->
-        <div class="row g-3 mb-4">
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-total">
-              <span class="estado-num">{{ d.estados.total }}</span>
-              <span class="estado-label">Total</span>
-            </div>
+        <!-- Header Admin -->
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+          <div>
+            <h1 class="dash-title mb-0">Dashboard</h1>
+            <span class="dash-subtitle">Centro de control · Soporte Remoto SAC</span>
           </div>
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-abiertos">
-              <span class="estado-num">{{ svc.totalAbiertos() }}</span>
-              <span class="estado-label">Abiertos</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-progreso">
-              <span class="estado-num">{{ d.estados.enProgreso + d.estados.enDiagnostico }}</span>
-              <span class="estado-label">En Atención</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-resuelto">
-              <span class="estado-num">{{ d.estados.resueltos }}</span>
-              <span class="estado-label">Resueltos</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-cerrado">
-              <span class="estado-num">{{ d.estados.cerrados }}</span>
-              <span class="estado-label">Cerrados</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4 col-lg-2">
-            <div class="estado-card estado-reabierto">
-              <span class="estado-num">{{ d.estados.reabiertas }}</span>
-              <span class="estado-label">Reabiertos</span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ── Fila 2: KPIs ITIL ─────────────────────────────────────────────── -->
-        <div class="row g-3 mb-4">
-
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="kpi-card">
-              <div class="kpi-icon">
-                <!-- stopwatch -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M12 9v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M9.5 2.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M12 2.5V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="kpi-body">
-                <span class="kpi-value">{{ formatMinutos(d.kpisItil.mttrPromedioMinutos) }}</span>
-                <span class="kpi-name">MTTR Resolución</span>
-                <span class="kpi-desc">Tiempo promedio hasta resolver</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="kpi-card">
-              <div class="kpi-icon">
-                <!-- chat dots -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  <circle cx="9" cy="11" r="1" fill="currentColor"/>
-                  <circle cx="12" cy="11" r="1" fill="currentColor"/>
-                  <circle cx="15" cy="11" r="1" fill="currentColor"/>
-                </svg>
-              </div>
-              <div class="kpi-body">
-                <span class="kpi-value">{{ formatMinutos(d.kpisItil.mttrRespuestaPromedioMinutos) }}</span>
-                <span class="kpi-name">MTTR Respuesta</span>
-                <span class="kpi-desc">Tiempo hasta primera respuesta</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="kpi-card">
-              <div class="kpi-icon">
-                <!-- shield check -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6l-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="kpi-body">
-                <span class="kpi-value" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
-                  {{ formatPct(d.kpisItil.porcentajeCumplimientoSla) }}
-                </span>
-                <span class="kpi-name">Cumplimiento SLA</span>
-                <span class="kpi-desc">Tickets resueltos a tiempo</span>
-              </div>
-              @if (d.kpisItil.porcentajeCumplimientoSla !== null) {
-                <div class="kpi-progress mt-2">
-                  <div class="kpi-progress-bar"
-                       [style.width]="d.kpisItil.porcentajeCumplimientoSla + '%'"
-                       [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="kpi-card">
-              <div class="kpi-icon">
-                <!-- person check -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M17 11l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="kpi-body">
-                <span class="kpi-value">
-                  {{ formatPct(d.kpisItil.porcentajeResolucionPrimerContacto) }}
-                </span>
-                <span class="kpi-name">Primer Contacto</span>
-                <span class="kpi-desc">Resueltos sin reasignación</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ── Fila 3: Distribuciones + Calidad ──────────────────────────────── -->
-        <div class="row g-3 mb-4">
-
-          <!-- Por categoría -->
-          <div class="col-12 col-lg-4">
-            <div class="panel-card h-100">
-              <div class="panel-header">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
-                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
-                </svg>
-                Por Categoría
-              </div>
-              <div class="panel-body">
-                @for (item of d.porCategoria; track item.nombre) {
-                  <div class="dist-row">
-                    <span class="dist-label">{{ item.nombre }}</span>
-                    <div class="dist-bar-wrap">
-                      <div class="dist-bar" [style.width]="barWidth(item.total, maxCategoria())"></div>
-                    </div>
-                    <span class="dist-count">{{ item.total }}</span>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-
-          <!-- Por prioridad -->
-          <div class="col-12 col-lg-4">
-            <div class="panel-card h-100">
-              <div class="panel-header">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M12 8v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="12" cy="16" r="0.75" fill="currentColor"/>
-                </svg>
-                Por Prioridad
-              </div>
-              <div class="panel-body">
-                @for (item of d.porPrioridad; track item.nombre) {
-                  <div class="dist-row">
-                    <span class="dist-label">
-                      <span class="badge-prioridad" [ngClass]="prioridadClass(item.nombre)">
-                        {{ item.nombre }}
-                      </span>
-                    </span>
-                    <div class="dist-bar-wrap">
-                      <div class="dist-bar dist-bar-prioridad"
-                           [style.width]="barWidth(item.total, maxPrioridad())">
-                      </div>
-                    </div>
-                    <span class="dist-count">{{ item.total }}</span>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-
-          <!-- Calidad -->
-          <div class="col-12 col-lg-4">
-            <div class="panel-card h-100">
-              <div class="panel-header">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
-                  <path d="M17 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M3 11V9a4 4 0 0 1 4-4h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M7 22l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M21 13v2a4 4 0 0 1-4 4H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Calidad
-              </div>
-              <div class="panel-body d-flex flex-column gap-3 justify-content-center pt-2">
-
-                <div class="calidad-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <small class="text-muted">Reincidencia</small>
-                    <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeReincidencia) }}</small>
-                  </div>
-                  @if (d.kpisItil.porcentajeReincidencia !== null) {
-                    <div class="kpi-progress">
-                      <div class="kpi-progress-bar kpi-rojo"
-                           [style.width]="d.kpisItil.porcentajeReincidencia + '%'">
-                      </div>
-                    </div>
-                  }
-                </div>
-
-                <div class="calidad-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <small class="text-muted">Cumplimiento SLA</small>
-                    <small class="fw-bold" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
-                      {{ formatPct(d.kpisItil.porcentajeCumplimientoSla) }}
-                    </small>
-                  </div>
-                  @if (d.kpisItil.porcentajeCumplimientoSla !== null) {
-                    <div class="kpi-progress">
-                      <div class="kpi-progress-bar"
-                           [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)"
-                           [style.width]="d.kpisItil.porcentajeCumplimientoSla + '%'">
-                      </div>
-                    </div>
-                  }
-                </div>
-
-                <div class="calidad-item">
-                  <div class="d-flex justify-content-between mb-1">
-                    <small class="text-muted">Primer Contacto</small>
-                    <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeResolucionPrimerContacto) }}</small>
-                  </div>
-                  @if (d.kpisItil.porcentajeResolucionPrimerContacto !== null) {
-                    <div class="kpi-progress">
-                      <div class="kpi-progress-bar kpi-verde"
-                           [style.width]="d.kpisItil.porcentajeResolucionPrimerContacto + '%'">
-                      </div>
-                    </div>
-                  }
-                </div>
-
-                <!-- Mini stats -->
-                <div class="row g-2 mt-1">
-                  <div class="col-6">
-                    <div class="mini-stat">
-                      <span class="mini-num" style="color:#e8843a">{{ d.estados.pendientes }}</span>
-                      <span class="mini-label">Pendientes</span>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="mini-stat">
-                      <span class="mini-num" style="color:#bf391c">{{ d.estados.cancelados }}</span>
-                      <span class="mini-label">Cancelados</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ── Fila 4: Tabla de técnicos ──────────────────────────────────────── -->
-        @if (d.topTecnicos.length > 0) {
-          <div class="panel-card">
-            <div class="panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <button class="btn-refresh" (click)="svc.cargar()" [disabled]="svc.cargando()">
+            <span [class.spin]="svc.cargando()" style="display:inline-flex;align-items:center;">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="margin-right:0.4rem;">
+                <path d="M13.5 2.5A6.5 6.5 0 0 1 14.5 8a6.5 6.5 0 0 1-6.5 6.5A6.5 6.5 0 0 1 1.5 8a6.5 6.5 0 0 1 5-6.33" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13.5 2.5V6h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Rendimiento por Técnico
-            </div>
-            <div class="panel-body p-0">
-              <div class="table-responsive">
-                <table class="table table-dark table-hover dash-table mb-0">
-                  <thead>
-                    <tr>
-                      <th>Técnico</th>
-                      <th class="text-center">Asignados</th>
-                      <th class="text-center">Resueltos</th>
-                      <th class="text-center">Cerrados</th>
-                      <th class="text-center">MTTR</th>
-                      <th class="text-center">SLA</th>
-                      <th class="text-center">1er Contacto</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (tec of d.topTecnicos; track tec.tecnico) {
-                      <tr>
-                        <td>
-                          <div class="d-flex align-items-center gap-2">
-                            <div class="avatar-circle">{{ tec.tecnico.charAt(0) }}</div>
-                            {{ tec.tecnico }}
-                          </div>
-                        </td>
-                        <td class="text-center">{{ tec.totalAsignados }}</td>
-                        <td class="text-center">
-                          <span class="badge-resuelto">{{ tec.resueltos }}</span>
-                        </td>
-                        <td class="text-center">{{ tec.cerrados }}</td>
-                        <td class="text-center">{{ formatMinutos(tec.mttrPromedioMinutos) }}</td>
-                        <td class="text-center">
-                          <span [ngClass]="slaClass(tec.porcentajeCumplimientoSla)">
-                            {{ formatPct(tec.porcentajeCumplimientoSla) }}
-                          </span>
-                        </td>
-                        <td class="text-center">{{ formatPct(tec.porcentajePrimerContacto) }}</td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            </span>
+            {{ svc.cargando() ? 'Actualizando…' : 'Actualizar' }}
+          </button>
+        </div>
+
+        @if (svc.error()) {
+          <div class="alerta-error d-flex align-items-center gap-2 mb-3">
+            {{ svc.error() }}
           </div>
         }
 
-      } <!-- end @if data -->
+        @if (svc.cargando() && !svc.data()) {
+          <div class="row g-3 mb-4">
+            @for (i of [1,2,3,4]; track i) {
+              <div class="col-6 col-lg-3"><div class="skeleton-card"></div></div>
+            }
+          </div>
+        }
+
+        @if (svc.data(); as d) {
+
+          <!-- Fila 1: Contadores estado -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-total">
+                <span class="estado-num">{{ d.estados.total }}</span>
+                <span class="estado-label">Total</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-abiertos">
+                <span class="estado-num">{{ svc.totalAbiertos() }}</span>
+                <span class="estado-label">Abiertos</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-progreso">
+                <span class="estado-num">{{ d.estados.enProgreso + d.estados.enDiagnostico }}</span>
+                <span class="estado-label">En Atención</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-resuelto">
+                <span class="estado-num">{{ d.estados.resueltos }}</span>
+                <span class="estado-label">Resueltos</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-cerrado">
+                <span class="estado-num">{{ d.estados.cerrados }}</span>
+                <span class="estado-label">Cerrados</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="estado-card estado-reabierto">
+                <span class="estado-num">{{ d.estados.reabiertas }}</span>
+                <span class="estado-label">Reabiertos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 2: KPIs ITIL -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 9v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 2.5h5M12 2.5V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value">{{ formatMinutos(d.kpisItil.mttrPromedioMinutos) }}</span>
+                  <span class="kpi-name">MTTR Resolución</span>
+                  <span class="kpi-desc">Tiempo promedio hasta resolver</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <circle cx="9" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="15" cy="11" r="1" fill="currentColor"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value">{{ formatMinutos(d.kpisItil.mttrRespuestaPromedioMinutos) }}</span>
+                  <span class="kpi-name">MTTR Respuesta</span>
+                  <span class="kpi-desc">Tiempo hasta primera respuesta</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6l-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
+                    {{ formatPct(d.kpisItil.porcentajeCumplimientoSla) }}
+                  </span>
+                  <span class="kpi-name">Cumplimiento SLA</span>
+                  <span class="kpi-desc">Tickets resueltos a tiempo</span>
+                </div>
+                @if (d.kpisItil.porcentajeCumplimientoSla !== null) {
+                  <div class="kpi-progress mt-2">
+                    <div class="kpi-progress-bar"
+                         [style.width]="d.kpisItil.porcentajeCumplimientoSla + '%'"
+                         [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)"></div>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M17 11l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value">{{ formatPct(d.kpisItil.porcentajeResolucionPrimerContacto) }}</span>
+                  <span class="kpi-name">Primer Contacto</span>
+                  <span class="kpi-desc">Resueltos sin reasignación</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 3: Distribuciones + Calidad -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-4">
+              <div class="panel-card h-100">
+                <div class="panel-header">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
+                  </svg>
+                  Por Categoría
+                </div>
+                <div class="panel-body">
+                  @for (item of d.porCategoria; track item.nombre) {
+                    <div class="dist-row">
+                      <span class="dist-label">{{ item.nombre }}</span>
+                      <div class="dist-bar-wrap">
+                        <div class="dist-bar" [style.width]="barWidth(item.total, maxCategoria())"></div>
+                      </div>
+                      <span class="dist-count">{{ item.total }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="panel-card h-100">
+                <div class="panel-header">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 8v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="12" cy="16" r="0.75" fill="currentColor"/>
+                  </svg>
+                  Por Prioridad
+                </div>
+                <div class="panel-body">
+                  @for (item of d.porPrioridad; track item.nombre) {
+                    <div class="dist-row">
+                      <span class="dist-label">
+                        <span class="badge-prioridad" [ngClass]="prioridadClass(item.nombre)">{{ item.nombre }}</span>
+                      </span>
+                      <div class="dist-bar-wrap">
+                        <div class="dist-bar dist-bar-prioridad" [style.width]="barWidth(item.total, maxPrioridad())"></div>
+                      </div>
+                      <span class="dist-count">{{ item.total }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="panel-card h-100">
+                <div class="panel-header">Calidad</div>
+                <div class="panel-body d-flex flex-column gap-3 justify-content-center pt-2">
+                  <div class="calidad-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <small class="text-muted">Reincidencia</small>
+                      <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeReincidencia) }}</small>
+                    </div>
+                    @if (d.kpisItil.porcentajeReincidencia !== null) {
+                      <div class="kpi-progress">
+                        <div class="kpi-progress-bar kpi-rojo" [style.width]="d.kpisItil.porcentajeReincidencia + '%'"></div>
+                      </div>
+                    }
+                  </div>
+                  <div class="calidad-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <small class="text-muted">Cumplimiento SLA</small>
+                      <small class="fw-bold" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
+                        {{ formatPct(d.kpisItil.porcentajeCumplimientoSla) }}
+                      </small>
+                    </div>
+                    @if (d.kpisItil.porcentajeCumplimientoSla !== null) {
+                      <div class="kpi-progress">
+                        <div class="kpi-progress-bar" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)"
+                             [style.width]="d.kpisItil.porcentajeCumplimientoSla + '%'"></div>
+                      </div>
+                    }
+                  </div>
+                  <div class="calidad-item">
+                    <div class="d-flex justify-content-between mb-1">
+                      <small class="text-muted">Primer Contacto</small>
+                      <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeResolucionPrimerContacto) }}</small>
+                    </div>
+                    @if (d.kpisItil.porcentajeResolucionPrimerContacto !== null) {
+                      <div class="kpi-progress">
+                        <div class="kpi-progress-bar kpi-verde"
+                             [style.width]="d.kpisItil.porcentajeResolucionPrimerContacto + '%'"></div>
+                      </div>
+                    }
+                  </div>
+                  <div class="row g-2 mt-1">
+                    <div class="col-6">
+                      <div class="mini-stat">
+                        <span class="mini-num" style="color:#e8843a">{{ d.estados.pendientes }}</span>
+                        <span class="mini-label">Pendientes</span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="mini-stat">
+                        <span class="mini-num" style="color:#bf391c">{{ d.estados.cancelados }}</span>
+                        <span class="mini-label">Cancelados</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 4: Tabla técnicos -->
+          @if (d.topTecnicos.length > 0) {
+            <div class="panel-card">
+              <div class="panel-header">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Rendimiento por Técnico
+              </div>
+              <div class="panel-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover dash-table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Técnico</th>
+                        <th class="text-center">Asignados</th>
+                        <th class="text-center">Resueltos</th>
+                        <th class="text-center">Cerrados</th>
+                        <th class="text-center">MTTR</th>
+                        <th class="text-center">SLA</th>
+                        <th class="text-center">1er Contacto</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (tec of d.topTecnicos; track tec.tecnico) {
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center gap-2">
+                              <div class="avatar-circle">{{ tec.tecnico.charAt(0) }}</div>
+                              {{ tec.tecnico }}
+                            </div>
+                          </td>
+                          <td class="text-center">{{ tec.totalAsignados }}</td>
+                          <td class="text-center"><span class="badge-resuelto">{{ tec.resueltos }}</span></td>
+                          <td class="text-center">{{ tec.cerrados }}</td>
+                          <td class="text-center">{{ formatMinutos(tec.mttrPromedioMinutos) }}</td>
+                          <td class="text-center">
+                            <span [ngClass]="slaClass(tec.porcentajeCumplimientoSla)">
+                              {{ formatPct(tec.porcentajeCumplimientoSla) }}
+                            </span>
+                          </td>
+                          <td class="text-center">{{ formatPct(tec.porcentajePrimerContacto) }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          }
+
+        } <!-- end @if admin data -->
+
+      } <!-- end @if Admin -->
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           VISTA TÉCNICO
+           ══════════════════════════════════════════════════════════════════ -->
+      @if (rol === 'Técnico') {
+
+        <!-- Header Técnico -->
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+          <div>
+            <h1 class="dash-title mb-0">Mi Dashboard</h1>
+            <span class="dash-subtitle">Resumen personal de tickets · Soporte Remoto SAC</span>
+          </div>
+          <button class="btn-refresh" (click)="svc.cargarTecnico()" [disabled]="svc.cargandoTecnico()">
+            <span [class.spin]="svc.cargandoTecnico()" style="display:inline-flex;align-items:center;">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="margin-right:0.4rem;">
+                <path d="M13.5 2.5A6.5 6.5 0 0 1 14.5 8a6.5 6.5 0 0 1-6.5 6.5A6.5 6.5 0 0 1 1.5 8a6.5 6.5 0 0 1 5-6.33" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13.5 2.5V6h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            {{ svc.cargandoTecnico() ? 'Actualizando…' : 'Actualizar' }}
+          </button>
+        </div>
+
+        @if (svc.errorTecnico()) {
+          <div class="alerta-error mb-3">{{ svc.errorTecnico() }}</div>
+        }
+
+        @if (svc.cargandoTecnico() && !svc.dataTecnico()) {
+          <div class="row g-3 mb-4">
+            @for (i of [1,2,3,4,5]; track i) {
+              <div class="col-6 col-lg"><div class="skeleton-card"></div></div>
+            }
+          </div>
+        }
+
+        @if (svc.dataTecnico(); as t) {
+
+          <!-- Fila 1: Mis contadores -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4 col-lg">
+              <div class="estado-card estado-total">
+                <span class="estado-num">{{ t.misTickets.totalAsignados }}</span>
+                <span class="estado-label">Mis Tickets</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="estado-card estado-progreso">
+                <span class="estado-num">{{ t.misTickets.enProgreso }}</span>
+                <span class="estado-label">En Progreso</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="estado-card estado-abiertos">
+                <span class="estado-num">{{ t.misTickets.pendientes }}</span>
+                <span class="estado-label">Pendientes</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="estado-card estado-resuelto">
+                <span class="estado-num">{{ t.misTickets.resueltosHoy }}</span>
+                <span class="estado-label">Resueltos Hoy</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg">
+              <div class="estado-card" [class.estado-reabierto]="t.misTickets.criticos > 0"
+                                       [class.estado-cerrado]="t.misTickets.criticos === 0">
+                <span class="estado-num">{{ t.misTickets.criticos }}</span>
+                <span class="estado-label">Críticos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 2: Mis KPIs personales -->
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 9v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 2.5h5M12 2.5V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value">{{ formatMinutos(t.miMttrMinutos) }}</span>
+                  <span class="kpi-name">Mi MTTR</span>
+                  <span class="kpi-desc">Tiempo promedio de resolución</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6l-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value" [ngClass]="slaClass(t.miSla)">{{ formatPct(t.miSla) }}</span>
+                  <span class="kpi-name">Mi SLA</span>
+                  <span class="kpi-desc">Tickets resueltos a tiempo</span>
+                </div>
+                @if (t.miSla !== null) {
+                  <div class="kpi-progress mt-2">
+                    <div class="kpi-progress-bar" [ngClass]="slaClass(t.miSla)"
+                         [style.width]="t.miSla + '%'"></div>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="kpi-card">
+                <div class="kpi-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M17 11l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-body">
+                  <span class="kpi-value">{{ formatPct(t.miPrimerContacto) }}</span>
+                  <span class="kpi-name">Primer Contacto</span>
+                  <span class="kpi-desc">Resueltos sin reasignación</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fila 3: Tablas de atención urgente -->
+          <div class="row g-3">
+
+            <!-- Próximos a vencer SLA -->
+            <div class="col-12 col-lg-6">
+              <div class="panel-card h-100">
+                <div class="panel-header">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#e8843a;">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Próximos a vencer SLA
+                  <span class="ms-auto badge-count">{{ t.proximosAVencerSla.length }}</span>
+                </div>
+                <div class="panel-body p-0">
+                  @if (t.proximosAVencerSla.length === 0) {
+                    <div class="empty-panel">
+                      <i class="bi bi-check-circle" style="color:#2ea44f;font-size:1.5rem;"></i>
+                      <span>Sin tickets próximos a vencer</span>
+                    </div>
+                  } @else {
+                    <div class="table-responsive">
+                      <table class="table table-dark table-hover dash-table mb-0">
+                        <thead>
+                          <tr>
+                            <th>Ticket</th>
+                            <th>Estado</th>
+                            <th class="text-end">Tiempo restante</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (tk of t.proximosAVencerSla; track tk.publicId) {
+                            <tr [routerLink]="['/principal/tickets', tk.publicId]" style="cursor:pointer;">
+                              <td>
+                                <div class="fw-semibold" style="font-size:.85rem;color:#e0d0c0;">{{ tk.numeroTicket }}</div>
+                                <div style="font-size:.78rem;color:#7a6a5a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">{{ tk.titulo }}</div>
+                              </td>
+                              <td><span style="font-size:.78rem;color:#9a8a7a;">{{ tk.estado }}</span></td>
+                              <td class="text-end">
+                                <span class="fw-bold" [ngClass]="tiempoRestanteClass(tk.fechaLimiteResolucion)">
+                                  {{ tiempoRestante(tk.fechaLimiteResolucion) }}
+                                </span>
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Críticos abiertos -->
+            <div class="col-12 col-lg-6">
+              <div class="panel-card h-100">
+                <div class="panel-header">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#bf391c;">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M12 9v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="12" cy="17" r="0.75" fill="currentColor"/>
+                  </svg>
+                  Tickets Críticos Abiertos
+                  <span class="ms-auto badge-count" [class.badge-count-alert]="t.criticosAbiertos.length > 0">
+                    {{ t.criticosAbiertos.length }}
+                  </span>
+                </div>
+                <div class="panel-body p-0">
+                  @if (t.criticosAbiertos.length === 0) {
+                    <div class="empty-panel">
+                      <i class="bi bi-check-circle" style="color:#2ea44f;font-size:1.5rem;"></i>
+                      <span>Sin tickets críticos pendientes</span>
+                    </div>
+                  } @else {
+                    <div class="table-responsive">
+                      <table class="table table-dark table-hover dash-table mb-0">
+                        <thead>
+                          <tr>
+                            <th>Ticket</th>
+                            <th>Estado</th>
+                            <th class="text-end">Registrado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (tk of t.criticosAbiertos; track tk.publicId) {
+                            <tr [routerLink]="['/principal/tickets', tk.publicId]" style="cursor:pointer;">
+                              <td>
+                                <div class="fw-semibold" style="font-size:.85rem;color:#e0d0c0;">{{ tk.numeroTicket }}</div>
+                                <div style="font-size:.78rem;color:#7a6a5a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">{{ tk.titulo }}</div>
+                              </td>
+                              <td><span style="font-size:.78rem;color:#9a8a7a;">{{ tk.estado }}</span></td>
+                              <td class="text-end" style="font-size:.78rem;color:#7a6a5a;">
+                                {{ tk.fechaRegistro | date:'dd/MM HH:mm' }}
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        } <!-- end @if tecnico data -->
+
+      } <!-- end @if Técnico -->
 
     </div>
   </div>

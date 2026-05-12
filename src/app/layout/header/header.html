@@ -37,11 +37,13 @@
                                     <span class="badge bg-danger rounded-pill ms-2">{{ notifSvc.sinLeer() }}</span>
                                 }
                             </h6>
-                            <button type="button"
-                                    class="text-muted clear-all-notifications-btn d-flex align-items-center gap-2"
-                                    (click)="notifSvc.limpiarTodas()">
-                                Limpiar todo
-                            </button>
+                            @if (notifSvc.sinLeer() > 0) {
+                                <button type="button"
+                                        class="text-muted clear-all-notifications-btn d-flex align-items-center gap-2"
+                                        (click)="notifSvc.marcarTodasLeidas()">
+                                    Marcar todas leídas
+                                </button>
+                            }
                         </div>
                         <div class="dropdown-body">
                             <div class="dropdown-list notification-list-scroll">
@@ -50,11 +52,11 @@
                                         Sin notificaciones
                                     </div>
                                 }
-                                @for (n of notifSvc.notificaciones(); track n.ticketPublicId + n.fecha) {
+                                @for (n of notifSvc.notificaciones(); track n.notificacionId) {
                                     <div class="dropdown-item notification-list-item d-flex align-items-center m-0 w-100 rounded-none"
                                          [style.opacity]="n.leida ? '0.55' : '1'"
                                          style="cursor:pointer;"
-                                         (click)="irAlTicket(n.ticketPublicId)">
+                                         (click)="irAlTicket(n.notificacionId, n.ticketPublicId)">
                                         <div class="me-3 flex-shrink-0">
                                             <div class="avatar avatar-md rounded-pill">
                                                 <div class="avatar-text"
@@ -78,7 +80,7 @@
                                                 {{ n.mensaje }}
                                             </p>
                                             <span class="text-muted" style="font-size:0.72rem;">
-                                                {{ n.fecha | date:'HH:mm · dd/MM' }}
+                                                {{ n.fechaCreacion | date:'HH:mm · dd/MM' }}
                                             </span>
                                         </div>
                                         @if (!n.leida) {

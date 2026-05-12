@@ -36,36 +36,62 @@
                         </li>
                         @if(section.modules.length){
                             @for(module of section.modules; track module.name){
-                                <li class="app-sidebar-menu-item has-dropdown" [class.open]="isAnyChildActive(module.items)">
-                                    <a href="javascript:void(0);" class="menu-link d-flex align-items-center" (click)="toggleModule(module)"
-  [class.active]="openModule === module.name">
-                                        <span class="menu-icon flex-shrink-0">
-                                            <svg width="13" height="17" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M11.55 6.75H1.95C1.28726 6.75 0.75 7.28726 0.75 7.95V15.15C0.75 15.8127 1.28726 16.35 1.95 16.35H11.55C12.2127 16.35 12.75 15.8127 12.75 15.15V7.95C12.75 7.28726 12.2127 6.75 11.55 6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M10.9498 6.75V4.95C10.9498 3.83609 10.5073 2.7678 9.71965 1.98015C8.932 1.1925 7.86371 0.75 6.7498 0.75C5.6359 0.75 4.56761 1.1925 3.77996 1.98015C2.9923 2.7678 2.5498 3.83609 2.5498 4.95V6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M6.7499 12.15C7.08127 12.15 7.3499 11.8814 7.3499 11.55C7.3499 11.2186 7.08127 10.95 6.7499 10.95C6.41853 10.95 6.1499 11.2186 6.1499 11.55C6.1499 11.8814 6.41853 12.15 6.7499 12.15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <span class="menu-title flex-grow-1">{{module.name}}</span>
-                                        <span class="menu-arrow flex-shrink-0 d-flex align-items-center justify-content-center">
-                                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 9L5 5L1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </a>
-                                    @if(module.items.length){
-                                        <ul class="app-sidebar-submenu"  [style.display]="openModule === module.name ? 'block' : 'none'">
-                                            @for(item of module.items; track item.name){
-                                                <li class="app-sidebar-menu-item">
-                                                    <a href="javascript:void(0)" [routerLink]="['/'+item.path]" [class.menu-current]="router.url === `/${item.path}`" class="menu-link d-flex align-items-center">
-                                                        <span class="menu-title flex-grow-1">{{item.name}}</span>
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                   
-                                </li>  
+
+                                <!-- Link directo (Dashboard, etc.) -->
+                                @if(module.directPath){
+                                    <li class="app-sidebar-menu-item">
+                                        <a [routerLink]="['/' + module.directPath]"
+                                           [class.active]="router.url === '/' + module.directPath"
+                                           class="menu-link d-flex align-items-center">
+                                            <span class="menu-icon flex-shrink-0">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                                    <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                                    <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                                    <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                                    <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                                </svg>
+                                            </span>
+                                            <span class="menu-title flex-grow-1">{{module.name}}</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Módulo con submenu (comportamiento original) -->
+                                @if(!module.directPath){
+                                    <li class="app-sidebar-menu-item has-dropdown" [class.open]="isAnyChildActive(module.items)">
+                                        <a href="javascript:void(0);" class="menu-link d-flex align-items-center"
+                                           (click)="toggleModule(module)"
+                                           [class.active]="openModule === module.name">
+                                            <span class="menu-icon flex-shrink-0">
+                                                <svg width="13" height="17" viewBox="0 0 14 18" fill="none">
+                                                    <path d="M11.55 6.75H1.95C1.28726 6.75 0.75 7.28726 0.75 7.95V15.15C0.75 15.8127 1.28726 16.35 1.95 16.35H11.55C12.2127 16.35 12.75 15.8127 12.75 15.15V7.95C12.75 7.28726 12.2127 6.75 11.55 6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10.9498 6.75V4.95C10.9498 3.83609 10.5073 2.7678 9.71965 1.98015C8.932 1.1925 7.86371 0.75 6.7498 0.75C5.6359 0.75 4.56761 1.1925 3.77996 1.98015C2.9923 2.7678 2.5498 3.83609 2.5498 4.95V6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M6.7499 12.15C7.08127 12.15 7.3499 11.8814 7.3499 11.55C7.3499 11.2186 7.08127 10.95 6.7499 10.95C6.41853 10.95 6.1499 11.2186 6.1499 11.55C6.1499 11.8814 6.41853 12.15 6.7499 12.15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <span class="menu-title flex-grow-1">{{module.name}}</span>
+                                            <span class="menu-arrow flex-shrink-0 d-flex align-items-center justify-content-center">
+                                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
+                                                    <path d="M1 9L5 5L1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        @if(module.items.length){
+                                            <ul class="app-sidebar-submenu" [style.display]="openModule === module.name ? 'block' : 'none'">
+                                                @for(item of module.items; track item.name){
+                                                    <li class="app-sidebar-menu-item">
+                                                        <a href="javascript:void(0)" [routerLink]="['/'+item.path]"
+                                                           [class.menu-current]="router.url === `/${item.path}`"
+                                                           class="menu-link d-flex align-items-center">
+                                                            <span class="menu-title flex-grow-1">{{item.name}}</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+
                             }
                         }
                     }

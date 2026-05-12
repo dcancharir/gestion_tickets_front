@@ -46,7 +46,7 @@
           } @else {
             @for (u of (usuarios.value() ?? []); track u.publicId) {
               <tr class="tk-row">
-                <td>{{ u.nombre }} {{ u.apellidos }}</td>
+                <td style="color:#111">{{ u.nombre }} {{ u.apellidos }}</td>
                 <td class="cell-muted">{{ u.userName }}</td>
                 <td class="cell-muted">{{ u.email }}</td>
                 <td class="cell-muted">{{ u.fechaCreacion | date:'dd/MM/yyyy' }}</td>

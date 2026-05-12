@@ -44,7 +44,7 @@
           } @else {
             @for (u of (categorias.value() ?? []); track u.categoriaId) {
               <tr class="tk-row">
-                <td>{{ u.nombre }}</td>
+                <td style="color: #111;">{{ u.nombre }}</td>
                 <td class="cell-muted">{{ u.descripcion }}</td>
                 <td>
                   <span [class]="u.activo ? 'badge-si' : 'badge-no'">

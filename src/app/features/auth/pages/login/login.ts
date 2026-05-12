@@ -13,8 +13,10 @@ export class Login {
     constructor() {
         effect(()=>{
             if(this.authService.isLogged()){
-                this.router.navigate(['/dashboard'])
-            } 
+                const rol = this.authService.getUserInfo()?.rol;
+                const destino = rol === 'Solicitante' ? '/principal/mis-tickets' : '/dashboard';
+                this.router.navigate([destino]);
+            }
         })
     }
     toastService  = inject(ToastService);
@@ -37,8 +39,9 @@ export class Login {
                 if(response){
                     this.signalrSvc.connect();
                     this.toastService.show(`Bienvenido al sistema ${response.userName}`)
+                    const destino = response.rol === 'Solicitante' ? '/principal/mis-tickets' : '/dashboard';
                     setTimeout(() => {
-                        this.router.navigate(['/dashboard'])
+                        this.router.navigate([destino]);
                     }, 1500);
                 }
                 else{

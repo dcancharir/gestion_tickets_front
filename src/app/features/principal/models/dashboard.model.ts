@@ -41,3 +41,32 @@ export interface DashboardKpi {
   porPrioridad: ConteoItem[];
   topTecnicos:  KpiTecnico[];
 }
+
+// ── Dashboard del Técnico ─────────────────────────────────────────────────────
+
+export interface ResumenTecnico {
+  totalAsignados: number;
+  enProgreso:     number;
+  pendientes:     number;
+  resueltosHoy:  number;
+  criticos:       number;
+}
+
+export interface TicketResumen {
+  publicId:             string;
+  numeroTicket:         string;
+  titulo:               string;
+  estado:               string;
+  prioridad:            string;
+  fechaRegistro:        string;
+  fechaLimiteResolucion: string | null;
+}
+
+export interface DashboardKpiTecnico {
+  misTickets:         ResumenTecnico;
+  miMttrMinutos:      number | null;
+  miSla:              number | null;
+  miPrimerContacto:   number | null;
+  proximosAVencerSla: TicketResumen[];
+  criticosAbiertos:   TicketResumen[];
+}

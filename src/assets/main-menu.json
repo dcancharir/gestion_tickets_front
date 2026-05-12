@@ -3,6 +3,13 @@
         "name": "Principal",
         "modules": [
             {
+                "name": "Dashboard",
+                "icon": "dashboard",
+                "action": "dashboard",
+                "directPath": "dashboard",
+                "items": []
+            },
+            {
                 "name": "Tickets",
                 "icon": "games",
                 "items": [
@@ -67,6 +74,11 @@
                         "action": "maintenance/categorias",
                         "name": "Categorias",
                         "path": "maintenance/categorias"
+                    },
+                    {
+                        "action": "maintenance/slas",
+                        "name": "SLAs",
+                        "path": "maintenance/slas"
                     }
                 ]
             }
