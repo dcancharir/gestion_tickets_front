@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, resource } from '@angular/core';
+import { Component, OnInit, inject, resource, signal } from '@angular/core';
 import { CommonModule }               from '@angular/common';
 import { FormsModule }                from '@angular/forms';
 import { Router, ActivatedRoute }     from '@angular/router';
@@ -26,7 +26,8 @@ export class TicketListaComponent implements OnInit {
   private estadoSvc    = inject(EstadoService);
   private prioridadSvc = inject(PrioridadService);
 
-  modo: ModoLista = 'todos';
+  modo: ModoLista  = 'todos';
+  showModal        = signal(false);
 
   estados   = resource({ loader: () => firstValueFrom(this.estadoSvc.getAll()) });
   prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });

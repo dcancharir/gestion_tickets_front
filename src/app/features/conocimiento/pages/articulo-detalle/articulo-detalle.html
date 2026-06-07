@@ -1,7 +1,4 @@
-<div class="app-content-wrapper py-20 pb-13">
-  <div class="container">
-
-    <!-- ── Loader ─────────────────────────────────────────────────────────────── -->
+<!-- ── Loader ─────────────────────────────────────────────────────────────── -->
     @if (cargando()) {
       <div class="text-center py-5">
         <div class="spinner-custom"></div>
@@ -16,14 +13,14 @@
     @if (articulo(); as a) {
 
       <!-- ── Header ──────────────────────────────────────────────────────────── -->
-      <div class="d-flex align-items-start gap-3 mb-4 flex-wrap">
+<div class="det-header" style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:20px">
         <button class="btn-volver" (click)="volver()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
           </svg>
         </button>
-        <div class="flex-grow-1">
-          <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+  <div style="flex:1;min-width:0">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
             @if (a.categoria) {
               <span class="chip-tipo">{{ a.categoria }}</span>
             }
@@ -32,26 +29,25 @@
             } @else {
               <span class="badge-no">Inactivo</span>
             }
-          </div>
-          <h1 class="detalle-titulo">{{ a.titulo }}</h1>
-          <p class="cell-muted mt-1 mb-0" style="font-size:.82rem;">
+    </div>
+    <h1 class="det-titulo" style="font-size:1.35rem;font-weight:700;color:var(--ink);margin:0">{{ a.titulo }}</h1>
+    <p class="cell-muted" style="font-size:.82rem;margin-top:6px;margin-bottom:0">
             Creado por <strong>{{ a.creadoPor }}</strong> · {{ formatFecha(a.fechaCreacion) }}
           </p>
-        </div>
-        <button class="btn-accion" (click)="modalEdit.set(true)">
+  </div>
+  <button class="btn-accion" (click)="modalEdit.set(true)">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-1" viewBox="0 0 16 16">
             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
           </svg>
           Editar
         </button>
-      </div>
+</div>
 
-      <!-- ── Contenido ────────────────────────────────────────────────────────── -->
-      <div class="row g-4">
+<!-- ── Contenido ────────────────────────────────────────────────────────── -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
-        <!-- Problema -->
-        <div class="col-12 col-lg-6">
-          <div class="info-card h-100">
+<!-- Problema -->
+<div class="info-card">
             <div class="info-card-header">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -62,12 +58,10 @@
             <div class="info-card-body">
               <p class="descripcion-texto">{{ a.problema }}</p>
             </div>
-          </div>
-        </div>
+</div>
 
-        <!-- Solución -->
-        <div class="col-12 col-lg-6">
-          <div class="info-card h-100">
+<!-- Solución -->
+<div class="info-card">
             <div class="info-card-header">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -78,15 +72,11 @@
             <div class="info-card-body">
               <p class="descripcion-texto">{{ a.solucion }}</p>
             </div>
-          </div>
-        </div>
-
-      </div>
-
-    } <!-- end @if articulo -->
-
-  </div>
 </div>
+
+</div>
+
+} <!-- end @if articulo -->
 
 <!-- Modal editar -->
 @if (modalEdit()) {

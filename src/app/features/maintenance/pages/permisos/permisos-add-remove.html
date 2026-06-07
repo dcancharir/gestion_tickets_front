@@ -1,123 +1,105 @@
-<div class="app-content-wrapper py-20 pb-13">
-  <div class="container">
+<!-- ── Header ────────────────────────────────────────────────────────────── -->
+<div class="perm-header">
+  <h1 class="page-title">Permisos por Rol</h1>
+  <div class="perm-header-actions">
+    <button class="btn btn-primary" (click)="sincronizarPermisos()" [disabled]="sincronizando()">
+      @if (sincronizando()) {
+        <span class="perm-spinner"></span> Sincronizando…
+      } @else {
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Sincronizar Permisos
+      }
+    </button>
+    <select class="perm-select"
+            [ngModel]="selectedRolId()"
+            (change)="onRolChange($event)">
+      <option [ngValue]="null">Seleccione un rol</option>
+      @for (rol of (roles.error() ? [] : (roles.value() ?? [])); track rol.rolId) {
+        <option [value]="rol.rolId">{{ rol.nombre }}</option>
+      }
+    </select>
+  </div>
+</div>
 
-    <!-- ── Header ────────────────────────────────────────────────────────── -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-      <h1 class="page-title mb-0">Permisos por Rol</h1>
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn-nuevo" (click)="sincronizarPermisos()" [disabled]="sincronizando()">
-          @if (sincronizando()) {
-            <span class="spinner-sm me-1"></span> Sincronizando…
+<!-- ── Barra de resumen global ─────────────────────────────────────────── -->
+<div class="perm-summary">
+  <label class="check-label"
+         [class.check-label--disabled]="!selectedRolId()"
+         [title]="!selectedRolId() ? 'Seleccione un rol primero' : ''">
+    <input type="checkbox"
+           [checked]="estadoGlobal() === 'all'"
+           [class.indeterminate-check]="estadoGlobal() === 'some'"
+           [disabled]="!selectedRolId() || procesando().has('__global__') || totalPermisos() === 0"
+           (change)="toggleTodo()">
+    @if (procesando().has('__global__')) {
+      <span class="perm-spinner-sm"></span> Procesando…
+    } @else {
+      Seleccionar todos los permisos
+    }
+  </label>
+
+  <div class="perm-stats">
+    <span class="perm-total">Total: <strong>{{ totalPermisos() }}</strong></span>
+    @if (selectedRolId()) {
+      <span class="permiso-badge"
+            [class.permiso-badge--full]="estadoGlobal() === 'all'"
+            [class.permiso-badge--partial]="estadoGlobal() === 'some'"
+            [class.permiso-badge--none]="estadoGlobal() === 'none'">
+        {{ totalAsignados() }} / {{ totalPermisos() }} asignados
+      </span>
+    }
+  </div>
+</div>
+
+<!-- ── Tarjetas de permisos ───────────────────────────────────────────── -->
+<div class="perm-grid">
+  @for (grupo of agrupadosArray(); track grupo.controlador) {
+    <div class="perm-card">
+
+      <!-- Cabecera del grupo -->
+      <div class="perm-card-header">
+        <label class="check-label check-label--group"
+               [title]="!selectedRolId() ? 'Seleccione un rol primero'
+                      : (estadoGrupo(grupo) === 'all' ? 'Quitar todos' : 'Asignar todos')">
+          <input type="checkbox"
+                 [checked]="estadoGrupo(grupo) === 'all'"
+                 [class.indeterminate-check]="estadoGrupo(grupo) === 'some'"
+                 [disabled]="!selectedRolId() || esProcesando(grupo.controlador)"
+                 (change)="toggleControlador(grupo)">
+          @if (esProcesando(grupo.controlador)) {
+            <span class="perm-spinner-sm"></span>
           } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-            </svg>
-            Sincronizar Permisos
+            {{ grupo.controlador || 'Vistas' }}
           }
-        </button>
-        <select class="filtro-select"
-                [ngModel]="selectedRolId()"
-                (change)="onRolChange($event)">
-          <option [ngValue]="null">Seleccione un rol</option>
-          @for (rol of (roles.error() ? [] : (roles.value() ?? [])); track rol.rolId) {
-            <option [value]="rol.rolId">{{ rol.nombre }}</option>
-          }
-        </select>
-      </div>
-    </div>
+        </label>
 
-    <!-- ── Barra de resumen global ────────────────────────────────────────── -->
-    <div class="tabla-wrapper mb-4 px-4 py-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
-
-      <!-- Check global -->
-      <label class="check-interno mb-0 d-flex align-items-center gap-2"
-             style="font-weight:600; font-size:0.875rem;"
-             [class.text-muted]="!selectedRolId()"
-             [title]="!selectedRolId() ? 'Seleccione un rol primero' : ''">
-        <input type="checkbox"
-               [checked]="estadoGlobal() === 'all'"
-               [class.indeterminate-check]="estadoGlobal() === 'some'"
-               [disabled]="!selectedRolId() || procesando().has('__global__') || totalPermisos() === 0"
-               (change)="toggleTodo()">
-        @if (procesando().has('__global__')) {
-          <span class="spinner-sm"></span> Procesando…
-        } @else {
-          Seleccionar todos los permisos
-        }
-      </label>
-
-      <!-- Estadísticas globales -->
-      <div class="d-flex align-items-center gap-3">
-        <span style="font-size:0.8rem; color:#6c757d;">
-          Total de permisos:
-          <strong style="color:#fff;">{{ totalPermisos() }}</strong>
-        </span>
         @if (selectedRolId()) {
-          <span class="permiso-badge"
-                [class.permiso-badge--full]="estadoGlobal() === 'all'"
-                [class.permiso-badge--partial]="estadoGlobal() === 'some'"
-                [class.permiso-badge--none]="estadoGlobal() === 'none'">
-            {{ totalAsignados() }} / {{ totalPermisos() }} asignados
+          <span class="permiso-badge permiso-badge--sm"
+                [class.permiso-badge--full]="estadoGrupo(grupo) === 'all'"
+                [class.permiso-badge--partial]="estadoGrupo(grupo) === 'some'"
+                [class.permiso-badge--none]="estadoGrupo(grupo) === 'none'">
+            {{ asignadosEnGrupo(grupo) }}/{{ grupo.permisos.length }}
           </span>
         }
       </div>
+
+      <div class="perm-card-divider"></div>
+
+      <!-- Permisos individuales -->
+      <div class="perm-card-list">
+        @for (permiso of grupo.permisos; track permiso.permisoId) {
+          <label class="check-label">
+            <input type="checkbox"
+                   [checked]="tienePermiso(permiso.permisoId)"
+                   [disabled]="esProcesando(grupo.controlador) || procesando().has('__global__')"
+                   (change)="addDeletePermission($event, permiso.permisoId)">
+            {{ permiso.nombre }}
+          </label>
+        }
+      </div>
+
     </div>
-
-    <!-- ── Tarjetas de permisos ───────────────────────────────────────────── -->
-    <div class="row g-3">
-      @for (grupo of agrupadosArray(); track grupo.controlador) {
-        <div class="col-xl-3 col-md-4 col-sm-6">
-          <div class="tabla-wrapper" style="padding: 1.1rem 1.25rem;">
-
-            <!-- Cabecera del grupo -->
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <label class="check-interno mb-0 d-flex align-items-center gap-2"
-                     style="font-size:0.72rem;font-weight:700;color:#d7691c;text-transform:uppercase;letter-spacing:0.07em;"
-                     [title]="!selectedRolId() ? 'Seleccione un rol primero' : (estadoGrupo(grupo) === 'all' ? 'Quitar todos' : 'Asignar todos')">
-                <input type="checkbox"
-                       [checked]="estadoGrupo(grupo) === 'all'"
-                       [class.indeterminate-check]="estadoGrupo(grupo) === 'some'"
-                       [disabled]="!selectedRolId() || esProcesando(grupo.controlador)"
-                       (change)="toggleControlador(grupo)">
-                @if (esProcesando(grupo.controlador)) {
-                  <span class="spinner-sm"></span>
-                } @else {
-                  {{ grupo.controlador || 'Vistas' }}
-                }
-              </label>
-
-              <!-- Badge X/Y por grupo -->
-              @if (selectedRolId()) {
-                <span class="permiso-badge"
-                      [class.permiso-badge--full]="estadoGrupo(grupo) === 'all'"
-                      [class.permiso-badge--partial]="estadoGrupo(grupo) === 'some'"
-                      [class.permiso-badge--none]="estadoGrupo(grupo) === 'none'"
-                      style="font-size:0.68rem;">
-                  {{ asignadosEnGrupo(grupo) }}/{{ grupo.permisos.length }}
-                </span>
-              }
-            </div>
-
-            <div style="height:1px;background:#f0f0f0;margin-bottom:0.75rem;"></div>
-
-            <!-- Permisos individuales -->
-            <div class="d-flex flex-column gap-2">
-              @for (permiso of grupo.permisos; track permiso.permisoId) {
-                <label class="check-interno">
-                  <input type="checkbox"
-                         [checked]="tienePermiso(permiso.permisoId)"
-                         [disabled]="esProcesando(grupo.controlador) || procesando().has('__global__')"
-                         (change)="addDeletePermission($event, permiso.permisoId)">
-                  {{ permiso.nombre }}
-                </label>
-              }
-            </div>
-
-          </div>
-        </div>
-      }
-    </div>
-
-  </div>
+  }
 </div>

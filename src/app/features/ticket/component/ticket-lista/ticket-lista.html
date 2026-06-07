@@ -1,237 +1,254 @@
-<div class="app-content-wrapper py-20 pb-13">
-  <div class="container">
- 
-  <!-- ── Header ─────────────────────────────────────────────────────────────── -->
-  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="page-title mb-0">{{ titulo }}</h1>
-      <span class="page-subtitle">
-        {{ svc.ticketsFiltrados().length }} de {{ svc.tickets().length }} tickets
-      </span>
-    </div>
-    <div class="d-flex gap-2 align-items-center">
-      <!-- Toggle vista -->
-      <div class="vista-toggle">
-        <button class="vista-btn"
-                [class.activo]="svc.vistaActiva() === 'tabla'"
-                (click)="svc.vistaActiva.set('tabla')"
-                title="Vista tabla">
-          <i class="bi bi-table"></i>
-        </button>
-        <button class="vista-btn"
-                [class.activo]="svc.vistaActiva() === 'tarjetas'"
-                (click)="svc.vistaActiva.set('tarjetas')"
-                title="Vista tarjetas">
-          <i class="bi bi-grid-3x3-gap"></i>
-        </button>
-      </div>
-      <!-- Nuevo ticket -->
-      <button class="btn-nuevo" data-bs-toggle="modal" data-bs-target="#modalCrearTicket">
-        <i class="bi bi-plus-lg"></i> Nuevo Ticket
+<!-- ── Header ─────────────────────────────────────────────────────────────── -->
+<div class="tl-header">
+  <div>
+    <h1 class="page-title">{{ titulo }}</h1>
+    <span class="page-subtitle">
+      {{ svc.ticketsFiltrados().length }} de {{ svc.tickets().length }} tickets
+    </span>
+  </div>
+  <div class="tl-actions">
+    <!-- Toggle vista -->
+    <div class="vista-toggle">
+      <button class="vista-btn"
+              [class.activo]="svc.vistaActiva() === 'tabla'"
+              (click)="svc.vistaActiva.set('tabla')"
+              title="Vista tabla">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"
+             viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/>
+          <rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/></svg>
+        Tabla
+      </button>
+      <button class="vista-btn"
+              [class.activo]="svc.vistaActiva() === 'tarjetas'"
+              (click)="svc.vistaActiva.set('tarjetas')"
+              title="Vista tarjetas">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"
+             viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/>
+          <rect x="2" y="10" width="9" height="11" rx="1"/><rect x="13" y="10" width="9" height="11" rx="1"/></svg>
+        Kanban
       </button>
     </div>
-  </div>
- 
-  <!-- ── Filtros ────────────────────────────────────────────────────────────── -->
-  <div class="filtros-bar mb-4">
-    <div class="filtro-busqueda">
-      <i class="bi bi-search"></i>
-      <input type="text"
-             class="filtro-input"
-             placeholder="Buscar por ticket, título, usuario…"
-             [(ngModel)]="busqueda">
-    </div>
- 
-    <select class="filtro-select" [(ngModel)]="filtroEstado"
-            [disabled]="estados.isLoading() || !!estados.error()">
-      <option value="">
-        {{ estados.isLoading() ? 'Cargando…' : 'Todos los estados' }}
-      </option>
-      @if (!estados.error()) {
-        @for (e of (estados.value() ?? []); track e.estadoId) {
-          <option [value]="e.nombre">{{ e.nombre }}</option>
-        }
-      }
-    </select>
-
-    <select class="filtro-select" [(ngModel)]="filtroPrioridad"
-            [disabled]="prioridades.isLoading() || !!prioridades.error()">
-      <option value="">
-        {{ prioridades.isLoading() ? 'Cargando…' : 'Todas las prioridades' }}
-      </option>
-      @if (!prioridades.error()) {
-        @for (p of prioridadesDistintas; track p.nombre) {
-          <option [value]="p.nombre">{{ p.nombre }}</option>
-        }
-      }
-    </select>
- 
-    @if (filtroEstado || filtroPrioridad || busqueda) {
-      <button class="btn-limpiar" (click)="svc.limpiarFiltros()">
-        <i class="bi bi-x-circle"></i> Limpiar
-      </button>
-    }
-  </div>
- 
-  <!-- ════════════════════════════════════════════════════════════════════════ -->
-  <!-- VISTA TABLA                                                             -->
-  <!-- ════════════════════════════════════════════════════════════════════════ -->
-  @if (svc.vistaActiva() === 'tabla') {
-    <div class="tabla-wrapper">
-      <table class="tk-table">
-        <thead>
-          <tr>
-            <th>Ticket</th>
-            <th>Título</th>
-            <th>Categoría</th>
-            <th>Prioridad</th>
-            <th>Estado</th>
-            <th>Solicitante</th>
-            <th>Técnico</th>
-            <th>SLA</th>
-            <th>Fecha</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (svc.cargando()) {
-            <tr>
-              <td colspan="10">
-                <div class="d-flex justify-content-center align-items-center py-4">
-                  <p class="text-primary mb-0">Cargando...</p>
-                </div>
-              </td>
-            </tr>
-          } @else if (svc.error()) {
-            <tr>
-              <td colspan="10">
-                <div class="d-flex justify-content-center align-items-center py-4 gap-2">
-                  <i class="bi bi-exclamation-triangle-fill text-danger"></i>
-                  <p class="text-danger mb-0">{{ svc.error() }}</p>
-                </div>
-              </td>
-            </tr>
-          } @else if (svc.ticketsFiltrados().length === 0) {
-            <tr>
-              <td colspan="10">
-                <div class="estado-vacio">
-                  <i class="bi bi-inbox"></i>
-                  <p>No hay tickets que mostrar</p>
-                </div>
-              </td>
-            </tr>
-          } @else {
-            @for (t of svc.ticketsFiltrados(); track t.publicId) {
-              <tr class="tk-row" (click)="verDetalle(t)">
-                <td>
-                  <span class="numero-ticket">{{ t.numeroTicket }}</span>
-                </td>
-                <td>
-                  <span class="titulo-ticket">{{ t.titulo }}</span>
-                </td>
-                <td>
-                  <span class="chip-categoria">{{ t.categoria }}</span>
-                </td>
-                <td>
-                  <span class="badge-prioridad"
-                        [style.color]="prioridadColor(t.prioridad)"
-                        [style.background-color]="prioridadColor(t.prioridad) + '26'"
-                        [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '55'">
-                    {{ t.prioridad }}
-                  </span>
-                </td>
-                <td>
-                  <span class="estado-chip"
-                        [style.color]="estadoColor(t.estado)"
-                        [style.background-color]="estadoColor(t.estado) + '26'"
-                        [style.border]="'1px solid ' + estadoColor(t.estado) + '55'">
-                    {{ t.estado }}
-                  </span>
-                </td>
-                <td class="cell-muted">{{ t.solicitante }}</td>
-                <td class="cell-muted">{{ t.tecnico ?? '—' }}</td>
-                <td>
-                  <span class="sla-badge" [ngClass]="slaClass(t)">
-                    {{ slaTexto(t) }}
-                  </span>
-                </td>
-                <td class="cell-muted">{{ formatFecha(t.fechaRegistro) }}</td>
-                <td>
-                  <button class="btn-ver btn-sm" (click)="$event.stopPropagation(); verDetalle(t)">
-                    Detalle
-                  </button>
-                </td>
-              </tr>
-            }
-          }
-        </tbody>
-      </table>
-    </div>
-  }
-
-  <!-- ════════════════════════════════════════════════════════════════════════ -->
-  <!-- VISTA TARJETAS                                                          -->
-  <!-- ════════════════════════════════════════════════════════════════════════ -->
-  @if (svc.vistaActiva() === 'tarjetas') {
-
-    @if (svc.cargando()) {
-      <div class="d-flex justify-content-center align-items-center py-5">
-        <p class="text-primary mb-0">Cargando...</p>
-      </div>
-    } @else if (svc.ticketsFiltrados().length === 0) {
-      <div class="estado-vacio">
-        <i class="bi bi-inbox"></i>
-        <p>No hay tickets que mostrar</p>
-      </div>
-    } @else {
-      <div class="kanban-wrapper">
-        @for (grupo of svc.ticketsPorEstado(); track grupo.estado) {
-          <div class="kanban-col">
-            <!-- Cabecera columna -->
-            <div class="kanban-col-header"
-                 [style.border-left-color]="estadoColor(grupo.estado)">
-              <span class="kanban-estado">{{ grupo.estado }}</span>
-              <span class="kanban-count">{{ grupo.cantidad }}</span>
-            </div>
-            <!-- Tarjetas -->
-            @for (t of grupo.tickets; track t.publicId) {
-              <div class="kanban-card" (click)="verDetalle(t)">
-                <div class="kanban-card-top">
-                  <span class="numero-ticket">{{ t.numeroTicket }}</span>
-                  <span class="badge-prioridad"
-                        [style.color]="prioridadColor(t.prioridad)"
-                        [style.background-color]="prioridadColor(t.prioridad) + '26'"
-                        [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '55'">
-                    {{ t.prioridad }}
-                  </span>
-                </div>
-                <p class="kanban-titulo">{{ t.titulo }}</p>
-                <div class="kanban-card-meta">
-                  <span><i class="bi bi-tag-fill"></i> {{ t.categoria }}</span>
-                  @if (t.tecnico) {
-                    <span><i class="bi bi-person-fill"></i> {{ t.tecnico }}</span>
-                  }
-                </div>
-                <div class="kanban-card-footer">
-                  <span class="sla-badge" [ngClass]="slaClass(t)">
-                    {{ slaTexto(t) }}
-                  </span>
-                  <span class="kanban-fecha">{{ formatFecha(t.fechaRegistro) }}</span>
-                </div>
-              </div>
-            }
-          </div>
-        }
-      </div>
-    }
-  }
- 
+    <!-- Nuevo ticket -->
+    <button class="btn btn-primary" (click)="showModal.set(true)">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+           viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nuevo Ticket
+    </button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════════════════════ -->
-<!-- MODAL: CREAR TICKET                                                         -->
-<!-- ════════════════════════════════════════════════════════════════════════════ -->
+<!-- ── Filtros ────────────────────────────────────────────────────────────── -->
+<div class="filtros-bar">
+  <div class="filtro-busqueda">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24" class="filtro-icon">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text"
+           class="filtro-input"
+           placeholder="Buscar por ticket, título, usuario…"
+           [(ngModel)]="busqueda">
+  </div>
+
+  <select class="filtro-select" [(ngModel)]="filtroEstado"
+          [disabled]="estados.isLoading() || !!estados.error()">
+    <option value="">
+      {{ estados.isLoading() ? 'Cargando…' : 'Todos los estados' }}
+    </option>
+    @if (!estados.error()) {
+      @for (e of (estados.value() ?? []); track e.estadoId) {
+        <option [value]="e.nombre">{{ e.nombre }}</option>
+      }
+    }
+  </select>
+
+  <select class="filtro-select" [(ngModel)]="filtroPrioridad"
+          [disabled]="prioridades.isLoading() || !!prioridades.error()">
+    <option value="">
+      {{ prioridades.isLoading() ? 'Cargando…' : 'Todas las prioridades' }}
+    </option>
+    @if (!prioridades.error()) {
+      @for (p of prioridadesDistintas; track p.nombre) {
+        <option [value]="p.nombre">{{ p.nombre }}</option>
+      }
+    }
+  </select>
+
+  @if (filtroEstado || filtroPrioridad || busqueda) {
+    <button class="btn-limpiar" (click)="svc.limpiarFiltros()">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/>
+        <line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      Limpiar
+    </button>
+  }
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- VISTA TABLA                                                             -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+@if (svc.vistaActiva() === 'tabla') {
+  <div class="tabla-wrapper">
+    <table class="tk-table">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Título</th>
+          <th>Categoría</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th>Solicitante</th>
+          <th>Técnico</th>
+          <th>SLA</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (svc.cargando()) {
+          <tr>
+            <td colspan="10">
+              <div class="estado-vacio">
+                <span class="tl-spinner"></span>
+                <span>Cargando tickets…</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (svc.error()) {
+          <tr>
+            <td colspan="10">
+              <div class="estado-vacio estado-error">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"
+                     viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <p>{{ svc.error() }}</p>
+              </div>
+            </td>
+          </tr>
+        } @else if (svc.ticketsFiltrados().length === 0) {
+          <tr>
+            <td colspan="10">
+              <div class="estado-vacio">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"
+                     viewBox="0 0 24 24"><path d="M22 12h-6l-2 3H10l-2-3H2"/>
+                  <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+                <p>No hay tickets que mostrar</p>
+              </div>
+            </td>
+          </tr>
+        } @else {
+          @for (t of svc.ticketsFiltrados(); track t.publicId) {
+            <tr class="tk-row" (click)="verDetalle(t)">
+              <td><span class="numero-ticket">{{ t.numeroTicket }}</span></td>
+              <td><span class="titulo-ticket">{{ t.titulo }}</span></td>
+              <td><span class="chip-categoria">{{ t.categoria }}</span></td>
+              <td>
+                <span class="badge-prioridad"
+                      [style.color]="prioridadColor(t.prioridad)"
+                      [style.background-color]="prioridadColor(t.prioridad) + '26'"
+                      [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '55'">
+                  {{ t.prioridad }}
+                </span>
+              </td>
+              <td>
+                <span class="estado-chip"
+                      [style.color]="estadoColor(t.estado)"
+                      [style.background-color]="estadoColor(t.estado) + '26'"
+                      [style.border]="'1px solid ' + estadoColor(t.estado) + '55'">
+                  {{ t.estado }}
+                </span>
+              </td>
+              <td class="cell-muted">{{ t.solicitante }}</td>
+              <td class="cell-muted">{{ t.tecnico ?? '—' }}</td>
+              <td>
+                <span class="sla-badge" [ngClass]="slaClass(t)">{{ slaTexto(t) }}</span>
+              </td>
+              <td class="cell-muted">{{ formatFecha(t.fechaRegistro) }}</td>
+              <td>
+                <button class="btn-ver" (click)="$event.stopPropagation(); verDetalle(t)">
+                  Detalle
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- VISTA TARJETAS / KANBAN                                                 -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+@if (svc.vistaActiva() === 'tarjetas') {
+  @if (svc.cargando()) {
+    <div class="estado-vacio">
+      <span class="tl-spinner"></span>
+      <span>Cargando tickets…</span>
+    </div>
+  } @else if (svc.ticketsFiltrados().length === 0) {
+    <div class="estado-vacio">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"
+           viewBox="0 0 24 24"><path d="M22 12h-6l-2 3H10l-2-3H2"/>
+        <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+      <p>No hay tickets que mostrar</p>
+    </div>
+  } @else {
+    <div class="kanban-wrapper">
+      @for (grupo of svc.ticketsPorEstado(); track grupo.estado) {
+        <div class="kanban-col">
+          <!-- Cabecera columna -->
+          <div class="kanban-col-header"
+               [style.border-left-color]="estadoColor(grupo.estado)">
+            <span class="kanban-estado">{{ grupo.estado }}</span>
+            <span class="kanban-count">{{ grupo.cantidad }}</span>
+          </div>
+          <!-- Tarjetas -->
+          @for (t of grupo.tickets; track t.publicId) {
+            <div class="kanban-card" (click)="verDetalle(t)">
+              <div class="kanban-card-top">
+                <span class="numero-ticket">{{ t.numeroTicket }}</span>
+                <span class="badge-prioridad"
+                      [style.color]="prioridadColor(t.prioridad)"
+                      [style.background-color]="prioridadColor(t.prioridad) + '26'"
+                      [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '55'">
+                  {{ t.prioridad }}
+                </span>
+              </div>
+              <p class="kanban-titulo">{{ t.titulo }}</p>
+              <div class="kanban-card-meta">
+                <span>
+                  <svg width="11" height="11" fill="none" stroke="var(--orange)" stroke-width="2"
+                       viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                  {{ t.categoria }}
+                </span>
+                @if (t.tecnico) {
+                  <span>
+                    <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/></svg>
+                    {{ t.tecnico }}
+                  </span>
+                }
+              </div>
+              <div class="kanban-card-footer">
+                <span class="sla-badge" [ngClass]="slaClass(t)">{{ slaTexto(t) }}</span>
+                <span class="kanban-fecha">{{ formatFecha(t.fechaRegistro) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+}
+
+<!-- ── Modal crear ticket (Angular-native) ────────────────────────────── -->
 <app-ticket-crear-modal
+  [visible]="showModal()"
+  (cerrar)="showModal.set(false)"
   (ticketCreado)="onTicketCreado($event)"
 ></app-ticket-crear-modal>

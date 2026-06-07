@@ -1,7 +1,7 @@
 import {
-  Component, Output, EventEmitter,
+  Component, Input, Output, EventEmitter,
   inject, signal, resource,
-  OnInit, OnDestroy
+  OnInit, OnDestroy, HostListener
 } from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule }   from '@angular/forms';
@@ -14,8 +14,6 @@ import { TicketListItem }      from '../../model/ticket.model';
 import { SedeService }         from '../../../maintenance/services/sede.service';
 import { ConocimientoService } from '../../../conocimiento/services/conocimiento.service';
 import { ArticuloListItem, ArticuloDetalle } from '../../../conocimiento/models/conocimiento.model';
-
-declare var bootstrap: any;
 
 interface PrioridadInfo {
   id:        number;
@@ -45,7 +43,12 @@ const MATRIZ_PRIORIDAD: Record<string, PrioridadInfo> = {
 })
 export class TicketCrearModalComponent implements OnInit, OnDestroy {
 
+  @Input()  visible      = false;
+  @Output() cerrar       = new EventEmitter<void>();
   @Output() ticketCreado = new EventEmitter<TicketListItem>();
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void { if (this.visible) this.cerrar.emit(); }
 
   private svc          = inject(TicketService);
   private sedeSvc      = inject(SedeService);
@@ -186,8 +189,7 @@ export class TicketCrearModalComponent implements OnInit, OnDestroy {
         this.guardando.set(false);
         this.ticketCreado.emit(ticket);
         this._reset();
-        const el = document.getElementById('modalCrearTicket');
-        if (el) bootstrap.Modal.getInstance(el)?.hide();
+        this.cerrar.emit();
       },
       error: () => {
         this.guardando.set(false);

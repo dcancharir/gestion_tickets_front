@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, resource, effect } from '@angular/core';
+import { Component, OnInit, inject, signal, resource, effect, HostListener } from '@angular/core';
 import { CommonModule }    from '@angular/common';
 import { FormsModule }     from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,8 +8,6 @@ import { EstadoService }   from '../../../maintenance/services/estado.service';
 import { PrioridadService } from '../../../maintenance/services/prioridad.service';
 import { UserService }     from '../../../maintenance/services/user.service';
 import { environment }     from '../../../../../environments/environment';
- 
-declare var bootstrap: any;
  
 @Component({
   selector:    'app-ticket-detalle',
@@ -40,10 +38,16 @@ export class TicketDetalleComponent implements OnInit {
     return (this.prioridades.value() ?? []).find(p => p.nombre === nombre)?.colorHexa ?? '#7a6a5a';
   }
  
-  // ── Estado de los modales ──────────────────────────────────────────────────
-  accionActiva       = signal<string>('');
+  // ── Modal Angular-nativo (reemplaza Bootstrap modals) ─────────────────────
+  modalActivo        = signal<string>('');
   guardando          = signal(false);
   errorAccion        = signal<string | null>(null);
+
+  abrirModal(id: string): void { this.errorAccion.set(null); this.modalActivo.set(id); }
+  cerrarModal(): void          { this.modalActivo.set(''); }
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void { if (this.modalActivo()) this.cerrarModal(); }
 
   // ── Estado del formulario de comentarios ───────────────────────────────────
   guardandoComentario = signal(false);
@@ -95,8 +99,7 @@ export class TicketDetalleComponent implements OnInit {
     const t = this.svc.detalle();
     if (!t || !this.fAsignar.tecnicoPublicId) return;
     this._ejecutar(
-      this.svc.asignar(t.publicId, this.fAsignar),
-      'modalAsignar'
+      this.svc.asignar(t.publicId, this.fAsignar)
     );
   }
  
@@ -106,8 +109,7 @@ export class TicketDetalleComponent implements OnInit {
       this.errorAccion.set('El detalle es obligatorio.'); return;
     }
     this._ejecutar(
-      this.svc.cambiarEstado(t.publicId, this.fEstado),
-      'modalEstado'
+      this.svc.cambiarEstado(t.publicId, this.fEstado)
     );
   }
  
@@ -117,8 +119,7 @@ export class TicketDetalleComponent implements OnInit {
       this.errorAccion.set('La solución aplicada es obligatoria.'); return;
     }
     this._ejecutar(
-      this.svc.resolver(t.publicId, this.fResolver),
-      'modalResolver'
+      this.svc.resolver(t.publicId, this.fResolver)
     );
   }
  
@@ -126,8 +127,7 @@ export class TicketDetalleComponent implements OnInit {
     const t = this.svc.detalle();
     if (!t) return;
     this._ejecutar(
-      this.svc.cerrar(t.publicId, this.fCerrar),
-      'modalCerrar'
+      this.svc.cerrar(t.publicId, this.fCerrar)
     );
   }
  
@@ -137,8 +137,7 @@ export class TicketDetalleComponent implements OnInit {
       this.errorAccion.set('Completa todos los campos.'); return;
     }
     this._ejecutar(
-      this.svc.escalar(t.publicId, this.fEscalar),
-      'modalEscalar'
+      this.svc.escalar(t.publicId, this.fEscalar)
     );
   }
  
@@ -148,8 +147,7 @@ export class TicketDetalleComponent implements OnInit {
       this.errorAccion.set('El motivo es obligatorio.'); return;
     }
     this._ejecutar(
-      this.svc.reabrir(t.publicId, this.fReabrir),
-      'modalReabrir'
+      this.svc.reabrir(t.publicId, this.fReabrir)
     );
   }
  
@@ -171,15 +169,13 @@ export class TicketDetalleComponent implements OnInit {
     });
   }
  
-  private _ejecutar(obs: any, modalId: string): void {
+  private _ejecutar(obs: any): void {
     this.guardando.set(true);
     this.errorAccion.set(null);
     obs.subscribe({
       next: () => {
         this.guardando.set(false);
-        const el = document.getElementById(modalId);
-        if (el) bootstrap.Modal.getInstance(el)?.hide();
-        // Recargar el detalle para reflejar cambios
+        this.cerrarModal();
         const t = this.svc.detalle();
         if (t) this.svc.cargarDetalle(t.publicId);
       },

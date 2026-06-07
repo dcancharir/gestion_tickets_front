@@ -27,16 +27,10 @@
             ],
             "styles": [
               "src/assets/css/bootstrap.css",
-              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/styles/app-new.css",
               "src/styles.css"
             ],
-            "scripts": [
-              "src/assets/vendor/libs/jquery/jquery.js",
-              "src/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js",
-              "src/assets/js/bootstrap.js",
-              "src/assets/js/conca-sidebar.js",
-              "src/assets/js/conca.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

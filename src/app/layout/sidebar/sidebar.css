@@ -1,14 +1,64 @@
-.app-sidebar-submenu {
-  display: none;
+.nav-loading {
+  padding: 12px 24px;
+  font-size: 12px;
+  color: var(--nav-text-dim);
 }
 
-.app-sidebar-submenu.open {
-  display: block;
-}
-.app-sidebar-menu-item .app-sidebar-submenu {
-  display: none;
+/* Módulo con submenu */
+.nav-group-sub { margin-bottom: 2px; }
+
+.nav-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: var(--nav-text);
+  font-family: inherit;
 }
 
-.app-sidebar-menu-item.open .app-sidebar-submenu {
+.nav-toggle .arrow {
+  margin-left: auto;
+  transition: transform .2s;
+  opacity: .6;
+}
+
+.nav-group-sub.open > .nav-toggle .arrow {
+  transform: rotate(180deg);
+}
+
+/* Submenú */
+.nav-sublist {
+  display: none;
+  padding: 3px 0 4px 40px;
+}
+
+.nav-group-sub.open > .nav-sublist {
   display: block;
+}
+
+.nav-subitem {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 8px;
+  color: var(--nav-text);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 1px;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+}
+
+.nav-subitem:hover { background: var(--nav-2); color: #ede7de; }
+
+.nav-subitem.active {
+  color: #fff;
+  background: rgba(237, 90, 28, .14);
+}
+
+/* Scroll interno del sidebar */
+aside.sidebar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--nav-line) transparent;
 }

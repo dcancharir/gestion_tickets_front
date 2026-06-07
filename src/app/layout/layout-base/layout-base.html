@@ -1,24 +1,17 @@
-<body>
+<div class="app"
+     [class.nav-collapsed]="layoutSvc.collapsed()"
+     [class.nav-open]="layoutSvc.mobileOpen()">
 
-    <div class="app-main">
+  <app-sidebar></app-sidebar>
 
-        <!-- app wrapper start -->
-        <div id="app-wrapper" class="app-wrapper d-flex flex-column align-items-stretch min-vh-100">
-
-            <!-- app sidebar start -->
-            <app-sidebar></app-sidebar>
-            <!-- app sidebar end -->
-
-            <!-- app header start -->
-            <app-header></app-header>
-            <!-- app header end -->
-
-            <router-outlet></router-outlet>
-            
-            <!-- <div class="app-backdrop"></div> -->
-            <!-- app content end -->
-        </div>
-        <!-- app wrapper end -->
+  <div class="main">
+    <app-header></app-header>
+    <div class="content">
+      <router-outlet></router-outlet>
     </div>
-    <app-footer></app-footer>
-</body>
+  </div>
+
+  @if (layoutSvc.mobileOpen()) {
+    <div class="sidebar-backdrop" (click)="layoutSvc.closeMobile()"></div>
+  }
+</div>

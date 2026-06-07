@@ -14,6 +14,7 @@ interface GrupoPermisos { controlador: string; permisos: Permiso[]; }
 @Component({
     selector: 'app-permisos-add-remove',
     templateUrl: './permisos-add-remove.html',
+    styleUrl: './permisos-add-remove.css',
     imports: [FormsModule]
 })
 export class PermisosAddRemove {

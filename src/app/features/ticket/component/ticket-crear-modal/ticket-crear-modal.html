@@ -1,229 +1,238 @@
-<div class="modal fade" id="modalCrearTicket" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content modal-dark">
+@if (visible) {
+  <!-- Backdrop -->
+  <div class="modal-overlay" (click)="cerrar.emit()"></div>
 
-      <div class="modal-header modal-dark-header">
-        <h5 class="modal-title">
-          <i class="bi bi-plus-circle me-2" style="color:#d7691c"></i>
-          Nuevo Ticket
-        </h5>
-        <button type="button" class="btn-close-custom"
-                data-bs-dismiss="modal" (click)="cancelar()">
-          <i class="bi bi-x-lg"></i>
-        </button>
+  <!-- Panel -->
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+    <!-- Header -->
+    <div class="mp-header">
+      <span id="modal-title" class="mp-title">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24" style="color:var(--orange)">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        Nuevo Ticket
+      </span>
+      <button class="mp-close" (click)="cerrar.emit(); cancelar()" aria-label="Cerrar">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="mp-body">
+
+      @if (error()) {
+        <div class="mp-error">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Título -->
+      <div class="mp-field">
+        <label class="mp-label">Título <span class="req">*</span></label>
+        <input type="text" class="mp-input"
+               placeholder="Describe brevemente el problema"
+               [(ngModel)]="form.titulo"
+               (input)="onTituloInput(form.titulo)"
+               maxlength="200">
       </div>
 
-      <div class="modal-body modal-dark-body">
-
-        @if (error()) {
-          <div class="alerta-error mb-3">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
+      <!-- ── KB Sugerida ─────────────────────────────────────────────────── -->
+      @if (buscandoKb()) {
+        <div class="kb-panel">
+          <div class="kb-panel-header">
+            <svg width="14" height="14" fill="none" stroke="var(--orange)" stroke-width="2"
+                 viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+            <span>Buscando en Base de Conocimiento…</span>
+            <span class="spinner-sm"></span>
           </div>
-        }
-
-        <!-- Título -->
-        <div class="form-group mb-2">
-          <label class="form-label-dark">Título <span class="req">*</span></label>
-          <input type="text" class="form-input-dark"
-                 placeholder="Describe brevemente el problema"
-                 [(ngModel)]="form.titulo"
-                 (input)="onTituloInput(form.titulo)"
-                 maxlength="200">
         </div>
-
-        <!-- ── Panel KB sugerida ─────────────────────────────────────────── -->
-        @if (buscandoKb()) {
-          <div class="kb-panel mb-3">
-            <div class="kb-panel-header">
-              <i class="bi bi-book me-2" style="color:#d7691c"></i>
-              <span>Buscando en Base de Conocimiento…</span>
-              <span class="spinner-sm ms-2"></span>
-            </div>
+      } @else if (sugerencias().length > 0) {
+        <div class="kb-panel">
+          <div class="kb-panel-header">
+            <svg width="14" height="14" fill="none" stroke="var(--orange)" stroke-width="2"
+                 viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/>
+              <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1.42.55 2.67 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>
+            <span>¿Ya fue resuelto? Artículos relacionados:</span>
+            <button class="kb-close-btn" (click)="cerrarSugerencias()">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"
+                   viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
           </div>
-        } @else if (sugerencias().length > 0) {
-          <div class="kb-panel mb-3">
-            <div class="kb-panel-header">
-              <i class="bi bi-lightbulb me-2" style="color:#d7691c"></i>
-              <span>¿Tu problema ya fue resuelto? Artículos relacionados:</span>
-              <button class="kb-close-btn ms-auto" (click)="cerrarSugerencias()" title="Cerrar">
-                <i class="bi bi-x"></i>
-              </button>
-            </div>
-
-            <div class="kb-lista">
-              @for (art of sugerencias(); track art.publicId) {
-                <div class="kb-item" [class.kb-item-expanded]="articuloExpandido()?.publicId === art.publicId">
-
-                  <!-- Fila del artículo -->
-                  <div class="kb-item-header" (click)="verSolucion(art.publicId)">
-                    <div class="kb-item-info">
-                      <i class="bi bi-file-text me-2" style="color:#d7691c; font-size:.85rem"></i>
-                      <span class="kb-item-titulo">{{ art.titulo }}</span>
-                      @if (art.categoria) {
-                        <span class="kb-badge ms-2">{{ art.categoria }}</span>
-                      }
-                    </div>
-                    <i class="bi"
-                       [class.bi-chevron-down]="articuloExpandido()?.publicId !== art.publicId"
-                       [class.bi-chevron-up]="articuloExpandido()?.publicId === art.publicId"
-                       style="color:#9a8a7a; font-size:.8rem; flex-shrink:0"></i>
-                  </div>
-
-                  <!-- Detalle expandido -->
-                  @if (articuloExpandido()?.publicId === art.publicId) {
-                    @if (cargandoArticulo()) {
-                      <div class="kb-detalle">
-                        <span class="spinner-sm me-2"></span> Cargando solución…
-                      </div>
-                    } @else {
-                      <div class="kb-detalle">
-                        <div class="kb-seccion">
-                          <span class="kb-seccion-label">🔍 Problema</span>
-                          <p class="kb-seccion-texto">{{ articuloExpandido()!.problema }}</p>
-                        </div>
-                        <div class="kb-seccion mt-2">
-                          <span class="kb-seccion-label">✅ Solución</span>
-                          <p class="kb-seccion-texto">{{ articuloExpandido()!.solucion }}</p>
-                        </div>
-                        <small class="kb-aviso">
-                          Si esta solución resolvió tu problema, no necesitas crear un ticket.
-                        </small>
-                      </div>
+          <div class="kb-lista">
+            @for (art of sugerencias(); track art.publicId) {
+              <div class="kb-item" [class.kb-item-expanded]="articuloExpandido()?.publicId === art.publicId">
+                <div class="kb-item-header" (click)="verSolucion(art.publicId)">
+                  <div class="kb-item-info">
+                    <svg width="12" height="12" fill="none" stroke="var(--orange)" stroke-width="2"
+                         viewBox="0 0 24 24" style="flex:none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/></svg>
+                    <span class="kb-item-titulo">{{ art.titulo }}</span>
+                    @if (art.categoria) {
+                      <span class="kb-badge">{{ art.categoria }}</span>
                     }
-                  }
-
+                  </div>
+                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"
+                       viewBox="0 0 24 24" style="flex:none;color:var(--muted)">
+                    @if (articuloExpandido()?.publicId === art.publicId) {
+                      <polyline points="18 15 12 9 6 15"/>
+                    } @else {
+                      <polyline points="6 9 12 15 18 9"/>
+                    }
+                  </svg>
                 </div>
-              }
-            </div>
-          </div>
-        }
-        <!-- ── Fin KB sugerida ────────────────────────────────────────────── -->
-
-        <!-- Descripción -->
-        <div class="form-group mb-3">
-          <label class="form-label-dark">Descripción <span class="req">*</span></label>
-          <textarea class="form-input-dark" rows="4"
-                    placeholder="Detalla el problema, pasos para reproducirlo, equipos afectados…"
-                    [(ngModel)]="form.descripcion"></textarea>
-        </div>
-
-        <div class="row g-3 mb-3">
-          <!-- Canal -->
-          <div class="col-md-4">
-            <label class="form-label-dark">Canal de reporte</label>
-            <select class="form-input-dark" [(ngModel)]="form.canalReporte">
-              @for (c of canales; track c) {
-                <option [value]="c">{{ c }}</option>
-              }
-            </select>
-          </div>
-          <!-- Impacto -->
-          <div class="col-md-4">
-            <label class="form-label-dark">Impacto</label>
-            <select class="form-input-dark" [(ngModel)]="form.impacto">
-              <option [value]="1">Alto</option>
-              <option [value]="2">Medio</option>
-              <option [value]="3">Bajo</option>
-            </select>
-          </div>
-          <!-- Urgencia -->
-          <div class="col-md-4">
-            <label class="form-label-dark">Urgencia</label>
-            <select class="form-input-dark" [(ngModel)]="form.urgencia">
-              <option [value]="1">Alta</option>
-              <option [value]="2">Media</option>
-              <option [value]="3">Baja</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-          <!-- Categoría -->
-          <div class="col-md-6">
-            <label class="form-label-dark">Categoría <span class="req">*</span></label>
-            <select class="form-input-dark" [(ngModel)]="form.categoriaId">
-              <option [value]="0" disabled>Seleccionar…</option>
-              @for (c of categorias; track c.id) {
-                <option [value]="c.id">{{ c.nombre }}</option>
-              }
-            </select>
-          </div>
-          <!-- Prioridad (calculada automáticamente) -->
-          <div class="col-md-6">
-            <label class="form-label-dark">Prioridad</label>
-            <div class="prioridad-display"
-                 [style.border-color]="prioridad.colorHexa"
-                 [style.color]="prioridad.colorHexa"
-                 [style.background-color]="prioridad.colorHexa + '1A'">
-              <span class="prioridad-dot" [style.background-color]="prioridad.colorHexa"></span>
-              {{ prioridad.nombre }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Sede -->
-        <div class="form-group mb-3">
-          <label class="form-label-dark">Sede <span class="req">*</span></label>
-          @if (sedes.isLoading()) {
-            <select class="form-input-dark" disabled>
-              <option>Cargando sedes…</option>
-            </select>
-          } @else if (sedes.error()) {
-            <select class="form-input-dark" disabled>
-              <option>Error al cargar sedes</option>
-            </select>
-          } @else {
-            <select class="form-input-dark" [(ngModel)]="form.sedeId">
-              <option [value]="0" disabled>Seleccionar sede…</option>
-              @for (s of (sedes.value() ?? []); track s.sedeId) {
-                <option [value]="s.sedeId">{{ s.nombre }} ({{ s.tipoSede }})</option>
-              }
-            </select>
-          }
-        </div>
-
-        <!-- Adjuntos -->
-        <div class="form-group mb-1">
-          <label class="form-label-dark">Adjuntos</label>
-          <input type="file" class="form-input-dark" multiple
-                 accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
-                 (change)="onFileChange($event)">
-          <small style="color:#9a8a7a; font-size:.75rem">
-            Formatos permitidos: imágenes, PDF, Word, Excel, TXT
-          </small>
-        </div>
-
-        <!-- Lista de archivos seleccionados -->
-        @if (archivosSeleccionados().length > 0) {
-          <div class="archivos-lista mt-2">
-            @for (f of archivosSeleccionados(); track $index) {
-              <div class="archivo-item">
-                <span class="archivo-clip">📎</span>
-                <span class="archivo-nombre">{{ f.name }}</span>
-                <span class="archivo-size">{{ (f.size / 1024).toFixed(0) }} KB</span>
-                <button type="button" class="btn-remove-archivo"
-                        title="Quitar archivo"
-                        (click)="removerArchivo($index)">✕</button>
+                @if (articuloExpandido()?.publicId === art.publicId) {
+                  <div class="kb-detalle">
+                    @if (cargandoArticulo()) {
+                      <span class="spinner-sm"></span> Cargando solución…
+                    } @else {
+                      <div class="kb-seccion">
+                        <span class="kb-seccion-label">🔍 Problema</span>
+                        <p class="kb-seccion-texto">{{ articuloExpandido()!.problema }}</p>
+                      </div>
+                      <div class="kb-seccion">
+                        <span class="kb-seccion-label">✅ Solución</span>
+                        <p class="kb-seccion-texto">{{ articuloExpandido()!.solucion }}</p>
+                      </div>
+                      <small class="kb-aviso">
+                        Si esta solución resolvió tu problema, no necesitas crear un ticket.
+                      </small>
+                    }
+                  </div>
+                }
               </div>
             }
           </div>
+        </div>
+      }
+      <!-- ── Fin KB ───────────────────────────────────────────────────────── -->
+
+      <!-- Descripción -->
+      <div class="mp-field">
+        <label class="mp-label">Descripción <span class="req">*</span></label>
+        <textarea class="mp-input" rows="4"
+                  placeholder="Detalla el problema, pasos para reproducirlo, equipos afectados…"
+                  [(ngModel)]="form.descripcion"></textarea>
+      </div>
+
+      <div class="mp-grid-3">
+        <!-- Canal -->
+        <div class="mp-field">
+          <label class="mp-label">Canal de reporte</label>
+          <select class="mp-input" [(ngModel)]="form.canalReporte">
+            @for (c of canales; track c) { <option [value]="c">{{ c }}</option> }
+          </select>
+        </div>
+        <!-- Impacto -->
+        <div class="mp-field">
+          <label class="mp-label">Impacto</label>
+          <select class="mp-input" [(ngModel)]="form.impacto">
+            <option [value]="1">Alto</option>
+            <option [value]="2">Medio</option>
+            <option [value]="3">Bajo</option>
+          </select>
+        </div>
+        <!-- Urgencia -->
+        <div class="mp-field">
+          <label class="mp-label">Urgencia</label>
+          <select class="mp-input" [(ngModel)]="form.urgencia">
+            <option [value]="1">Alta</option>
+            <option [value]="2">Media</option>
+            <option [value]="3">Baja</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mp-grid-2">
+        <!-- Categoría -->
+        <div class="mp-field">
+          <label class="mp-label">Categoría <span class="req">*</span></label>
+          <select class="mp-input" [(ngModel)]="form.categoriaId">
+            <option [value]="0" disabled>Seleccionar…</option>
+            @for (c of categorias; track c.id) {
+              <option [value]="c.id">{{ c.nombre }}</option>
+            }
+          </select>
+        </div>
+        <!-- Prioridad calculada -->
+        <div class="mp-field">
+          <label class="mp-label">Prioridad (calculada)</label>
+          <div class="prioridad-display"
+               [style.border-color]="prioridad.colorHexa"
+               [style.color]="prioridad.colorHexa"
+               [style.background-color]="prioridad.colorHexa + '1A'">
+            <span class="prioridad-dot" [style.background-color]="prioridad.colorHexa"></span>
+            {{ prioridad.nombre }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Sede -->
+      <div class="mp-field">
+        <label class="mp-label">Sede <span class="req">*</span></label>
+        @if (sedes.isLoading()) {
+          <select class="mp-input" disabled><option>Cargando sedes…</option></select>
+        } @else if (sedes.error()) {
+          <select class="mp-input" disabled><option>Error al cargar sedes</option></select>
+        } @else {
+          <select class="mp-input" [(ngModel)]="form.sedeId">
+            <option [value]="0" disabled>Seleccionar sede…</option>
+            @for (s of (sedes.value() ?? []); track s.sedeId) {
+              <option [value]="s.sedeId">{{ s.nombre }} ({{ s.tipoSede }})</option>
+            }
+          </select>
         }
-
       </div>
 
-      <div class="modal-footer modal-dark-footer">
-        <button class="btn-modal-cancel" data-bs-dismiss="modal" (click)="cancelar()">
-          Cancelar
-        </button>
-        <button class="btn-modal-save" (click)="guardar()" [disabled]="guardando()">
-          @if (guardando()) {
-            <span class="spinner-sm"></span> Guardando…
-          } @else {
-            <i class="bi bi-check-lg me-1"></i> Crear Ticket
+      <!-- Adjuntos -->
+      <div class="mp-field">
+        <label class="mp-label">Adjuntos</label>
+        <input type="file" class="mp-input" multiple
+               accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+               (change)="onFileChange($event)">
+        <small class="mp-hint">Formatos: imágenes, PDF, Word, Excel, TXT</small>
+      </div>
+
+      @if (archivosSeleccionados().length > 0) {
+        <div class="archivos-lista">
+          @for (f of archivosSeleccionados(); track $index) {
+            <div class="archivo-item">
+              <span>📎</span>
+              <span class="archivo-nombre">{{ f.name }}</span>
+              <span class="archivo-size">{{ (f.size / 1024).toFixed(0) }} KB</span>
+              <button type="button" class="btn-remove-archivo"
+                      title="Quitar" (click)="removerArchivo($index)">✕</button>
+            </div>
           }
-        </button>
-      </div>
+        </div>
+      }
 
+    </div><!-- /mp-body -->
+
+    <!-- Footer -->
+    <div class="mp-footer">
+      <button class="btn-modal-cancel" (click)="cerrar.emit(); cancelar()">
+        Cancelar
+      </button>
+      <button class="btn-modal-save" (click)="guardar()" [disabled]="guardando()">
+        @if (guardando()) {
+          <span class="spinner-sm"></span> Guardando…
+        } @else {
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+               viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Crear Ticket
+        }
+      </button>
     </div>
+
   </div>
-</div>
+}

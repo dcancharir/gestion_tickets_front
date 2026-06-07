@@ -1,371 +1,373 @@
-/* src/app/features/dashboard/dashboard.component.css */
- 
-/* ── Wrapper ─────────────────────────────────────────────────────────────────── */
+/* ================================================================
+   Dashboard — estilos con el nuevo design system (app-new.css)
+   ================================================================ */
+
+/* ── Wrapper ─────────────────────────────────────────────────── */
 .dashboard-wrapper {
-  background:  #fff;
-  min-height:  100vh;
-  padding:     2rem;
-  color:       #f5f0eb;
-  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  padding: 0;
 }
- 
-/* ── Header ──────────────────────────────────────────────────────────────────── */
+
+/* ── Header ──────────────────────────────────────────────────── */
 .dash-title {
-  font-size:      1.75rem;
+  font-size:      1.6rem;
   font-weight:    700;
   letter-spacing: -0.02em;
-  color:          #111;
+  color:          var(--ink);
+  margin: 0;
 }
- 
+
 .dash-subtitle {
-  font-size:      0.8rem;
-  color:          #7a6a5a;
-  letter-spacing: 0.05em;
+  font-size:      0.78rem;
+  color:          var(--muted);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  margin-top: 3px;
 }
- 
+
+/* ── Botón Actualizar ────────────────────────────────────────── */
 .btn-refresh {
-  background:    #111111;
-  border:        1px solid #2a1a0e;
-  color:         #f5f0eb;
-  font-size:     0.85rem;
-  padding:       0.5rem 1.1rem;
-  border-radius: 8px;
-  transition:    all 0.2s;
+  background:    var(--surface);
+  border:        1px solid var(--line);
+  color:         var(--ink-2);
+  font-size:     13px;
+  font-weight:   600;
+  padding:       0 16px;
+  height:        36px;
+  border-radius: 9px;
   cursor:        pointer;
   display:       inline-flex;
   align-items:   center;
-  gap:           0.1rem;
+  gap:           6px;
+  font-family:   inherit;
+  transition:    background .15s, border-color .15s;
 }
-
 .btn-refresh:hover:not(:disabled) {
-  background:   #1a0f06;
-  border-color: #d7691c;
-  color:        #d7691c;
+  background:    var(--surface-2);
+  border-color:  var(--orange);
+  color:         var(--orange);
 }
-
 .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ── Animación refresh ────────────────────────────────────────────────────────── */
 @keyframes spin { to { transform: rotate(360deg); } }
 .spin { display: inline-flex; animation: spin 0.8s linear infinite; }
- 
-/* ── Skeleton ─────────────────────────────────────────────────────────────────── */
+
+/* ── Alerta de error ─────────────────────────────────────────── */
+.alerta-error {
+  background:    var(--red-soft);
+  border:        1px solid var(--red);
+  color:         var(--red);
+  border-radius: var(--r);
+  padding:       10px 16px;
+  font-size:     13.5px;
+}
+
+/* ── Skeleton ────────────────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -400px 0; }
   100% { background-position:  400px 0; }
 }
- 
 .skeleton-card {
-  height:          100px;
-  border-radius:   12px;
-  background:      linear-gradient(90deg, #111111 25%, #1a1208 50%, #111111 75%);
+  height:          90px;
+  border-radius:   var(--r);
+  background:      linear-gradient(90deg, var(--line-2) 25%, var(--surface-2) 50%, var(--line-2) 75%);
   background-size: 400px 100%;
   animation:       shimmer 1.4s ease infinite;
 }
- 
-/* ── Tarjetas de estado ───────────────────────────────────────────────────────── */
+
+/* ── Tarjetas de estado ──────────────────────────────────────── */
 .estado-card {
-  background:    #111111;
-  border:        1px solid #2a1a0e;
-  border-radius: 12px;
-  padding:       1.25rem 1rem;
+  background:    var(--surface);
+  border:        1px solid var(--line);
+  border-radius: var(--r);
+  padding:       1.1rem 1rem;
   text-align:    center;
-  transition:    transform 0.2s, border-color 0.2s;
-  cursor:        default;
+  box-shadow:    var(--shadow-sm);
+  transition:    transform .15s, box-shadow .15s;
 }
- 
-.estado-card:hover { transform: translateY(-2px); }
- 
+.estado-card:hover {
+  transform:  translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
 .estado-num {
   display:       block;
   font-size:     2rem;
-  font-weight:   800;
+  font-weight:   700;
   line-height:   1;
   margin-bottom: 0.3rem;
+  font-family:   'IBM Plex Mono', monospace;
+  letter-spacing: -.025em;
 }
- 
 .estado-label {
-  font-size:      0.72rem;
-  color:          #7a6a5a;
+  font-size:      0.7rem;
+  color:          var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  font-weight:    600;
 }
- 
-.estado-total     { border-top: 3px solid #d7691c; }
-.estado-total     .estado-num { color: #d7691c; }
- 
-.estado-abiertos  { border-top: 3px solid #e8843a; }
-.estado-abiertos  .estado-num { color: #e8843a; }
- 
-.estado-progreso  { border-top: 3px solid #bf391c; }
-.estado-progreso  .estado-num { color: #bf391c; }
- 
-.estado-resuelto  { border-top: 3px solid #c25a1a; }
-.estado-resuelto  .estado-num { color: #c25a1a; }
- 
-.estado-cerrado   { border-top: 3px solid #7a6a5a; }
-.estado-cerrado   .estado-num { color: #7a6a5a; }
- 
-.estado-reabierto { border-top: 3px solid #bf391c; }
-.estado-reabierto .estado-num { color: #bf391c; }
- 
-/* ── KPI Cards ────────────────────────────────────────────────────────────────── */
+
+.estado-total     { border-top: 3px solid var(--orange); }
+.estado-total     .estado-num { color: var(--orange); }
+.estado-abiertos  { border-top: 3px solid var(--blue); }
+.estado-abiertos  .estado-num { color: var(--blue); }
+.estado-progreso  { border-top: 3px solid var(--amber); }
+.estado-progreso  .estado-num { color: var(--amber); }
+.estado-resuelto  { border-top: 3px solid var(--green); }
+.estado-resuelto  .estado-num { color: var(--green); }
+.estado-cerrado   { border-top: 3px solid var(--slate); }
+.estado-cerrado   .estado-num { color: var(--slate); }
+.estado-reabierto { border-top: 3px solid var(--red); }
+.estado-reabierto .estado-num { color: var(--red); }
+
+/* ── KPI Cards ───────────────────────────────────────────────── */
 .kpi-card {
-  background:    #111111;
-  border:        1px solid #2a1a0e;
-  border-radius: 12px;
-  padding:       1.5rem;
+  background:    var(--surface);
+  border:        1px solid var(--line);
+  border-radius: var(--r);
+  padding:       1.25rem;
   display:       flex;
   align-items:   flex-start;
   gap:           1rem;
-  transition:    transform 0.2s, box-shadow 0.2s;
+  box-shadow:    var(--shadow-sm);
+  transition:    transform .15s, box-shadow .15s;
   height:        100%;
 }
- 
 .kpi-card:hover {
   transform:  translateY(-2px);
-  box-shadow: 0 8px 24px rgba(191, 57, 28, 0.15);
+  box-shadow: var(--shadow);
 }
- 
+
 .kpi-icon {
-  background:      rgba(215, 105, 28, 0.15);
-  color:           #d7691c;
+  background:      var(--orange-soft);
+  color:           var(--orange-600);
   border-radius:   10px;
-  width:           42px;
-  height:          42px;
+  width:           40px;
+  height:          40px;
   display:         flex;
   align-items:     center;
   justify-content: center;
-  font-size:       1.2rem;
   flex-shrink:     0;
 }
- 
 .kpi-body {
   flex:           1;
   display:        flex;
   flex-direction: column;
 }
- 
 .kpi-value {
   font-size:     1.6rem;
-  font-weight:   800;
-  color:         #f5f0eb;
+  font-weight:   700;
+  color:         var(--ink);
   line-height:   1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
+  font-family:   'IBM Plex Mono', monospace;
+  letter-spacing: -.025em;
 }
- 
 .kpi-name {
-  font-size:     0.85rem;
+  font-size:     0.84rem;
   font-weight:   600;
-  color:         #f5f0eb;
-  margin-bottom: 0.1rem;
+  color:         var(--ink-2);
+  margin-bottom: 0.15rem;
 }
- 
 .kpi-desc {
   font-size: 0.75rem;
-  color:     #7a6a5a;
+  color:     var(--muted);
 }
- 
-/* ── Barra de progreso ────────────────────────────────────────────────────────── */
+
+/* ── Barra de progreso ───────────────────────────────────────── */
 .kpi-progress {
   height:        5px;
-  background:    #2a1a0e;
+  background:    var(--line-2);
   border-radius: 99px;
   overflow:      hidden;
   margin-top:    0.5rem;
 }
- 
 .kpi-progress-bar {
   height:        100%;
+  background:    var(--orange);
   border-radius: 99px;
   transition:    width 0.6s ease;
 }
- 
-/* Colores semáforo adaptados a la paleta */
-.kpi-verde                       { color: #d7691c; }
-.kpi-progress-bar.kpi-verde      { background: #d7691c; }
-.kpi-amarillo                    { color: #e8843a; }
-.kpi-progress-bar.kpi-amarillo   { background: #e8843a; }
-.kpi-rojo                        { color: #bf391c; }
-.kpi-progress-bar.kpi-rojo       { background: #bf391c; }
- 
-/* ── Paneles genéricos ────────────────────────────────────────────────────────── */
+
+/* Semáforo SLA */
+.kpi-verde   { color: var(--green) !important; }
+.kpi-amarillo{ color: var(--amber) !important; }
+.kpi-rojo    { color: var(--red)   !important; }
+
+.kpi-progress-bar.kpi-verde   { background: var(--green); }
+.kpi-progress-bar.kpi-amarillo{ background: var(--amber); }
+.kpi-progress-bar.kpi-rojo    { background: var(--red); }
+
+/* ── Paneles genéricos ───────────────────────────────────────── */
 .panel-card {
-  background:    #111111;
-  border:        1px solid #2a1a0e;
-  border-radius: 12px;
+  background:    var(--surface);
+  border:        1px solid var(--line);
+  border-radius: var(--r);
   overflow:      hidden;
+  box-shadow:    var(--shadow-sm);
 }
- 
 .panel-header {
-  padding:        1rem 1.25rem;
-  font-size:      0.85rem;
+  display:        flex;
+  align-items:    center;
+  padding:        14px 18px;
+  font-size:      12.5px;
   font-weight:    600;
-  color:          #7a6a5a;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom:  1px solid #2a1a0e;
+  color:          var(--ink-2);
+  border-bottom:  1px solid var(--line);
+  letter-spacing: .01em;
 }
- 
-.panel-header i { margin-right: 0.4rem; color: #d7691c; }
- 
-.panel-body { padding: 1.25rem; }
- 
-/* ── Distribuciones ───────────────────────────────────────────────────────────── */
+.panel-body { padding: 16px 18px; }
+
+/* ── Distribuciones ──────────────────────────────────────────── */
 .dist-row {
   display:       flex;
   align-items:   center;
-  gap:           0.75rem;
-  margin-bottom: 0.75rem;
+  gap:           10px;
+  margin-bottom: 10px;
 }
- 
 .dist-row:last-child { margin-bottom: 0; }
- 
+
 .dist-label {
-  width:         110px;
-  font-size:     0.8rem;
-  color:         #f5f0eb;
+  width:         120px;
+  font-size:     12.5px;
+  color:         var(--ink-2);
   flex-shrink:   0;
   white-space:   nowrap;
   overflow:      hidden;
   text-overflow: ellipsis;
+  font-weight:   500;
 }
- 
 .dist-bar-wrap {
   flex:          1;
   height:        6px;
-  background:    #2a1a0e;
+  background:    var(--line-2);
   border-radius: 99px;
   overflow:      hidden;
 }
- 
 .dist-bar {
   height:        100%;
-  background:    #d7691c;
+  background:    var(--orange);
   border-radius: 99px;
   transition:    width 0.5s ease;
 }
- 
-.dist-bar.dist-bar-prioridad { background: #bf391c; }
- 
+.dist-bar.dist-bar-prioridad { background: var(--red); }
+
 .dist-count {
-  font-size:   0.8rem;
+  font-size:   12px;
   font-weight: 600;
-  color:       #7a6a5a;
+  color:       var(--muted);
   width:       24px;
   text-align:  right;
+  font-family: 'IBM Plex Mono', monospace;
 }
- 
-/* ── Badges de prioridad ──────────────────────────────────────────────────────── */
+
+/* ── Badges de prioridad ─────────────────────────────────────── */
 .badge-prioridad {
-  font-size:     0.7rem;
+  display:       inline-block;
+  font-size:     11px;
   font-weight:   600;
-  padding:       0.2rem 0.5rem;
-  border-radius: 4px;
+  padding:       3px 8px;
+  border-radius: 6px;
 }
- 
-.badge-critico     { background: rgba(191, 57, 28, 0.25); color: #bf391c; }
-.badge-alto        { background: rgba(215, 105, 28, 0.25); color: #d7691c; }
-.badge-medio       { background: rgba(232, 132, 58, 0.25); color: #e8843a; }
-.badge-bajo        { background: rgba(194, 90, 26, 0.20);  color: #c25a1a; }
-.badge-planificado { background: rgba(122, 106, 90, 0.25); color: #7a6a5a; }
- 
-/* ── Panel calidad ────────────────────────────────────────────────────────────── */
+.badge-critico     { background: var(--red-soft);   color: var(--red); }
+.badge-alto        { background: var(--orange-soft); color: var(--orange-600); }
+.badge-medio       { background: var(--amber-soft);  color: var(--amber); }
+.badge-bajo        { background: var(--slate-soft);  color: var(--slate); }
+.badge-planificado { background: var(--slate-soft);  color: var(--muted); }
+
+/* ── Calidad ─────────────────────────────────────────────────── */
 .calidad-item {
-  padding-bottom: 0.75rem;
-  border-bottom:  1px solid #2a1a0e;
+  padding-bottom: 12px;
+  border-bottom:  1px solid var(--line-2);
 }
- 
 .calidad-item:last-of-type { border-bottom: none; }
- 
-/* ── Mini stats ───────────────────────────────────────────────────────────────── */
+
+/* ── Mini stats ──────────────────────────────────────────────── */
 .mini-stat {
-  background:    #000000;
-  border:        1px solid #2a1a0e;
-  border-radius: 8px;
-  padding:       0.75rem;
+  background:    var(--surface-2);
+  border:        1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding:       12px;
   text-align:    center;
 }
- 
 .mini-num {
   display:     block;
-  font-size:   1.4rem;
-  font-weight: 800;
+  font-size:   1.5rem;
+  font-weight: 700;
   line-height: 1;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: -.025em;
 }
- 
 .mini-label {
   display:    block;
-  font-size:  0.7rem;
-  color:      #7a6a5a;
-  margin-top: 0.2rem;
-}
- 
-/* ── Tabla técnicos ───────────────────────────────────────────────────────────── */
-.dash-table {
-  --bs-table-bg:           #111111;
-  --bs-table-hover-bg:     #1a0f06;
-  --bs-table-border-color: #2a1a0e;
-  --bs-table-color:        #f5f0eb;
-}
- 
-.dash-table thead th {
-  font-size:      0.72rem;
+  font-size:  11px;
+  color:      var(--muted);
+  margin-top: 3px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color:          #7a6a5a;
-  border-bottom:  1px solid #2a1a0e;
-  padding:        0.85rem 1rem;
+  letter-spacing: .04em;
+}
+
+/* ── Tabla técnicos ──────────────────────────────────────────── */
+.dash-table {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.dash-table thead th {
+  font-size:      11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color:          var(--muted);
+  border-bottom:  2px solid var(--line);
+  padding:        10px 14px;
   font-weight:    600;
+  background:     var(--surface-2);
 }
- 
 .dash-table tbody td {
-  font-size:      0.875rem;
-  padding:        0.85rem 1rem;
+  padding:        10px 14px;
   vertical-align: middle;
+  border-bottom:  1px solid var(--line-2);
 }
- 
+.dash-table tbody tr:hover td { background: var(--surface-2); }
+
 .avatar-circle {
   width:           30px;
   height:          30px;
   border-radius:   50%;
-  background:      rgba(215, 105, 28, 0.15);
-  color:           #d7691c;
-  font-size:       0.75rem;
+  background:      var(--orange-soft);
+  color:           var(--orange-600);
+  font-size:       12px;
   font-weight:     700;
   display:         flex;
   align-items:     center;
   justify-content: center;
   flex-shrink:     0;
 }
- 
 .badge-resuelto {
-  background:    rgba(215, 105, 28, 0.2);
-  color:         #d7691c;
-  font-size:     0.75rem;
+  background:    var(--green-soft);
+  color:         var(--green);
+  font-size:     11.5px;
   font-weight:   600;
-  padding:       0.2rem 0.6rem;
-  border-radius: 4px;
-}
- 
-/* ── Dashboard Técnico — extras ───────────────────────────────────────────────── */
-.badge-count {
-  background:    #1e1008;
-  border:        1px solid #2a1a0e;
-  border-radius: 10px;
-  color:         #7a6a5a;
-  font-size:     0.72rem;
-  font-weight:   700;
-  padding:       0.1rem 0.5rem;
-  min-width:     22px;
-  text-align:    center;
+  padding:       3px 8px;
+  border-radius: 6px;
 }
 
+/* ── Dashboard Técnico — extras ──────────────────────────────── */
+.badge-count {
+  background:    var(--surface-2);
+  border:        1px solid var(--line);
+  border-radius: 10px;
+  color:         var(--muted);
+  font-size:     11px;
+  font-weight:   700;
+  padding:       2px 8px;
+  min-width:     22px;
+  text-align:    center;
+  font-family:   'IBM Plex Mono', monospace;
+}
 .badge-count-alert {
-  background: rgba(191, 57, 28, 0.2);
-  border-color: #bf391c;
-  color:       #e8843a;
+  background:   var(--red-soft);
+  border-color: var(--red);
+  color:        var(--red);
 }
 
 .empty-panel {
@@ -373,15 +375,14 @@
   flex-direction:  column;
   align-items:     center;
   justify-content: center;
-  gap:             0.5rem;
+  gap:             8px;
   padding:         2rem 1rem;
-  color:           #4a3a2a;
-  font-size:       0.85rem;
+  color:           var(--muted);
+  font-size:       13.5px;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .dashboard-wrapper { padding: 1rem; }
-  .dash-title  { font-size: 1.35rem; }
+  .dash-title  { font-size: 1.3rem; }
   .kpi-value   { font-size: 1.3rem; }
 }

@@ -7,6 +7,7 @@ import { ToastService } from "../../../../core/services/toast.service";
 @Component({
     selector : 'app-login',
     templateUrl : './login.html',
+    styleUrl: './login.css',
     imports: [FormsModule]
 })
 export class Login {
@@ -23,9 +24,10 @@ export class Login {
     authService   = inject(AuthService);
     signalrSvc    = inject(SignalrService);
     router        = inject(Router);
-    userName = signal('')
-    password = signal('')
+    userName = signal('');
+    password = signal('');
     showPassword = signal(false);
+    readonly currentYear = new Date().getFullYear();
     togglePassword() {
         this.showPassword.update(value => !value);
     }

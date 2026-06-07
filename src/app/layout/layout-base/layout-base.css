@@ -1,5 +1,24 @@
-.container{
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    min-width: 100% !important;
+/* Backdrop móvil — este elemento SÍ está en layout-base.html,
+   por lo que el CSS scoped funciona correctamente aquí.        */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  z-index: 39;
+}
+
+/* NOTA: Todas las reglas que afectan a .sidebar (incluyendo
+   .app.nav-collapsed .sidebar y .app.nav-open .sidebar) están
+   en app-new.css (CSS global), porque .sidebar vive dentro del
+   template de <app-sidebar> (componente hijo) y Angular
+   ViewEncapsulation impide que el CSS scoped del padre llegue
+   al template del hijo.
+
+   Solo .app.nav-collapsed .main queda aquí porque .main SÍ
+   está en el template de layout-base.                         */
+@media (min-width: 1081px) {
+  .app.nav-collapsed .main {
+    margin-left: 0;
+    transition: margin-left .25s ease;
+  }
 }

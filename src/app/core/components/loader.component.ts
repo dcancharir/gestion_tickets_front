@@ -1,10 +1,14 @@
-import { Component,inject } from "@angular/core";
+import { Component, inject, computed } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter, map, startWith } from "rxjs";
 import { LoaderService } from "../services/loader.service";
+
 @Component({
   selector: 'app-loader',
   standalone: true,
   template: `
-    @if (loader.isLoading()) {
+    @if (mostrar()) {
       <div class="loader-overlay">
         <div class="loader-card">
           <div class="spinner"></div>
@@ -16,19 +20,19 @@ import { LoaderService } from "../services/loader.service";
   styles: [`
     .loader-overlay {
       position: fixed;
-      inset: 0;                      /* cubre toda la pantalla */
+      inset: 0;
       background: rgba(0, 0, 0, 0.45);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;                 /* por encima de modales (z ~1000) */
-      pointer-events: all;           /* bloquea todos los clics */
+      z-index: 9999;
+      pointer-events: all;
     }
 
     .loader-card {
-      background: var(--color-background-primary);
-      border: 0.5px solid var(--color-border-tertiary);
-      border-radius: var(--border-radius-lg);
+      background: #ffffff;
+      border: 1px solid #E8E3DC;
+      border-radius: 16px;
       padding: 1.75rem 2.5rem;
       display: flex;
       flex-direction: column;
@@ -47,7 +51,7 @@ import { LoaderService } from "../services/loader.service";
 
     span {
       font-size: 13px;
-      color: var(--color-text-secondary);
+      color: #8A827A;
     }
 
     @keyframes spin {
@@ -57,4 +61,23 @@ import { LoaderService } from "../services/loader.service";
 })
 export class LoaderComponent {
   loader = inject(LoaderService);
+  router = inject(Router);
+
+  /** true cuando la URL actual es la página de login */
+  private esLogin = toSignal(
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(() => this.isLoginUrl()),
+      startWith(this.isLoginUrl())
+    ),
+    { initialValue: this.isLoginUrl() }
+  );
+
+  /** Mostrar overlay sólo si hay request activa Y no estamos en login */
+  mostrar = computed(() => this.loader.isLoading() && !this.esLogin());
+
+  private isLoginUrl(): boolean {
+    const url = this.router.url;
+    return url === '/login' || url === '/' || url === '';
+  }
 }
