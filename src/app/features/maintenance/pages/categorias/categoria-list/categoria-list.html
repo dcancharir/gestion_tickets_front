@@ -63,7 +63,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-categoria-add-edit
     [categoria]="categoriaSeleccionada()"
     (guardado)="onGuardado($event)"

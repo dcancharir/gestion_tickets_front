@@ -381,6 +381,60 @@
   font-size:       13.5px;
 }
 
+/* ── CSS Grid layouts (reemplazan Bootstrap row/col-*) ───────── */
+/* Contenedor base — mb-4 equivalente */
+.dash-row { margin-bottom: 1.5rem; }
+
+/* 6 columnas: estado-cards (admin) */
+.dash-grid-6 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+/* 5 columnas: estado-cards (técnico) */
+.dash-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+/* 4 columnas: KPI cards admin */
+.dash-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+/* 3 columnas: distribuciones + KPI técnico */
+.dash-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+/* 2 columnas: tablas técnico, mini-stats */
+.dash-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .dash-grid-6 { grid-template-columns: repeat(3, 1fr); }
+  .dash-grid-5 { grid-template-columns: repeat(3, 1fr); }
+  .dash-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (≥992px) */
+@media (min-width: 992px) {
+  .dash-grid-6 { grid-template-columns: repeat(6, 1fr); }
+  .dash-grid-5 { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* Large desktop (≥1200px) */
+@media (min-width: 1200px) {
+  .dash-grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .dash-title  { font-size: 1.3rem; }

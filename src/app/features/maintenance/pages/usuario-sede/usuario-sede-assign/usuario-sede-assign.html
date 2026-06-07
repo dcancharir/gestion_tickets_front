@@ -1,8 +1,6 @@
-<div [class.show]="true" [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content modal-dark">
+      <div class="maint-modal-panel lg">
 
-      <div class="modal-header modal-dark-header">
+      <div class="modal-dark-header">
         <h5 class="modal-title">
           Asignar Sedes — {{ usuario().nombre }} {{ usuario().apellidos }}
         </h5>
@@ -13,17 +11,17 @@
         </button>
       </div>
 
-      <div class="modal-body modal-dark-body">
+      <div class="modal-dark-body">
         @if (todasSedes.isLoading() || cargandoSedes()) {
-          <div class="d-flex justify-content-center py-4">
-            <p class="text-primary mb-0">Cargando sedes...</p>
+          <div style="display:flex;justify-content:center;padding:24px 0">
+            <p style="color:var(--orange);margin:0">Cargando sedes...</p>
           </div>
         } @else if (todasSedes.error() || (todasSedes.value()?.length ?? 0) === 0) {
-          <p class="cell-muted text-center py-4 mb-0">No hay sedes registradas.</p>
+          <p style="color:var(--muted);text-align:center;padding:24px 0;margin:0">No hay sedes registradas.</p>
         } @else {
-          <div class="row gy-3">
+          <div class="mp-grid-2">
             @for (sede of (todasSedes.value() ?? []); track sede.sedeId) {
-              <div class="col-md-6">
+              <div>
                 <label class="check-interno">
                   <input type="checkbox"
                          [id]="'sede-' + sede.sedeId"
@@ -31,7 +29,7 @@
                          (change)="toggleSede(sede.sedeId, $any($event.target).checked)">
                   <span>
                     <strong style="color:#f5f0eb;">{{ sede.nombre }}</strong>
-                    <span class="chip-tipo ms-1">{{ sede.tipoSede }}</span>
+                    <span class="chip-tipo">{{ sede.tipoSede }}</span>
                   </span>
                 </label>
               </div>
@@ -40,7 +38,7 @@
         }
       </div>
 
-      <div class="modal-footer modal-dark-footer">
+      <div class="modal-dark-footer">
         <button type="button" class="btn-modal-cancel" (click)="closeModal()">Cancelar</button>
         <button type="button" class="btn-modal-save"
                 (click)="guardar()"
@@ -52,6 +50,4 @@
         </button>
       </div>
 
-    </div>
-  </div>
-</div>
+    

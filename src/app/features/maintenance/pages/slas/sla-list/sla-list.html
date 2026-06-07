@@ -110,7 +110,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-sla-add-edit
     [sla]="slaSeleccionado()"
     (guardado)="onGuardado($event)"

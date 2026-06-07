@@ -1,8 +1,6 @@
-<div [class.show]="true" [style.display]="'block'" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content modal-dark">
+      <div class="maint-modal-panel">
 
-      <div class="modal-header modal-dark-header">
+      <div class="modal-dark-header">
         <h5 class="modal-title">
           {{ !categoria()?.categoriaId ? 'Nueva Categoría' : 'Editar Categoría' }}
         </h5>
@@ -13,20 +11,20 @@
         </button>
       </div>
 
-      <div class="modal-body modal-dark-body">
-        <div class="mb-4">
+      <div class="modal-dark-body">
+        <div style="margin-bottom:16px">
           <label class="form-label-dark">Nombre <span class="req">*</span></label>
           <input type="text" class="form-input-dark"
                  [(ngModel)]="form().nombre"
                  placeholder="Ingrese nombre">
         </div>
-        <div class="mb-4">
+        <div style="margin-bottom:16px">
           <label class="form-label-dark">Descripción</label>
           <input type="text" class="form-input-dark"
                  [(ngModel)]="form().descripcion"
                  placeholder="Ingrese descripción">
         </div>
-        <div class="mb-2">
+        <div style="margin-bottom:8px">
           <label class="form-label-dark">Activo</label>
           <select class="form-input-dark" [(ngModel)]="form().activo">
             <option [ngValue]="true">Sí</option>
@@ -35,11 +33,9 @@
         </div>
       </div>
 
-      <div class="modal-footer modal-dark-footer">
+      <div class="modal-dark-footer">
         <button type="button" class="btn-modal-cancel" (click)="closeModal()">Cancelar</button>
         <button type="button" class="btn-modal-save" (click)="guardar()">Guardar</button>
       </div>
 
-    </div>
-  </div>
-</div>
+    

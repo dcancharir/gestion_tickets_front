@@ -70,7 +70,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-estado-add-edit
     [estado]="estadoSeleccionado()"
     (guardado)="onGuardado($event)"

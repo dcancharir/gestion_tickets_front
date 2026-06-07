@@ -68,7 +68,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-prioridad-add-edit
     [prioridad]="prioridadSeleccionada()"
     (guardado)="onGuardado($event)"

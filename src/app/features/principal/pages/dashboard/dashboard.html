@@ -6,7 +6,7 @@
       @if (rol !== 'Técnico') {
 
         <!-- Header Admin -->
-        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem">
           <div>
             <h1 class="dash-title mb-0">Dashboard</h1>
             <span class="dash-subtitle">Centro de control · Soporte Remoto SAC</span>
@@ -23,15 +23,15 @@
         </div>
 
         @if (svc.error()) {
-          <div class="alerta-error d-flex align-items-center gap-2 mb-3">
+          <div class="alerta-error" style="margin-bottom:1rem">
             {{ svc.error() }}
           </div>
         }
 
         @if (svc.cargando() && !svc.data()) {
-          <div class="row g-3 mb-4">
+          <div class="dash-row dash-grid-4">
             @for (i of [1,2,3,4]; track i) {
-              <div class="col-6 col-lg-3"><div class="skeleton-card"></div></div>
+              <div class="skeleton-card"></div>
             }
           </div>
         }
@@ -39,38 +39,38 @@
         @if (svc.data(); as d) {
 
           <!-- Fila 1: Contadores estado -->
-          <div class="row g-3 mb-4">
-            <div class="col-6 col-md-4 col-lg-2">
+          <div class="dash-row dash-grid-6">
+            <div>
               <div class="estado-card estado-total">
                 <span class="estado-num">{{ d.estados.total }}</span>
                 <span class="estado-label">Total</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2">
+            <div>
               <div class="estado-card estado-abiertos">
                 <span class="estado-num">{{ svc.totalAbiertos() }}</span>
                 <span class="estado-label">Abiertos</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2">
+            <div>
               <div class="estado-card estado-progreso">
                 <span class="estado-num">{{ d.estados.enProgreso + d.estados.enDiagnostico }}</span>
                 <span class="estado-label">En Atención</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2">
+            <div>
               <div class="estado-card estado-resuelto">
                 <span class="estado-num">{{ d.estados.resueltos }}</span>
                 <span class="estado-label">Resueltos</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2">
+            <div>
               <div class="estado-card estado-cerrado">
                 <span class="estado-num">{{ d.estados.cerrados }}</span>
                 <span class="estado-label">Cerrados</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-2">
+            <div>
               <div class="estado-card estado-reabierto">
                 <span class="estado-num">{{ d.estados.reabiertas }}</span>
                 <span class="estado-label">Reabiertos</span>
@@ -79,8 +79,8 @@
           </div>
 
           <!-- Fila 2: KPIs ITIL -->
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-md-6 col-xl-3">
+          <div class="dash-row dash-grid-4">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -96,7 +96,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -113,7 +113,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -137,7 +137,7 @@
                 }
               </div>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -156,8 +156,8 @@
           </div>
 
           <!-- Fila 3: Distribuciones + Calidad -->
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-lg-4">
+          <div class="dash-row dash-grid-3">
+            <div>
               <div class="panel-card h-100">
                 <div class="panel-header">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
@@ -179,7 +179,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-lg-4">
+            <div>
               <div class="panel-card h-100">
                 <div class="panel-header">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#d7691c;">
@@ -204,12 +204,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-lg-4">
+            <div>
               <div class="panel-card h-100">
                 <div class="panel-header">Calidad</div>
-                <div class="panel-body d-flex flex-column gap-3 justify-content-center pt-2">
+                <div class="panel-body" style="display:flex;flex-direction:column;gap:12px;justify-content:center;padding-top:.5rem">
                   <div class="calidad-item">
-                    <div class="d-flex justify-content-between mb-1">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:.25rem">
                       <small class="text-muted">Reincidencia</small>
                       <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeReincidencia) }}</small>
                     </div>
@@ -220,7 +220,7 @@
                     }
                   </div>
                   <div class="calidad-item">
-                    <div class="d-flex justify-content-between mb-1">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:.25rem">
                       <small class="text-muted">Cumplimiento SLA</small>
                       <small class="fw-bold" [ngClass]="slaClass(d.kpisItil.porcentajeCumplimientoSla)">
                         {{ formatPct(d.kpisItil.porcentajeCumplimientoSla) }}
@@ -234,7 +234,7 @@
                     }
                   </div>
                   <div class="calidad-item">
-                    <div class="d-flex justify-content-between mb-1">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:.25rem">
                       <small class="text-muted">Primer Contacto</small>
                       <small class="fw-bold">{{ formatPct(d.kpisItil.porcentajeResolucionPrimerContacto) }}</small>
                     </div>
@@ -245,14 +245,14 @@
                       </div>
                     }
                   </div>
-                  <div class="row g-2 mt-1">
-                    <div class="col-6">
+                  <div class="dash-grid-2" style="margin-top:8px">
+                    <div>
                       <div class="mini-stat">
                         <span class="mini-num" style="color:#e8843a">{{ d.estados.pendientes }}</span>
                         <span class="mini-label">Pendientes</span>
                       </div>
                     </div>
-                    <div class="col-6">
+                    <div>
                       <div class="mini-stat">
                         <span class="mini-num" style="color:#bf391c">{{ d.estados.cancelados }}</span>
                         <span class="mini-label">Cancelados</span>
@@ -275,9 +275,9 @@
                 </svg>
                 Rendimiento por Técnico
               </div>
-              <div class="panel-body p-0">
+              <div class="panel-body" style="padding:0">
                 <div class="table-responsive">
-                  <table class="table table-dark table-hover dash-table mb-0">
+                  <table class="table dash-table">
                     <thead>
                       <tr>
                         <th>Técnico</th>
@@ -293,7 +293,7 @@
                       @for (tec of d.topTecnicos; track tec.tecnico) {
                         <tr>
                           <td>
-                            <div class="d-flex align-items-center gap-2">
+                            <div style="display:flex;align-items:center;gap:8px">
                               <div class="avatar-circle">{{ tec.tecnico.charAt(0) }}</div>
                               {{ tec.tecnico }}
                             </div>
@@ -328,7 +328,7 @@
       @if (rol === 'Técnico') {
 
         <!-- Header Técnico -->
-        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem">
           <div>
             <h1 class="dash-title mb-0">Mi Dashboard</h1>
             <span class="dash-subtitle">Resumen personal de tickets · Soporte Remoto SAC</span>
@@ -349,9 +349,9 @@
         }
 
         @if (svc.cargandoTecnico() && !svc.dataTecnico()) {
-          <div class="row g-3 mb-4">
+          <div class="dash-row dash-grid-5">
             @for (i of [1,2,3,4,5]; track i) {
-              <div class="col-6 col-lg"><div class="skeleton-card"></div></div>
+              <div class="skeleton-card"></div>
             }
           </div>
         }
@@ -359,32 +359,32 @@
         @if (svc.dataTecnico(); as t) {
 
           <!-- Fila 1: Mis contadores -->
-          <div class="row g-3 mb-4">
-            <div class="col-6 col-md-4 col-lg">
+          <div class="dash-row dash-grid-5">
+            <div>
               <div class="estado-card estado-total">
                 <span class="estado-num">{{ t.misTickets.totalAsignados }}</span>
                 <span class="estado-label">Mis Tickets</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg">
+            <div>
               <div class="estado-card estado-progreso">
                 <span class="estado-num">{{ t.misTickets.enProgreso }}</span>
                 <span class="estado-label">En Progreso</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg">
+            <div>
               <div class="estado-card estado-abiertos">
                 <span class="estado-num">{{ t.misTickets.pendientes }}</span>
                 <span class="estado-label">Pendientes</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg">
+            <div>
               <div class="estado-card estado-resuelto">
                 <span class="estado-num">{{ t.misTickets.resueltosHoy }}</span>
                 <span class="estado-label">Resueltos Hoy</span>
               </div>
             </div>
-            <div class="col-6 col-md-4 col-lg">
+            <div>
               <div class="estado-card" [class.estado-reabierto]="t.misTickets.criticos > 0"
                                        [class.estado-cerrado]="t.misTickets.criticos === 0">
                 <span class="estado-num">{{ t.misTickets.criticos }}</span>
@@ -394,8 +394,8 @@
           </div>
 
           <!-- Fila 2: Mis KPIs personales -->
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-md-4">
+          <div class="dash-row dash-grid-3">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -411,7 +411,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -432,7 +432,7 @@
                 }
               </div>
             </div>
-            <div class="col-12 col-md-4">
+            <div>
               <div class="kpi-card">
                 <div class="kpi-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -451,10 +451,10 @@
           </div>
 
           <!-- Fila 3: Tablas de atención urgente -->
-          <div class="row g-3">
+          <div class="dash-grid-2">
 
             <!-- Próximos a vencer SLA -->
-            <div class="col-12 col-lg-6">
+            <div>
               <div class="panel-card h-100">
                 <div class="panel-header">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#e8843a;">
@@ -464,7 +464,7 @@
                   Próximos a vencer SLA
                   <span class="ms-auto badge-count">{{ t.proximosAVencerSla.length }}</span>
                 </div>
-                <div class="panel-body p-0">
+                <div class="panel-body" style="padding:0">
                   @if (t.proximosAVencerSla.length === 0) {
                     <div class="empty-panel">
                       <i class="bi bi-check-circle" style="color:#2ea44f;font-size:1.5rem;"></i>
@@ -472,7 +472,7 @@
                     </div>
                   } @else {
                     <div class="table-responsive">
-                      <table class="table table-dark table-hover dash-table mb-0">
+                      <table class="table dash-table">
                         <thead>
                           <tr>
                             <th>Ticket</th>
@@ -504,7 +504,7 @@
             </div>
 
             <!-- Críticos abiertos -->
-            <div class="col-12 col-lg-6">
+            <div>
               <div class="panel-card h-100">
                 <div class="panel-header">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="margin-right:0.4rem;color:#bf391c;">
@@ -517,7 +517,7 @@
                     {{ t.criticosAbiertos.length }}
                   </span>
                 </div>
-                <div class="panel-body p-0">
+                <div class="panel-body" style="padding:0">
                   @if (t.criticosAbiertos.length === 0) {
                     <div class="empty-panel">
                       <i class="bi bi-check-circle" style="color:#2ea44f;font-size:1.5rem;"></i>
@@ -525,7 +525,7 @@
                     </div>
                   } @else {
                     <div class="table-responsive">
-                      <table class="table table-dark table-hover dash-table mb-0">
+                      <table class="table dash-table">
                         <thead>
                           <tr>
                             <th>Ticket</th>

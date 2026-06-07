@@ -26,7 +26,6 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/css/bootstrap.css",
               "src/assets/styles/app-new.css",
               "src/styles.css"
             ],

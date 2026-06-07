@@ -61,7 +61,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-sede-add-edit
     [sede]="sedeSeleccionada()"
     (guardado)="onGuardado($event)"

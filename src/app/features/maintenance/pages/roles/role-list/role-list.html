@@ -59,7 +59,7 @@
         </tbody>
       </table>
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-role-add-edit
     [rol]="rolSeleccionado()"
     (guardado)="onGuardado($event)"

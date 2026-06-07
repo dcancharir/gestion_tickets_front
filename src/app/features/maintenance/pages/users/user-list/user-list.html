@@ -70,7 +70,7 @@
       </table>
 
 @if (modalAbierto()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-user-add-edit
     [usuario]="usuarioSeleccionado()"
     (guardado)="onGuardado($event)"
@@ -79,7 +79,7 @@
 }
 
 @if (modalSedesAbierto() && usuarioParaSedes()) {
-  <div class="modal-backdrop fade show"></div>
+  <div class="maint-backdrop"></div>
   <app-usuario-sede-assign
     [usuario]="usuarioParaSedes()!"
     (guardado)="onSedesGuardadas()"
