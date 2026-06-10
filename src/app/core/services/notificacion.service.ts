@@ -20,9 +20,20 @@ export class NotificacionService {
       .subscribe(lista => this.notificaciones.set(lista));
   }
 
-  /** Recibe una notificación en tiempo real via SignalR y la agrega al estado. */
+  /** Recibe una notificación en tiempo real via SignalR y la agrega al estado.
+   *  El payload ya llega en camelCase (SignalR configurado con JsonNamingPolicy.CamelCase).
+   */
   agregar(payload: any): void {
-    const notif: Notificacion = { ...payload, leida: false };
+    const notif: Notificacion = {
+      notificacionId: payload.notificacionId,
+      tipo:           payload.tipo,
+      ticketPublicId: payload.ticketPublicId,
+      numeroTicket:   payload.numeroTicket,
+      titulo:         payload.titulo,
+      mensaje:        payload.mensaje,
+      leida:          payload.leida ?? false,
+      fechaCreacion:  payload.fechaCreacion
+    };
     this.notificaciones.update(list => [notif, ...list]);
   }
 

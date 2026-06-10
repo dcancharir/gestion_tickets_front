@@ -16,11 +16,13 @@ import { ArticuloList } from './features/conocimiento/pages/articulo-list/articu
 import { ArticuloDetalleComponent } from './features/conocimiento/pages/articulo-detalle/articulo-detalle';
 import { AccesoDenegado } from './features/acceso-denegado/acceso-denegado';
 import { PerfilComponent } from './features/perfil/perfil';
+import { RestablecerPasswordComponent } from './features/auth/pages/restablecer-password/restablecer-password';
 import { permisosGuard } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LayoutLogin },
+    { path: 'restablecer-password', component: RestablecerPasswordComponent },
     { path: 'acceso-denegado', component: AccesoDenegado },
 
     // ── Dashboard ────────────────────────────────────────────────────────────

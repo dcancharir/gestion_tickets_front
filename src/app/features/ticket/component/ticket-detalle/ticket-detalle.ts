@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, resource, effect, HostListener } fro
 import { CommonModule }    from '@angular/common';
 import { FormsModule }     from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { HttpClient }      from '@angular/common/http';
 import { firstValueFrom }  from 'rxjs';
 import { TicketService }   from '../../services/ticket.service';
@@ -25,6 +26,7 @@ export class TicketDetalleComponent implements OnInit {
  
   private route        = inject(ActivatedRoute);
   private router       = inject(Router);
+  private location     = inject(Location);
   private http         = inject(HttpClient);
   private auth         = inject(AuthService);
   private toastSvc     = inject(ToastService);
@@ -156,7 +158,13 @@ export class TicketDetalleComponent implements OnInit {
   }
  
   volver(): void {
-    this.router.navigate(['/tickets']);
+    // Si hay historial de navegación, vuelve atrás.
+    // Si no (acceso directo por URL), cae en /principal/mis-tickets como fallback.
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/principal/mis-tickets']);
+    }
   }
  
   // ── Acciones ───────────────────────────────────────────────────────────────

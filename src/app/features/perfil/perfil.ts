@@ -35,10 +35,37 @@ export class PerfilComponent {
   error     = signal<string | null>(null);
   editando  = signal(false);
 
-  // Campos del formulario
+  // Campos del formulario de perfil
   fNombre    = '';
   fApellidos = '';
   fEmail     = '';
+
+  // ── Cambio de contraseña ─────────────────────────────────────────────
+  seccionPassword  = signal(false);
+  guardandoPass    = signal(false);
+  errorPass        = signal<string | null>(null);
+  mostrarPassActual = signal(false);
+  mostrarPassNueva  = signal(false);
+
+  fPassActual    = '';
+  fPassNueva     = signal('');
+  fPassConfirmar = '';
+
+  passFortaleza = computed(() => {
+    const len = this.fPassNueva().length;
+    if (len === 0)  return '';
+    if (len < 8)    return 'weak';
+    if (len < 12)   return 'medium';
+    return 'strong';
+  });
+
+  passFortalezaLabel = computed(() => {
+    const f = this.passFortaleza();
+    if (f === 'weak')   return 'Muy corta';
+    if (f === 'medium') return 'Aceptable';
+    if (f === 'strong') return 'Segura';
+    return '';
+  });
 
   avatarInitial = computed(() => {
     const u = this.usuario();
@@ -118,6 +145,60 @@ export class PerfilComponent {
   formatFecha(f: string): string {
     return new Date(f).toLocaleDateString('es-PE', {
       day: '2-digit', month: 'long', year: 'numeric'
+    });
+  }
+
+  // ── Acciones de cambio de contraseña ─────────────────────────────────
+  toggleSeccionPassword(): void {
+    if (this.seccionPassword()) {
+      this.cerrarSeccionPassword();
+    } else {
+      this.seccionPassword.set(true);
+    }
+  }
+
+  cerrarSeccionPassword(): void {
+    this.seccionPassword.set(false);
+    this.errorPass.set(null);
+    this.fPassActual    = '';
+    this.fPassNueva.set('');
+    this.fPassConfirmar = '';
+    this.mostrarPassActual.set(false);
+    this.mostrarPassNueva.set(false);
+  }
+
+  cambiarPassword(): void {
+    this.errorPass.set(null);
+
+    if (!this.fPassActual.trim()) {
+      this.errorPass.set('Ingresa tu contraseña actual.');
+      return;
+    }
+    if (this.fPassNueva().length < 8) {
+      this.errorPass.set('La nueva contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+    if (this.fPassNueva() !== this.fPassConfirmar) {
+      this.errorPass.set('Las contraseñas no coinciden.');
+      return;
+    }
+
+    this.guardandoPass.set(true);
+    this.http.put<{ mensaje: string }>(`${environment.api_url}api/usuarios/me/password`, {
+      passwordActual:    this.fPassActual,
+      nuevoPassword:     this.fPassNueva(),
+      confirmarPassword: this.fPassConfirmar
+    }).subscribe({
+      next: () => {
+        this.guardandoPass.set(false);
+        this.cerrarSeccionPassword();
+        this.toast.show('Contraseña actualizada correctamente.', 'success');
+      },
+      error: (err) => {
+        this.guardandoPass.set(false);
+        const msg = err?.error?.mensaje ?? 'Error al cambiar la contraseña.';
+        this.errorPass.set(msg);
+      }
     });
   }
 }
