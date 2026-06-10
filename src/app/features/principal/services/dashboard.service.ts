@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient }                   from '@angular/common/http';
 import { environment }                  from '../../../../environments/environment';
-import { DashboardKpi, DashboardKpiTecnico } from '../models/dashboard.model';
+import { DashboardKpi, DashboardKpiTecnico, TendenciaDia } from '../models/dashboard.model';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -16,6 +16,9 @@ export class DashboardService {
   readonly dataTecnico     = signal<DashboardKpiTecnico | null>(null);
   readonly cargandoTecnico = signal(false);
   readonly errorTecnico    = signal<string | null>(null);
+
+  // ── Tendencia 7 días ───────────────────────────────────────────────────────
+  readonly tendencia7d = signal<TendenciaDia[]>([]);
 
   // ── Computed helpers (vista Admin) ─────────────────────────────────────────
   readonly totalAbiertos = computed(() => {
@@ -33,6 +36,10 @@ export class DashboardService {
     this.http.get<DashboardKpi>(`${this._baseUrl}/kpis`).subscribe({
       next:  d   => { this.data.set(d);   this.cargando.set(false); },
       error: ()  => { this.error.set('No se pudo cargar el dashboard.'); this.cargando.set(false); }
+    });
+    this.http.get<TendenciaDia[]>(`${this._baseUrl}/tendencia-7d`).subscribe({
+      next: t => this.tendencia7d.set(t),
+      error: () => {}
     });
   }
 

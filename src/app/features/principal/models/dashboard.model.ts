@@ -17,6 +17,14 @@ export interface KpisItil {
   porcentajeCumplimientoSla:         number | null;
   porcentajeResolucionPrimerContacto: number | null;
   porcentajeReincidencia:            number | null;
+  resueltos7d:                       number;
+  resueltosAnterior7d:               number;
+}
+
+export interface TendenciaDia {
+  fecha:      string;
+  registrados: number;
+  resueltos:   number;
 }
  
 export interface ConteoItem {

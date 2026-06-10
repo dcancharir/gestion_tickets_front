@@ -15,6 +15,7 @@ import { TicketDetalleComponent } from './features/ticket/component/ticket-detal
 import { ArticuloList } from './features/conocimiento/pages/articulo-list/articulo-list';
 import { ArticuloDetalleComponent } from './features/conocimiento/pages/articulo-detalle/articulo-detalle';
 import { AccesoDenegado } from './features/acceso-denegado/acceso-denegado';
+import { PerfilComponent } from './features/perfil/perfil';
 import { permisosGuard } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
@@ -87,6 +88,15 @@ export const routes: Routes = [
             { path: 'users',    component: UserList,          canActivate: [permisosGuard] },
             { path: 'roles',    component: RoleList,          canActivate: [permisosGuard] },
             { path: 'permisos', component: PermisosAddRemove, canActivate: [permisosGuard] },
+        ]
+    },
+
+    // ── Perfil de usuario ────────────────────────────────────────────────────
+    {
+        path: 'perfil',
+        component: LayoutBase,
+        children: [
+            { path: '', component: PerfilComponent }
         ]
     },
 

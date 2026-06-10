@@ -87,4 +87,29 @@ export class Dashboard implements OnInit {
     if (diff <= 7200000)     return 'kpi-amarillo';  // < 2h
     return 'kpi-verde';
   }
+
+  // ── Tendencia 7d helpers ───────────────────────────────────────────────────
+
+  maxTendencia(): number {
+    const t = this.svc.tendencia7d();
+    if (!t.length) return 1;
+    return Math.max(...t.map(d => Math.max(d.registrados, d.resueltos)), 1);
+  }
+
+  barHeightPct(val: number): string {
+    const max = this.maxTendencia();
+    return `${Math.round((val / max) * 100)}%`;
+  }
+
+  tendenciaClass(d7d: number, ant7d: number): string {
+    if (d7d > ant7d) return 'kpi-verde';
+    if (d7d < ant7d) return 'kpi-rojo';
+    return '';
+  }
+
+  tendenciaIcon(d7d: number, ant7d: number): string {
+    if (d7d > ant7d) return '↑';
+    if (d7d < ant7d) return '↓';
+    return '→';
+  }
 }

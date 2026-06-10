@@ -2,12 +2,17 @@ import { Component, OnInit, inject, signal, resource, effect, HostListener } fro
 import { CommonModule }    from '@angular/common';
 import { FormsModule }     from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient }      from '@angular/common/http';
 import { firstValueFrom }  from 'rxjs';
 import { TicketService }   from '../../services/ticket.service';
 import { EstadoService }   from '../../../maintenance/services/estado.service';
 import { PrioridadService } from '../../../maintenance/services/prioridad.service';
 import { UserService }     from '../../../maintenance/services/user.service';
+import { AuthService }     from '../../../../core/services/auth.service';
+import { ToastService }    from '../../../../core/services/toast.service';
 import { environment }     from '../../../../../environments/environment';
+
+interface ValoracionDto { valoracionId: number; puntuacion: number; comentario: string | null; fechaValoracion: string; }
  
 @Component({
   selector:    'app-ticket-detalle',
@@ -20,10 +25,22 @@ export class TicketDetalleComponent implements OnInit {
  
   private route        = inject(ActivatedRoute);
   private router       = inject(Router);
+  private http         = inject(HttpClient);
+  private auth         = inject(AuthService);
+  private toastSvc     = inject(ToastService);
   readonly svc         = inject(TicketService);
   private estadoSvc    = inject(EstadoService);
   private prioridadSvc = inject(PrioridadService);
   private userSvc      = inject(UserService);
+
+  // ── CSAT / Valoración ────────────────────────────────────────────────────
+  valoracion      = signal<ValoracionDto | null>(null);
+  valoracionCargada = signal(false);
+  csatEstrellas   = signal(0);        // estrella hover/seleccionada temporal
+  csatSeleccion   = signal(0);        // puntuación confirmada
+  csatComentario  = '';
+  csatGuardando   = signal(false);
+  csatEnviado     = signal(false);
 
   estados     = resource({ loader: () => firstValueFrom(this.estadoSvc.getAll()) });
   prioridades = resource({ loader: () => firstValueFrom(this.prioridadSvc.getAll()) });
@@ -87,6 +104,55 @@ export class TicketDetalleComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('publicId')!;
     this.svc.cargarDetalle(id);
+    this.cargarValoracion(id);
+  }
+
+  // ── CSAT helpers ─────────────────────────────────────────────────────────
+
+  cargarValoracion(publicId: string): void {
+    this.http.get<ValoracionDto>(`${environment.api_url}api/incidencias/${publicId}/valoracion`)
+      .subscribe({
+        next:  v  => { this.valoracion.set(v);    this.valoracionCargada.set(true); },
+        error: () => { this.valoracionCargada.set(true); } // 204 o error → sin valoración aún
+      });
+  }
+
+  puedeValorar(): boolean {
+    const t = this.svc.detalle();
+    if (!t) return false;
+    const esResueltoOCerrado = t.estado === 'Resuelto' || t.esEstadoFinal;
+    const esSolicitante      = t.solicitantePublicId === this.auth.getUserInfo()?.publicId;
+    return esResueltoOCerrado && esSolicitante && !this.valoracion() && this.valoracionCargada();
+  }
+
+  setEstrella(n: number): void { this.csatSeleccion.set(n); }
+  hoverEstrella(n: number): void { this.csatEstrellas.set(n); }
+  leaveEstrellas(): void { this.csatEstrellas.set(0); }
+
+  estrellaActiva(n: number): boolean {
+    return n <= (this.csatEstrellas() || this.csatSeleccion());
+  }
+
+  enviarValoracion(): void {
+    if (this.csatSeleccion() === 0) return;
+    const t = this.svc.detalle();
+    if (!t) return;
+    this.csatGuardando.set(true);
+    this.http.post<ValoracionDto>(
+      `${environment.api_url}api/incidencias/${t.publicId}/valoracion`,
+      { puntuacion: this.csatSeleccion(), comentario: this.csatComentario || null }
+    ).subscribe({
+      next: v => {
+        this.valoracion.set(v);
+        this.csatEnviado.set(true);
+        this.csatGuardando.set(false);
+        this.toastSvc.show('¡Gracias por tu valoración!', 'success');
+      },
+      error: () => {
+        this.csatGuardando.set(false);
+        this.toastSvc.show('No se pudo enviar la valoración.', 'error');
+      }
+    });
   }
  
   volver(): void {

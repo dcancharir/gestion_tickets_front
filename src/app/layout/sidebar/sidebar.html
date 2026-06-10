@@ -77,13 +77,19 @@
 
   <!-- Usuario en el pie del sidebar -->
   <div class="nav-user">
-    <div class="av sm" [class]="avatarColor()">{{ avatarInitial() }}</div>
+    <a class="av sm" [class]="avatarColor()" [routerLink]="['/perfil']" title="Mi perfil"
+       style="cursor:pointer;text-decoration:none">{{ avatarInitial() }}</a>
     <div class="meta">
       <b>{{ user()?.nombre }} {{ user()?.apellidos }}</b>
       <span>{{ user()?.rol }}</span>
     </div>
-    <button class="gear" type="button" title="Cerrar sesión"
-            (click)="auth.logout()">
+    <a [routerLink]="['/perfil']" class="gear" title="Mi perfil" style="cursor:pointer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+    </a>
+    <button class="gear" type="button" title="Cerrar sesión" (click)="auth.logout()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
         <polyline points="16 17 21 12 16 7"/>

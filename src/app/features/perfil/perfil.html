@@ -1,0 +1,105 @@
+<div class="perfil-wrapper">
+
+  <!-- Header -->
+  <div class="perfil-header">
+    <div>
+      <h1 class="perfil-title">Mi Perfil</h1>
+      <span class="perfil-subtitle">Información de tu cuenta</span>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="perfil-skeleton">
+      <div class="skeleton-av"></div>
+      <div style="flex:1">
+        <div class="skeleton-line w-40"></div>
+        <div class="skeleton-line w-60" style="margin-top:8px"></div>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="alerta-error">{{ error() }}</div>
+  } @else if (usuario(); as u) {
+
+    <div class="perfil-card">
+
+      <!-- Avatar + info básica -->
+      <div class="perfil-top">
+        <div class="perfil-av av lg" [class]="avatarColor()">{{ avatarInitial() }}</div>
+        <div class="perfil-meta">
+          <span class="perfil-nombre">{{ u.nombre }} {{ u.apellidos }}</span>
+          <span class="perfil-rol">{{ u.rolNombre }}</span>
+          <span class="perfil-fecha">Miembro desde {{ formatFecha(u.fechaCreacion) }}</span>
+        </div>
+        @if (!editando()) {
+          <button class="btn-editar" (click)="abrirEdicion()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Editar
+          </button>
+        }
+      </div>
+
+      <div class="perfil-divider"></div>
+
+      @if (!editando()) {
+        <!-- Vista solo lectura -->
+        <div class="perfil-fields">
+          <div class="perfil-field">
+            <span class="perfil-field-label">Nombre</span>
+            <span class="perfil-field-value">{{ u.nombre }}</span>
+          </div>
+          <div class="perfil-field">
+            <span class="perfil-field-label">Apellidos</span>
+            <span class="perfil-field-value">{{ u.apellidos }}</span>
+          </div>
+          <div class="perfil-field">
+            <span class="perfil-field-label">Correo electrónico</span>
+            <span class="perfil-field-value">{{ u.email }}</span>
+          </div>
+          <div class="perfil-field">
+            <span class="perfil-field-label">Usuario</span>
+            <span class="perfil-field-value mono">{{ u.userName }}</span>
+          </div>
+          <div class="perfil-field">
+            <span class="perfil-field-label">Estado</span>
+            <span [class]="u.activo ? 'badge-si' : 'badge-no'">
+              {{ u.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </div>
+        </div>
+      } @else {
+        <!-- Formulario de edición -->
+        <div class="perfil-form">
+          <div class="perfil-form-row">
+            <div class="perfil-form-group">
+              <label class="form-label-dark">Nombre <span class="req">*</span></label>
+              <input class="form-input-dark" [(ngModel)]="fNombre" placeholder="Tu nombre" />
+            </div>
+            <div class="perfil-form-group">
+              <label class="form-label-dark">Apellidos <span class="req">*</span></label>
+              <input class="form-input-dark" [(ngModel)]="fApellidos" placeholder="Tus apellidos" />
+            </div>
+          </div>
+          <div class="perfil-form-group">
+            <label class="form-label-dark">Correo electrónico <span class="req">*</span></label>
+            <input class="form-input-dark" type="email" [(ngModel)]="fEmail" placeholder="tu@email.com" />
+          </div>
+
+          <div class="perfil-form-actions">
+            <button class="btn-modal-cancel" (click)="cancelarEdicion()" [disabled]="guardando()">
+              Cancelar
+            </button>
+            <button class="btn-modal-save" (click)="guardar()" [disabled]="guardando()">
+              @if (guardando()) { <span class="spinner-sm"></span> }
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+  }
+
+</div>
