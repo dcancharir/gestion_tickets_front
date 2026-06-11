@@ -44,7 +44,7 @@ export class Sidebar {
     if (this.menuResource.error()) return [];
     const raw = this.menuResource.value() ?? [];
 
-    if (this.auth.getUserInfo()?.hasFullAccess) return raw;
+    if (this.auth.hasFullAccess()) return raw;
 
     const permitidos = this.permisosSet();
     if (this.vistasResource.isLoading()) return [];
