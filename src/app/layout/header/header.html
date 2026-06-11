@@ -58,7 +58,8 @@
           @for (n of notifSvc.notificaciones(); track n.notificacionId) {
             <div class="notif-item"
                  [class.unread]="!n.leida"
-                 (click)="irAlTicket(n.notificacionId, n.ticketPublicId)">
+                 [class.notif-clickable]="!!n.urlDestino"
+                 (click)="abrirNotificacion(n.notificacionId, n.urlDestino)">
               <div class="notif-icon"
                    [class.notif-assign]="n.tipo === 'Asignación'"
                    [class.notif-escalate]="n.tipo !== 'Asignación'">
@@ -74,7 +75,7 @@
                 }
               </div>
               <div class="notif-body">
-                <p class="notif-title">{{ n.numeroTicket }} — {{ n.tipo }}</p>
+                <p class="notif-title">@if (n.referencia) { {{ n.referencia }} — } {{ n.tipo }}</p>
                 <p class="notif-msg">{{ n.mensaje }}</p>
                 <span class="notif-time">{{ n.fechaCreacion | date:'HH:mm · dd/MM' }}</span>
               </div>

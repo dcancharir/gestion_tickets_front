@@ -27,11 +27,11 @@ export class NotificacionService {
     const notif: Notificacion = {
       notificacionId: payload.notificacionId,
       tipo:           payload.tipo,
-      ticketPublicId: payload.ticketPublicId,
-      numeroTicket:   payload.numeroTicket,
+      referencia:     payload.referencia ?? null,
       titulo:         payload.titulo,
       mensaje:        payload.mensaje,
       leida:          payload.leida ?? false,
+      urlDestino:     payload.urlDestino ?? null,
       fechaCreacion:  payload.fechaCreacion
     };
     this.notificaciones.update(list => [notif, ...list]);

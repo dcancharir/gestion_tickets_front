@@ -84,14 +84,16 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px 18px;
-  cursor: pointer;
+  cursor: default;
   transition: background .12s;
   border-bottom: 1px solid var(--line-2);
 }
+.notif-item.notif-clickable { cursor: pointer; }
 .notif-item:last-child { border-bottom: none; }
 .notif-item:hover { background: var(--surface-2); }
+.notif-item.notif-clickable:hover { background: var(--surface-2); }
 .notif-item.unread { background: var(--orange-tint); }
-.notif-item.unread:hover { background: #faeade; }
+.notif-item.unread.notif-clickable:hover { background: #faeade; }
 
 .notif-icon {
   width: 34px;

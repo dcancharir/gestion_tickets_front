@@ -58,10 +58,12 @@ export class Header {
     this.showUser.set(false);
   }
 
-  irAlTicket(notificacionId: number, ticketPublicId: string): void {
+  abrirNotificacion(notificacionId: number, urlDestino: string | null): void {
     this.notifSvc.marcarLeida(notificacionId);
     this.showNotif.set(false);
-    this.router.navigate(['/tickets', ticketPublicId]);
+    if (urlDestino) {
+      this.router.navigateByUrl(urlDestino);
+    }
   }
 
   logout(event: Event): void {
