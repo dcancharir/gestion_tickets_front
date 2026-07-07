@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, resource, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, resource, signal } from '@angular/core';
 import { CommonModule }               from '@angular/common';
 import { FormsModule }                from '@angular/forms';
 import { Router, ActivatedRoute }     from '@angular/router';
@@ -18,7 +18,7 @@ type ModoLista = 'todos' | 'mis-tickets' | 'mis-asignaciones';
   templateUrl: './ticket-lista.html',
   styleUrls:   ['./ticket-lista.css']
 })
-export class TicketListaComponent implements OnInit {
+export class TicketListaComponent implements OnInit, AfterViewInit {
 
   readonly svc         = inject(TicketService);
   readonly router      = inject(Router);
@@ -55,6 +55,27 @@ export class TicketListaComponent implements OnInit {
              'mis-asignaciones': 'Mis Asignaciones' }[this.modo];
   }
  
+  ngAfterViewInit(): void {
+    // ponytail: MutationObserver detecta cuando el @else renderiza kanbanWrapper
+    const mo = new MutationObserver(() => {
+      const wrapper = document.getElementById('kanbanWrapper');
+      if (!wrapper) return;
+      mo.disconnect();
+
+      const top  = document.getElementById('kanbanScrollTop')!;
+      const inner = top.firstElementChild as HTMLElement;
+
+      const syncWidth = () => inner.style.width = wrapper.scrollWidth + 'px';
+      new ResizeObserver(syncWidth).observe(wrapper);
+      syncWidth();
+
+      let busy = false;
+      top.addEventListener('scroll',     () => { if (!busy) { busy = true; wrapper.scrollLeft = top.scrollLeft;     busy = false; } });
+      wrapper.addEventListener('scroll', () => { if (!busy) { busy = true; top.scrollLeft     = wrapper.scrollLeft; busy = false; } });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
   ngOnInit(): void {
     this.modo = (this.route.snapshot.data['modo'] as ModoLista) ?? 'todos';
     this.svc.limpiarFiltros();

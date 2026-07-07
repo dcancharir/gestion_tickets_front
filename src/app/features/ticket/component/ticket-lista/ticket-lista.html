@@ -196,7 +196,8 @@
       <p>No hay tickets que mostrar</p>
     </div>
   } @else {
-    <div class="kanban-wrapper">
+    <div class="kanban-scroll-top" id="kanbanScrollTop"><div></div></div>
+    <div class="kanban-wrapper" id="kanbanWrapper">
       @for (grupo of svc.ticketsPorEstado(); track grupo.estado) {
         <div class="kanban-col">
           <!-- Cabecera columna -->

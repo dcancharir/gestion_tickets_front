@@ -308,6 +308,9 @@
    VISTA KANBAN
    ════════════════════════════════════════════════════════════════ */
 
+.kanban-scroll-top          { overflow-x: auto; overflow-y: hidden; height: 16px; }
+.kanban-scroll-top > div   { height: 1px; }
+
 .kanban-wrapper {
   display:        flex;
   gap:            14px;
