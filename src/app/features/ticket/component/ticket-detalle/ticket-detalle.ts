@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpClient }      from '@angular/common/http';
 import { firstValueFrom }  from 'rxjs';
-import { TicketService }   from '../../services/ticket.service';
+import { TicketService }    from '../../services/ticket.service';
+import { FavoritoService }  from '../../services/favorito.service';
 import { EstadoService }   from '../../../maintenance/services/estado.service';
 import { PrioridadService } from '../../../maintenance/services/prioridad.service';
 import { UserService }     from '../../../maintenance/services/user.service';
@@ -31,6 +32,7 @@ export class TicketDetalleComponent implements OnInit {
   private auth         = inject(AuthService);
   private toastSvc     = inject(ToastService);
   readonly svc         = inject(TicketService);
+  readonly favSvc      = inject(FavoritoService);
   private estadoSvc    = inject(EstadoService);
   private prioridadSvc = inject(PrioridadService);
   private userSvc      = inject(UserService);
@@ -107,6 +109,7 @@ export class TicketDetalleComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('publicId')!;
     this.svc.cargarDetalle(id);
     this.cargarValoracion(id);
+    this.favSvc.cargar();
   }
 
   // ── CSAT helpers ─────────────────────────────────────────────────────────

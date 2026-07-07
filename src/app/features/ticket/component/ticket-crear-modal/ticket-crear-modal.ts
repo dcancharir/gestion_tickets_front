@@ -1,7 +1,7 @@
 import {
   Component, Input, Output, EventEmitter,
   inject, signal, resource,
-  OnInit, OnDestroy, HostListener
+  OnInit, OnDestroy, OnChanges, SimpleChanges, HostListener
 } from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule }   from '@angular/forms';
@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'r
 import { firstValueFrom } from 'rxjs';
 
 import { TicketService }       from '../../services/ticket.service';
+import { FavoritoService }     from '../../services/favorito.service';
 import { TicketListItem }      from '../../model/ticket.model';
 import { SedeService }         from '../../../maintenance/services/sede.service';
 import { ConocimientoService } from '../../../conocimiento/services/conocimiento.service';
@@ -41,7 +42,7 @@ const MATRIZ_PRIORIDAD: Record<string, PrioridadInfo> = {
   templateUrl: './ticket-crear-modal.html',
   styleUrls:   ['./ticket-crear-modal.css']
 })
-export class TicketCrearModalComponent implements OnInit, OnDestroy {
+export class TicketCrearModalComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()  visible      = false;
   @Output() cerrar       = new EventEmitter<void>();
@@ -51,8 +52,11 @@ export class TicketCrearModalComponent implements OnInit, OnDestroy {
   onEsc(): void { if (this.visible) this.cerrar.emit(); }
 
   private svc          = inject(TicketService);
+  readonly favSvc      = inject(FavoritoService);
   private sedeSvc      = inject(SedeService);
   private kbSvc        = inject(ConocimientoService);
+
+  panelFavoritos = signal(false);
 
   guardando             = signal(false);
   error                 = signal<string | null>(null);
@@ -84,6 +88,23 @@ export class TicketCrearModalComponent implements OnInit, OnDestroy {
   form = this._formVacio();
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
+
+  usarFavorito(fav: import('../../model/favorito.model').FavoritoItem): void {
+    this.form.titulo       = fav.titulo;
+    this.form.descripcion  = fav.descripcion;
+    this.form.categoriaId  = fav.categoriaId;
+    this.form.canalReporte = fav.canalReporte;
+    this.form.impacto      = fav.impacto;
+    this.form.urgencia     = fav.urgencia;
+    this.panelFavoritos.set(false);
+    this.buscarSubject.next(fav.titulo);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible']?.currentValue === true) {
+      this.favSvc.cargar();
+    }
+  }
 
   ngOnInit(): void {
     // Debounce: espera 500ms después del último tecleo, ignora repetidos

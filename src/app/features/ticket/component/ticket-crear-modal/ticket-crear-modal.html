@@ -15,12 +15,40 @@
         </svg>
         Nuevo Ticket
       </span>
-      <button class="mp-close" (click)="cerrar.emit(); cancelar()" aria-label="Cerrar">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <div style="display:flex;align-items:center;gap:8px">
+        @if (favSvc.items().length > 0) {
+          <button class="btn-usar-favorito" (click)="panelFavoritos.set(!panelFavoritos())"
+                  [class.activo]="panelFavoritos()" title="Usar ticket favorito como plantilla">
+            <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                 [attr.fill]="panelFavoritos() ? 'currentColor' : 'none'">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Usar favorito
+          </button>
+        }
+        <button class="mp-close" (click)="cerrar.emit(); cancelar()" aria-label="Cerrar">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
     </div>
+
+    <!-- Panel de favoritos -->
+    @if (panelFavoritos()) {
+      <div class="fav-panel">
+        <p class="fav-panel-titulo">Selecciona un ticket como plantilla</p>
+        <div class="fav-list">
+          @for (fav of favSvc.items(); track fav.publicId) {
+            <button class="fav-item" (click)="usarFavorito(fav)">
+              <span class="fav-numero">{{ fav.numeroTicket }}</span>
+              <span class="fav-titulo">{{ fav.titulo }}</span>
+              <span class="fav-cat">{{ fav.categoriaNombre }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
 
     <!-- Body -->
     <div class="mp-body">

@@ -122,6 +122,23 @@
 }
 .btn-accion:hover { background: var(--orange); border-color: var(--orange); color: #fff; }
 
+.btn-favorito {
+  display:       inline-flex;
+  align-items:   center;
+  justify-content: center;
+  width:         34px;
+  height:        34px;
+  border:        1px solid var(--line);
+  border-radius: var(--r);
+  background:    var(--surface);
+  color:         var(--muted);
+  cursor:        pointer;
+  transition:    background .15s, border-color .15s, color .15s;
+  flex-shrink:   0;
+}
+.btn-favorito:hover  { border-color: #f59e0b; color: #f59e0b; }
+.btn-favorito.activo { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
+
 /* ── Layout 2 columnas ───────────────────────────────────────── */
 .det-layout {
   display:               grid;
