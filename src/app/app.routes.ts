@@ -17,6 +17,8 @@ import { ArticuloDetalleComponent } from './features/conocimiento/pages/articulo
 import { AccesoDenegado } from './features/acceso-denegado/acceso-denegado';
 import { PerfilComponent } from './features/perfil/perfil';
 import { RestablecerPasswordComponent } from './features/auth/pages/restablecer-password/restablecer-password';
+import { ReportesComponent } from './features/reportes/pages/reportes/reportes';
+import { DistribucionComponent } from './features/reportes/pages/distribucion/distribucion';
 import { permisosGuard } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
@@ -90,6 +92,24 @@ export const routes: Routes = [
             { path: 'users',    component: UserList,          canActivate: [permisosGuard] },
             { path: 'roles',    component: RoleList,          canActivate: [permisosGuard] },
             { path: 'permisos', component: PermisosAddRemove, canActivate: [permisosGuard] },
+        ]
+    },
+
+    // ── Reportes ─────────────────────────────────────────────────────────────
+    {
+        path: 'reportes',
+        component: LayoutBase,
+        canActivate: [permisosGuard],
+        children: [
+            { path: '', component: ReportesComponent }
+        ]
+    },
+    {
+        path: 'reportes/distribucion',
+        component: LayoutBase,
+        canActivate: [permisosGuard],
+        children: [
+            { path: '', component: DistribucionComponent }
         ]
     },
 

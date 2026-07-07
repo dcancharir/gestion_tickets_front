@@ -33,6 +33,27 @@
         ]
     },
     {
+        "name": "Reportes",
+        "modules": [
+            {
+                "name": "Reportes",
+                "icon": "chart",
+                "items": [
+                    {
+                        "action": "reportes",
+                        "name": "Satisfacción",
+                        "path": "reportes"
+                    },
+                    {
+                        "action": "reportes/distribucion",
+                        "name": "Distribución",
+                        "path": "reportes/distribucion"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "Conocimiento",
         "modules": [
             {
