@@ -337,6 +337,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         @if (errorAccion()) { <div class="det-error">{{ errorAccion() }}</div> }
         <div class="mp-field">
           <label class="mp-label">Técnico <span class="req">*</span></label>
@@ -369,6 +383,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         @if (errorAccion()) { <div class="det-error">{{ errorAccion() }}</div> }
         <div class="mp-field">
           <label class="mp-label">Nuevo estado</label>
@@ -406,6 +434,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         @if (errorAccion()) { <div class="det-error">{{ errorAccion() }}</div> }
         <div class="mp-field">
           <label class="mp-label">Solución aplicada <span class="req">*</span></label>
@@ -439,6 +481,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         <p class="mp-confirm-msg">¿Confirmas que la solución fue satisfactoria?</p>
         <div class="mp-field">
           <label class="mp-label">Comentario (opcional)</label>
@@ -468,6 +524,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         @if (errorAccion()) { <div class="det-error">{{ errorAccion() }}</div> }
         <div class="mp-field">
           <label class="mp-label">Técnico destino <span class="req">*</span></label>
@@ -506,6 +576,20 @@
         </button>
       </div>
       <div class="mp-body">
+        @if (svc.detalle(); as t) {
+          <div class="modal-ticket-ctx">
+            <div class="mtc-row">
+              <span class="mtc-num">{{ t.numeroTicket }}</span>
+              <span class="mtc-badge" [style.color]="estadoColor(t.estado)"
+                    [style.background-color]="estadoColor(t.estado) + '20'"
+                    [style.border]="'1px solid ' + estadoColor(t.estado) + '40'">{{ t.estado }}</span>
+              <span class="mtc-badge" [style.color]="prioridadColor(t.prioridad)"
+                    [style.background-color]="prioridadColor(t.prioridad) + '20'"
+                    [style.border]="'1px solid ' + prioridadColor(t.prioridad) + '40'">{{ t.prioridad }}</span>
+            </div>
+            <span class="mtc-titulo">{{ t.titulo }}</span>
+          </div>
+        }
         @if (errorAccion()) { <div class="det-error">{{ errorAccion() }}</div> }
         <div class="mp-field">
           <label class="mp-label">Motivo <span class="req">*</span></label>
